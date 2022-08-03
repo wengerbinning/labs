@@ -1,0 +1,77 @@
+{
+    "preprocessor-rule-enabled": {
+        "patterns": [
+            {
+                "begin": "^\\s*((#)\\s*if\\b)(?=\\s*\\(*\\b0*1\\b\\)*\\s*(?:$|//|/\\*))",
+                "beginCaptures": {
+                    "0": { "name": "meta.preprocessor.c" },
+                    "1": { "name": "keyword.control.directive.conditional.c" },
+                    "2": { "name": "punctuation.definition.directive.c" },
+                    "3": { "name": "constant.numeric.preprocessor.c" }
+                },
+
+                "end": "^\\s*((#)\\s*endif\\b)",
+                "endCaptures": {
+                    "0": { "name": "meta.preprocessor.c" },
+                    "1": { "name": "keyword.control.directive.conditional.c" },
+                    "2": { "name": "punctuation.definition.directive.c" }
+                },
+    
+                "patterns": [
+                    //
+                    {
+                        "begin": "\\G(?=.)(?!//|/\\*(?!.*\\\\\\s*\\n))",
+                        "end": "(?=//)|(?=/\\*(?!.*\\\\\\s*\\n))|(?=\\n)",
+                        "name": "meta.preprocessor.c",
+                        "patterns": [
+                            { "include": "#preprocessor-rule-conditional-line" }
+                        ]
+                    },
+                    
+                    { "include": "#comments" },
+                    
+                    // else
+                    {
+                        "begin": "^\\s*((#)\\s*else\\b)",
+                        "beginCaptures": {
+                            "0": { "name": "meta.preprocessor.c" },
+                            "1": { "name": "keyword.control.directive.conditional.c" },
+                            "2": { "name": "punctuation.definition.directive.c" }
+                        },
+
+                        "end": "(?=^\\s*((#)\\s*endif\\b))",
+                        "contentName": "comment.block.preprocessor.else-branch.c",
+                        "patterns": [
+                            { "include": "#disabled" },
+                            { "include": "#pragma-mark" }
+                        ]
+                    },
+                    
+                    // elif
+                    {
+                        "begin": "^\\s*((#)\\s*elif\\b)",
+                        "beginCaptures": {
+                            "0": { "name": "meta.preprocessor.c" },
+                            "1": { "name": "keyword.control.directive.conditional.c" },
+                            "2": { "name": "punctuation.definition.directive.c" }
+                        },
+                        "end": "(?=^\\s*((#)\\s*(?:else|elif|endif)\\b))",
+                        "contentName": "comment.block.preprocessor.if-branch.c",
+                        "patterns": [
+                            { "include": "#disabled" },
+                            { "include": "#pragma-mark" }
+                        ]
+                    },
+                    
+                    {
+                        "begin": "\\n",
+                        "end": "(?=^\\s*((#)\\s*(?:else|elif|endif)\\b))",
+                        "patterns": [
+                            { "include": "$self" }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

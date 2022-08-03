@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+#
+#
+#
+
+
+
+
+#
+test -f configure || ./bootstrap
+
+#
+./configure
+
+#
+make
+
+#
+make install DESTDIR=$PWD/dst

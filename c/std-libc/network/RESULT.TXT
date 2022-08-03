@@ -1,0 +1,82 @@
+
+int main (int argc, char *argv[]) {
+    int valid;
+    char *buf;
+    regex_t regex;
+    size_t nmatch = REGEX_NMATCH + 1;
+    regmatch_t pmatch[REGEX_NMATCH + 1];
+
+    unsigned char a, a1, a2, a3, a4;
+    unsigned char e, e1, e2, e3, e4;
+    unsigned char m;
+
+
+    if (!argv[1])
+        return 0;
+
+    buf = strdup(argv[1]);
+
+    /* IPv4 Address */
+    regcomp(&regex, REGEX_IP4ADDR, REG_EXTENDED);
+    if (0 == regexec(&regex, buf, nmatch, pmatch, 0)) {
+        memset(buf + pmatch[1].rm_eo, 0, 1); a4 = atoi(buf + pmatch[1].rm_so);
+        memset(buf + pmatch[2].rm_eo, 0, 1); a3 = atoi(buf + pmatch[2].rm_so);
+        memset(buf + pmatch[3].rm_eo, 0, 1); a2 = atoi(buf + pmatch[3].rm_so);
+        memset(buf + pmatch[4].rm_eo, 0, 1); a1 = atoi(buf + pmatch[4].rm_so);
+        printf("#"IPFMT0"\n", a4, a3, a2, a1);
+        valid = 1;
+    }
+    regfree(&regex);
+    /* IPv4 Address with Mask */
+    regcomp(&regex, REGEX_IP4MASK, REG_EXTENDED);
+    if (0 == regexec(&regex, buf, nmatch, pmatch, 0)) {
+        memset(buf + pmatch[1].rm_eo, 0, 1); a4 = atoi(buf + pmatch[1].rm_so);
+        memset(buf + pmatch[2].rm_eo, 0, 1); a3 = atoi(buf + pmatch[2].rm_so);
+        memset(buf + pmatch[3].rm_eo, 0, 1); a2 = atoi(buf + pmatch[3].rm_so);
+        memset(buf + pmatch[4].rm_eo, 0, 1); a1 = atoi(buf + pmatch[4].rm_so);
+        memset(buf + pmatch[5].rm_eo, 0, 1); m  = atoi(buf + pmatch[5].rm_so);
+        printf("@"IPFMT0"/%d\n", a4, a3, a2, a1, m);
+        valid = 1;
+    }
+    regfree(&regex);
+    /* IPv4 Address Range 1 */
+    regcomp(&regex, REGEX_IPRANG1, REG_EXTENDED);
+    if (0 == regexec(&regex, buf, nmatch, pmatch, 0)) {
+        // memset(buf + pmatch[0].rm_eo, 0, 1);
+        memset(buf + pmatch[1].rm_eo, 0, 1); a4 = atoi(buf + pmatch[1].rm_so);
+        memset(buf + pmatch[2].rm_eo, 0, 1); a3 = atoi(buf + pmatch[2].rm_so);
+        memset(buf + pmatch[3].rm_eo, 0, 1); a2 = atoi(buf + pmatch[3].rm_so);
+        memset(buf + pmatch[4].rm_eo, 0, 1); a1 = atoi(buf + pmatch[4].rm_so);
+        memset(buf + pmatch[5].rm_eo, 0, 1); e1 = atoi(buf + pmatch[5].rm_so);
+        printf("@"IPFMT0"-%d\n", a4, a3, a2, a1, e1);
+        valid = 1;
+    }
+    regfree(&regex);
+    /* IPv4 Address Range 2 */
+    regcomp(&regex, REGEX_IPRANG2, REG_EXTENDED);
+    if (0 == regexec(&regex, buf, nmatch, pmatch, 0)) {
+        // memset(buf + pmatch[0].rm_eo, 0, 1);
+        memset(buf + pmatch[1].rm_eo, 0, 1); a4 = atoi(buf + pmatch[1].rm_so);
+        memset(buf + pmatch[2].rm_eo, 0, 1); a3 = atoi(buf + pmatch[2].rm_so);
+        memset(buf + pmatch[3].rm_eo, 0, 1); a2 = atoi(buf + pmatch[3].rm_so);
+        memset(buf + pmatch[4].rm_eo, 0, 1); a1 = atoi(buf + pmatch[4].rm_so);
+        memset(buf + pmatch[1].rm_eo, 0, 1); e4 = atoi(buf + pmatch[1].rm_so);
+        memset(buf + pmatch[2].rm_eo, 0, 1); e3 = atoi(buf + pmatch[2].rm_so);
+        memset(buf + pmatch[3].rm_eo, 0, 1); e2 = atoi(buf + pmatch[3].rm_so);
+        memset(buf + pmatch[4].rm_eo, 0, 1); e1 = atoi(buf + pmatch[4].rm_so);
+        printf("@"IPFMT0"-"IPFMT0"\n", a4, a3, a2, a1, e4, e3, e2, e1);
+        if (a4 == e4) {
+
+        }
+        valid = 1;
+    }
+    regfree(&regex);
+
+
+    if (!valid) {
+        printf("Unvaild Striing: %s\n", buf);
+    }
+    free(buf);
+
+    return 0;
+}

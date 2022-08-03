@@ -1,0 +1,22 @@
+#ifndef __MIME_H_
+#define __MIME_H_
+
+
+enum conent_type {
+    CONTENT_TYPE_DEFAULT,
+    MULTIPART_FORM_DATA,
+
+    TEXT_PLAIN,
+    TEXT_CSS,
+    TEXT_JAVASCRIPT,
+
+    APPLICATION_OCTET_STREAM,
+    APPLICATION_ZIP,
+    APPLICATION_X_GZIP,
+
+    CONTENT_TYPE_MAX
+};
+
+
+
+#endif /* __MIME_H_ */

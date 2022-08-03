@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: devel
+Description: Develop Librariy - from Wenger Binning
+Version: 0.1
+Libs: -L${libdir} -ldevel
+Cflags: -I${includedir}

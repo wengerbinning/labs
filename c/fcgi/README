@@ -1,0 +1,27 @@
+
+
+
+* fcgi
+
+
+
+- fastcgi.h
+- fastapp.h
+- fcgimisc.h
+- fcgiio.h
+- fcgiios.h
+
+libfcgi.so
+
+
+struct FCGX_Request
+
+
+int FCGX_Init (void);
+int FCGX_OpenSocket (const char *path, int backlog);
+int FCGX_InitRequest (FCGX_Request *request, int sock, int flags);
+
+int    FCGX_Accept_r (FCGX_Request *reqDataPtr);
+char * FCGX_GetParam (const char *name, FCGX_ParamArray envp);
+int    FCGX_FPrintF  (FCGX_Stream *stream, const char *format, ...);
+void   FCGX_Finish_r (FCGX_Request *reqDataPtr);

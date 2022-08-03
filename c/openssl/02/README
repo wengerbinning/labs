@@ -1,0 +1,68 @@
+
+
+
+
+htgen
+------
+扩展镜像文件，加入头部信息
+
+01 - output file
+02 - input file
+03 - pad size
+04 - image id
+05 - version
+06 - timestamp
+07 - factory
+08 - famil index     hwmodel_index
+09 - supported bits
+10 - mask
+11 - Only Header
+12 - cversion1
+13 - cversion2
+
+prov_dec
+--------
+解密镜像文件
+
+
+prov_enc -> prov_dec
+--------
+加密镜像文件， 所有数据均加密
+
+
+01 - key
+02 - file
+03 - footer
+
+
+
+prov_pack -> prov_dec
+---------
+打包镜像文件
+
+01 - key
+02 - famil
+03 - out file
+04 - flag
+05 - input file 1
+06 - input file 2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* 对数据区计算RSA摘要。
+*
+
+
+openssl dgst -sha1 -sign gwn_firmware_private data.bin  | hexdump --format '32/1 "%02x " "\n"'

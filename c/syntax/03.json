@@ -1,0 +1,52 @@
+{
+    "preprocessor-rule-conditional": {
+        "patterns": [
+            {
+                "begin": "^\\s*((#)\\s*if(?:n?def)?\\b)",
+                "beginCaptures": {
+                    "0": { "name": "meta.preprocessor.c" },
+                    "1": { "name": "keyword.control.directive.conditional.c" },
+                    "2": { "name": "punctuation.definition.directive.c" }
+                },
+                "end": "^\\s*((#)\\s*endif\\b)",
+                "endCaptures": {
+                    "0": { "name": "meta.preprocessor.c" },
+                    "1": { "name": "keyword.control.directive.conditional.c" },
+                    "2": { "name": "punctuation.definition.directive.c" }
+                },
+                "patterns": [
+                    {
+                        "begin": "\\G(?=.)(?!//|/\\*(?!.*\\\\\\s*\\n))",
+                        "end": "(?=//)|(?=/\\*(?!.*\\\\\\s*\\n))|(?<!\\\\)(?=\\n)",
+                        "name": "meta.preprocessor.c",
+                        "patterns": [
+                            { "include": "#preprocessor-rule-conditional-line" }
+                        ]
+                    },
+                    { "include": "#preprocessor-rule-enabled-elif" },
+                    { "include": "#preprocessor-rule-enabled-else" },
+                    { "include": "#preprocessor-rule-disabled-elif" },
+                    {
+                        "begin": "^\\s*((#)\\s*elif\\b)",
+                        "beginCaptures": {
+                            "1": { "name": "keyword.control.directive.conditional.c" },
+                            "2": { "name": "punctuation.definition.directive.c" }
+                        },
+                        "end": "(?=//)|(?=/\\*(?!.*\\\\\\s*\\n))|(?<!\\\\)(?=\\n)",
+                        "name": "meta.preprocessor.c",
+                        "patterns": [
+                            { "include": "#preprocessor-rule-conditional-line" }
+                        ]
+                    },
+                    { "include": "$self" }
+                ]
+            },
+            {
+                "match": "^\\s*#\\s*(else|elif|endif)\\b",
+                "captures": {
+                    "0": { "name": "invalid.illegal.stray-$1.c" }
+                }
+            }
+        ]
+    }
+}

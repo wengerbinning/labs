@@ -1,0 +1,1 @@
+LD_PRELOAD=$PWD/libdevel.so ./main

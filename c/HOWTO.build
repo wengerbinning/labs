@@ -1,0 +1,57 @@
+
+
+
+
+
+make ARCH=$ARCH CROSS_COMPILE=${CROSS_COMPILE} menuconfig
+make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} -j$(nproc)
+
+make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} -j$(nproc) modules
+make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} -j$(nproc) install INSTALL_PATH=${PWD}/dest
+
+
+
+object
+------
+
+```
+$(eval $(call build, object, relocatable, helloworld))
+```
+
+```
+$(eval $(call build, object, executable, helloworld))
+```
+
+
+library
+-------
+
+
+```
+$(eval $(call build, library, share, helloworld))
+```
+
+```
+$(eval $(call build, library, static, helloworld))
+```
+
+
+module
+------
+
+```
+$(eval $(call build, module, heloworld))
+```
+
+```
+mdirs :=  std-libc
+$(eval $(foreach mod,$(mdirs),$(call build, module, $(mod))))
+```
+
+
+x86_64-w64-mingw32
+
+
+
+
+mipsel-linux-gnu-gcc -EL -nostdlib -o boot.elf boot.c

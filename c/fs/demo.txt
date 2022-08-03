@@ -1,0 +1,67 @@
+
+打印字符  94 = (26 + 10 + 11) * 2
+控制字符: 33 = (32 + 01) * 1
+空白字符: 01 = (1) * 1
+
+10
+11
+26
+47 * 2  = 94
+
+0123456789
+!@#$%^&*()
+`-=[]\;',./
+~_+{}|:"<>?
+abcdefghijklmnopqrstuvwxyz
+ABCDEFGHIGKLMNOPQRSTUVWXYZ
+
+
+
+
+布隆过滤器(Bloom Filter)
+
+基于一个位数组和多个HASH函数来判定元素是否在数组中。
+
+适用与大量元素是否在
+误报不漏报
+
+可能是存在
+一定不存在
+
+
+
+SOH 标题开始
+STX 正文开始
+ETX 正文结束
+EOY 传输结束
+ETB
+SYN
+
+NUL 空白
+BEL 响铃
+ENQ 请求
+ACK 承认
+NAK 否定
+DLE
+
+CAN 取消
+ESC 换码
+SUB 换置
+DEL 删除
+
+BS 退格
+LF 换行
+CR 回车
+FF 换页
+EM
+
+
+HT
+VT
+SO 移位输出
+SI 移位输入
+
+FS 文字分隔符
+GS 群组分隔符
+RS 记录分隔符
+US 单元分隔符

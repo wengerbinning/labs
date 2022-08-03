@@ -1,0 +1,38 @@
+*.o
+.*.cmd
+.*.target
+
+.ignore
+.target
+.environment
+.deps/
+dest/**
+
+
+
+# autoscan
+autoscan.log
+# autoconf
+autom4te.cache/
+config.h.in
+configure
+# configure
+config.log
+config.status
+# autoconf with automake
+COPYING
+INSTALL
+Makefile.in
+aclocal.m4
+compile
+depcomp
+install-sh
+missing
+
+
+config.h
+Makefile
+stamp-h1
+
+
+dst/**

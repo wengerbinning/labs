@@ -1,0 +1,39 @@
+PROJECT NAME: ${PROJECT_NAME}
+PROJECT HOME: ${PROJECT_HOME}
+PROEJCT PATH: ${PROJECT_PATH}
+
+Common Targets:
+    all             default target
+    help            display this information
+    clean           clean project
+    dist-clean      dist clean project
+    install         install project
+    unistall        uninstall project
+
+Project Targets:
+$(awk '{printf "    %-16s%s\n", $1, $3}' .targets)
+
+
+Project Environment:
+    PROJECT_NAME    Project name
+    PROJECT_HOME    Project home
+
+Toolchain Environments:
+    TOOLCHAIN       Toolchain name
+    TOOLCHAIN_HOME  Toolchain home
+    CROSS_PREFIX    Toolchain prefix
+
+TOOLS Commands:
+    RM              shell rm
+    AWK             shell awk
+    ECHO            shell echo
+    TEST            shell test
+    MKDIR           shell mkdir
+
+Build Commands:
+    CC              GCC Compiler tool.
+    LD              GCC Link tool
+    AR              GCC archive tool.
+    NM              GCC nm tool.
+    STRIP           GCC strip tool.
+    OBJDUMP         GCC objdump tool.
