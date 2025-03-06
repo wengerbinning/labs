@@ -107,7 +107,6 @@ int parse_options (context_t *ctx, int argc, char *argv[]) {
             snprintf(p, len, "%s", argv[idx]);
         p = cmdline + strlen(cmdline);
         len = CMDLINE_SIZE - strlen(cmdline);
-
     }
 
     return 0;
