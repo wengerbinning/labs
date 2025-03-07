@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>HTML Labs</title>
+	<meta charset="utf-8"/>
+</head>
+
+
+<body>
+	<input type="file" id="elem-file-input">
+</body>
+
+<script>
+let file = document.getElementById('elem-file-input');
+
+
+
+let data = []
+// file.addEventListener("change", function selectededdFileChanged() {
+// 	console.log(this);
+// 	console.log(this.files);
+// });
+
+file.addEventListener("change", (e) => {
+	let elem = e.target;
+	console.log(elem.files);
+
+	//
+	let reader = new FileReader();
+	reader.readAsText(elem.files[0]);
+	reader.addEventListener("load", (e) => {
+		let reader = e.target
+		let content = reader.result;
+		let lines = content.split("\n");
+		let table;
+		let chain;
+		let skip;
+
+		for (let i = 1; i < lines.length; i++) {
+			let matchs = [];
+			// console.log(i, lines[i]);
+			if (lines[i].substring(0, 1) === '#') {
+				continue;
+			} else if (lines[i].substring(0, 1) === '*') {
+				table=lines[i].substring(1);
+			} else if (lines[i] === "COMMIT") {
+				table="none";
+			} else if (lines[i].substring(0, 1) === ':') {
+				chain=lines[i].substring(1).split(' ')[0];
+				// console.log('>', table, chain);
+			} else if (lines[i].substring(0, 2) === '-A') {
+				rules=lines[i].substring(3).split(' ');
+				for (let i = 0; i < rules.length; i++) {
+					if (i === 0) {
+						chain=rules[i];
+						continue;
+					}
+					if (rules[i++] === '-m') {
+							let match = rules[i];
+						if (rules[i++] === "comment") {
+							comment = rules[++i];
+							while (comment.substr(-1, 1) !== '"') {
+								comment += ' ' + rules[++i];
+							}
+							matchs.push({match: comment});
+						// } else {
+						// 	match[key] = rules[i];
+						// 	matchs.push(match);
+						}
+					} else if (rules[i] === '-j') {
+						console.log(i, rules[i], rules[i + 1]);
+					}
+				}
+				console.log(i, table, chain, matchs, rules);
+
+			} else {
+				console.log(i, lines[i]);
+			}
+		}
+		// console.log(content);
+	});
+
+
+
+
+});
+
+</script>
+</html>

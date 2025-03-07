@@ -1,6 +1,30 @@
 
 
 
+PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
+SHELL=/usr/bin/bash
+HOME=/home/wenger
+USER=wenger
+LOGNAME=wenger
+
+OLDPWD=/mnt/work/wengerbinning/labs
+PWD=/mnt/work/wengerbinning/labs/shell
+
+
+TERM=xterm-256color
+COLORTERM=truecolor
+LANGUAGE=
+LANG=C.UTF-8
+
+
+COLORFGBG=15;0
+SHLVL=1
+
+
+
+_=/usr/bin/env
+
+
 
 
 ## Color
@@ -18,7 +42,7 @@
 * Color 4
 * Color 5
 * Color 6
-* Color 7   
+* Color 7
 * Color 8
 
 
@@ -95,15 +119,34 @@ tput sgr0
 PS1='\e[32m\u\e[31m@\e[33m\h\e[0m \e[34m\W\e[0m \e[31m\$\e[0m \e[m'
 
 
-\$ 
+\$
 
 
 
 
 红
-橙
-黄
 绿
+黄
 蓝
 紫
+
+TERM=linux
+
+TERM=xterm-256color
+
+COLOR0_RED="\e[41m"
+COLOR0_GREEN="\e[42m"
+COLOR0_YELLOW="\e[43m"
+COLOR0_BLUE="\e[44m"
+COLOR0_VIOLET="\e[45m"
+
+COLOR1_RED="\e[31m"
+COLOR1_GREEN="\e[32m"
+COLOR1_YELLOW="\e[33m"
+COLOR1_BLUE="\e[34m"
+COLOR1_VIOLET="\e[35m"
+
+
+
+
 

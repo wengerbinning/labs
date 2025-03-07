@@ -8,3 +8,6 @@ echo -en "\033[${i}m"
 printf "%02d" $i
 echo -e "\033[0m"
 done
+
+
+COLORTERM=truecolor
