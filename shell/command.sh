@@ -33,6 +33,12 @@ run_cmd() {
 	if ! type -t error 2>/dev/null 1>&2; then
 		error() { echo -e "\e[31m${@/@COLOR@/\\e[0m\\e[31m}" >&2; }
 	fi
+	if ! type -t warning 2>/dev/null 1>&2; then
+		warning() { echo -e "\e[31m${@/@COLOR@/\\e[0m\\e[31m}" >&2; }
+	fi
+	if ! type -t notice 2>/dev/null 1>&2; then
+		notice() { echo -e "\e[31m${@/@COLOR@/\\e[0m\\e[31m}" >&2; }
+	fi
 	if ${force:-false}; then test -d "$home" && rm -rf $home; fi
 	test -d "${home}" || mkdir -p "${home}"
 	file=$(file_backup $file true)
