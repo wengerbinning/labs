@@ -1,44 +1,73 @@
 #!/usr/bin/env bash
 
+error()   { echo -e "\e[31m${@/@COLOR/\\e[0m\\e[31m}\e[0m" >&2; }
+warning() { echo -e "\e[33m${@/@COLOR/\\e[0m\\e[33m}\e[0m" >&2; }
+notice()  { echo -e "\e[32m${@/@COLOR/\\e[0m\\e[32m}\e[0m" >&1; }
+note()    { echo -e "\e[34m${@/@COLOR/\\e[0m\\e[34m}\e[0m" >&1; }
+debug()   { echo -e "\e[35m${@/@COLOR/\\e[0m\\e[35m}\e[0m" >&1; }
+
 ##
-error()   { echo -en "\e[31m"; echo -en $@; echo -en "\e[0m\n"; }
-warning() { echo -en "\e[33m"; echo -en $@; echo -en "\e[0m\n"; }
-notice()  { echo -en "\e[32m"; echo -en $@; echo -en "\e[0m\n"; }
-note()    { echo -en "\e[34m"; echo -en $@; echo -en "\e[0m\n"; }
-debug()   { echo -en "\e[32m"; echo -en $@; echo -en "\e[0m\n"; }
-#
+# usage: file_backup <file> <force>
+file_backup() {
+	local idx name suffix
+	local file=${1} force=${2:-false}
+	test -n "$file" || return
+	# parse file name
+	name=${file%.*}; suffix=${file##*.}
+	test "$suffix" == "$file" && unset suffix
+	# check file name
+	while test -f "$name${suffix:+.$suffix}"; do
+		name=${file%.*}-${idx:-0}
+	idx=$((idx + 1)); done
+	name=$name${suffix:+.$suffix}
+	# handle file name
+	case ${force:-false} in
+	true) test -f $file && mv -f $file $name; name=$file ;;
+	esac
+	echo $name
+}
+
+# usage: run_cmd <prog>...
 run_cmd() {
-	local idx=${_cmd_count:-0}
-	eval "cmd_${idx}_timestamp=\"$(date)\""
-	eval "cmd_${idx}_cmdline=\"$@\""
-	_cmd_count=$((idx + 1))
-	note "running command:\e[0m $@"
-	eval "$@"
-	test $? -ne 0 && {
-		error "running command error!"
-		debug "command:$@"
-		exit 1
+	local ret home=${CMD_HOME:-.command}
+	local file="${home}/$(date +%s).log"
+	local force=${CMD_FORCE:-false}
+	if ! type -t error 2>/dev/null 1>&2; then
+		error() { echo -e "\e[31m${@/@COLOR@/\\e[0m\\e[31m}" >&2; }
+	fi
+	if ! type -t warning 2>/dev/null 1>&2; then
+		warning() { echo -e "\e[31m${@/@COLOR@/\\e[0m\\e[31m}" >&2; }
+	fi
+	if ! type -t notice 2>/dev/null 1>&2; then
+		notice() { echo -e "\e[31m${@/@COLOR@/\\e[0m\\e[31m}" >&2; }
+	fi
+	if ${force:-false}; then test -d "$home" && rm -rf $home; fi
+	test -d "${home}" || mkdir -p "${home}"
+	file=$(file_backup $file true)
+	echo "[$(date +"%Y/%m/%d %H:%M:%S %z")] ${PWD} # $@" > $file
+	case ${CMD_VERBOSE:-false} in
+	true)
+		eval "$@";         ret=$? ;;
+	*)
+		eval "$@ >>$file"; ret=$?
+	esac
+	test ${ret:-1} -ne 0 && {
+		error "running command error ($ret): \e[34m$@ @COLOR@!"
+		case ${CMD_EXIT:-true} in
+		false) return $ret ;;
+		*)       exit $ret
+		esac
 	}
 }
-#
-cmd_total() {
-	local idx=0 stamp1 stamp2
-	local timestamp cmdline
-	while [ $idx -lt ${_cmd_count:-0} ]; do
-		eval "timestamp=\$cmd_${idx}_timestamp"
-		eval "cmdline=\$cmd_${idx}_cmdline"
-		stamp1=$(date -d"$timestamp"  +%s)
-		stamp2=$(date +%s)
-		printf "[%s] \033[1;3m%s\033[0m expend %d seconds\n" "${timestamp}" "${cmdline}" $((stamp2 - stamp1))
-		idx=$((idx + 1))
-	done
-}
+
+###############################################################################
 
 ##
 ARCH=x86_64
 TARGET="x86_64-unknown-linux-gnu"
 CROSS_PREFIX="x86_64-unknown-linux-gnu-"
-#
+
+##
 TOOLCHAIN_HOME="/opt/toolchains"
 TOOLCHAIN_NAME="toolchain-${TARGET}"
 TOOLCHAIN_PATH="${TOOLCHAIN_HOME}/${TOOLCHAIN_NAME}"
@@ -54,6 +83,7 @@ test -d "$WORKPATH" || mkdir -p $WORKPATH
 cd $WORKPATH && {
     notice "Start build project ..."
 ###############################################################################
+alias "egrep=grep -E"
 
 #
 run_cmd $SRC_PATH/configure --prefix='' \
@@ -68,6 +98,5 @@ run_cmd make install DESTDIR=$DST_PATH
 
 ###############################################################################
 	cd - </dev/null
-	cmd_total
 	notice "Project build successful!"
 }
