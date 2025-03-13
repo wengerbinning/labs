@@ -1,5 +1,20 @@
-* binutils, v2.42
-* linux, v5.4.274
+* bintuils
+* linux-include
+* gcc-core
+* glibc-include
+* gcc-libs
+* glibc
 * libcrypt
-* gcc, v10.5.0
-* glibc, v2.39
+* gcc
+
+
+
+
+
+* binutils-gdb
+* linux-include
+* gcc-core: binutils-gdb, linux-include
+* glibc-include: gcc-core
+* gcc-libs: glibc-include
+* glibc: gcc-libs
+* gcc: glibc, libcrypt

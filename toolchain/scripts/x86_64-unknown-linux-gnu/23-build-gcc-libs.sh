@@ -60,7 +60,7 @@ run_cmd() {
 	}
 }
 
-# =========================================================================== #
+###############################################################################
 
 ##
 ARCH=x86_64
@@ -73,47 +73,27 @@ TOOLCHAIN_NAME="toolchain-${TARGET}"
 TOOLCHAIN_PATH="${TOOLCHAIN_HOME}/${TOOLCHAIN_NAME}"
 
 ##
-RELEASED_HOME="/mnt/srv/released/toolchains"
-RELEASED_PATH="${RELEASED_HOME}/${TOOLCHAIN_NAME}"
-
-##
 PATH="$TOOLCHAIN_PATH/bin${PATH:+:$PATH}"
 export PATH
-CC=${CROSS_PREFIX}gcc
-CFLAGS="-O3 -g -Wno-attributes"
-export CC CFLAGS
 
 ##
 WORKPATH=".build"
 SRC_PATH=$PWD
 DST_PATH=${PWD}/dest
-
+#
 test -d "$DST_PATH" && mv -f $DST_PATH ${DST_PATH}.old
-test -d "$WORKPATH" && rm -rf "$WORKPATH"
 test -d "$WORKPATH" || mkdir -p $WORKPATH
 cd $WORKPATH && {
     notice "Start build project ..."
-# =========================================================================== #
+###################
 
-run_cmd $SRC_PATH/configure --prefix=/ \
-	--host=$TARGET \
-	--target=$TARGET \
-	--disable-multilib \
-	--with-headers=$TOOLCHAIN_PATH/usr/include
+# all-target-libstdc++-v3
+make -j6 all-target-libgcc
 
-run_cmd make install-bootstrap-headers=yes install-headers DESTDIR=$DST_PATH
-#
-run_cmd make -j$(nproc) csu/subdir_lib
-#
-run_cmd install -d $DST_PATH/lib
-run_cmd install -t $DST_PATH/lib csu/crt1.o csu/crti.o csu/crtn.o
-#
-run_cmd ${CC} -nostdlib -nostartfiles -shared -x c /dev/null -o $DST_PATH/lib/libc.so
-#
-run_cmd install -d $DST_PATH/include/gnu/
-run_cmd touch $DST_PATH/include/gnu/stubs.h
+# install-target-libstdc++-v3
+make install-target-libgcc  DESTDIR=${DEST_PATH}
 
-# =========================================================================== #
+###################
 	cd - </dev/null
 	notice "Project build successful!"
 }
