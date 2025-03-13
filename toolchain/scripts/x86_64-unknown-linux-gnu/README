@@ -1,3 +1,8 @@
+
+toolchians
+----------
+
+
 * bintuils
 * linux-include
 * gcc-core
@@ -7,9 +12,7 @@
 * libcrypt
 * gcc
 
-
-
-
+source
 
 * binutils-gdb
 * linux-include
@@ -18,3 +21,12 @@
 * gcc-libs: glibc-include
 * glibc: gcc-libs
 * gcc: glibc, libcrypt
+
+
+
+
+initramfs
+---------
+
+* ncurses:
+
