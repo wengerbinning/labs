@@ -78,3 +78,14 @@ targets := helloworld include
 * 动态库
 * 可链接文件
 * 可执行文件
+
+
+
+
+
+
+
+
+目标类型
+
+demdemo-demo-static-library
