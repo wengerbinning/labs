@@ -1,1 +1,4 @@
-*.o *.c
+*.o
+*.c
+
+helloworld
