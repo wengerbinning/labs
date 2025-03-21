@@ -1,7 +1,7 @@
 
 targets := helloworld
 
-
+helloworld-language=c
 
 # helloworld-type=dede-share-library
 
@@ -51,12 +51,21 @@ C_LINK=$(LD)$(if $(3), $(3)) -o $(1) $(2)
 
 
 
+define do_build
+	@echo BUILD $(1) ...
+endef
+
+
 
 $(target): $(target-deps) $(target-objs)
+	$(call do_build, $(target))
+
+
 
 
 ## executable object
 define build_executable_object
+	$(call file_newer, helloworld.o, helloworld.c)
 	$(foreach each, $(target-objs), $(call C_COMP,$(each),$(option)))
 	$(call C_LINK,$(target),$(target-objs),$(option))
 endef
