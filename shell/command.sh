@@ -1,7 +1,7 @@
 # CMD_HOME=.command
 # CMD_EXIT=true
 # CMD_FORCE=true
-# CMD_VERBOSE=true
+# 		=true
 #
 #
 
