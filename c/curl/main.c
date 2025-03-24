@@ -51,14 +51,19 @@ size_t read_callback(char *buffer, size_t size, size_t nitems, void *priv)
 
 int main(int agrc, char *argv[]) {
     CURL *curl;
-    CURLcode res;
+    CURLcode ret;
 
     curl_global_init(CURL_GLOBAL_ALL);
     curl = curl_easy_init();
 
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+    curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 5);
+    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 3);
+    curl_easy_setopt(curl, CURLOPT_LOW_SPEED_LIMIT, 100);
+    curl_easy_setopt(curl, CURLOPT_LOW_SPEED_TIME, 30);
 
-    curl_easy_setopt(curl, CURLOPT_POST, 1L);
-    curl_easy_setopt(curl, CURLOPT_URL, "http://127.0.0.1/api/cgi1");
+    // curl_easy_setopt(curl, CURLOPT_POST, 1L);
+    curl_easy_setopt(curl, CURLOPT_URL, "tftp://127.0.0.1");
     curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE_LARGE, (curl_off_t)MEM_SIZE(128, B));
     curl_easy_setopt(curl, CURLOPT_READDATA, (void *)stdin);
     curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
@@ -66,10 +71,20 @@ int main(int agrc, char *argv[]) {
 
     // curl_easy_setopt(curl, CURLOPT_POSTFIELDS, "name=daniel&project=curl");
 
-    res = curl_easy_perform(curl);
+    if ((ret = curl_easy_perform(curl)) != CURLE_OK) {
+      switch(ret) {
+        case CURLE_UNSUPPORTED_PROTOCOL:
+          printf("return code : %d\tCURLE_UNSUPPORTED_PROTOCOL\n", ret);
+          break;
+        default:
+          printf("return code : %d\n", ret);
+      }
+
+    }
     curl_easy_cleanup(curl);
 
-    curl_global_cleanup();
+
+    // curl_global_cleanup();
 
     return 0;
 }

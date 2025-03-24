@@ -1,13 +1,21 @@
+
+#include <time.h>
 #include <stdio.h>
 #include <syslog.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <stdlib.h>
+#include <stdbool.h>
+
 #include <arpa/inet.h>
+
+
+#include "hexdump.h"
 
 // https://manpages.debian.org/stretch/libssl-doc/BIO_do_handshake.3ssl.en.html
 
 // #include <openssl/applink.h>
+
 #include <openssl/bio.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
@@ -50,14 +58,21 @@ Content-Type: text/plain
 #define PATH "/api/cgi1"
 
 #define HTML_POST_REQ_HEAD_FMT \
-    "POST %s HTTP/1.1\r\n"        \
-    "User-Agent: FIOFCGIO\r\n"    \
-    "Host: %s:%u\r\n"             \
-    "Content-Type: %s\r\n"        \
-    "Content-Length: %d\r\n"      \
+    "POST %s HTTP/1.1\r\n"              \
+    "User-Agent: FIOFCGIO\r\n"          \
+    "Host: %s:%u\r\n"                   \
+    "Content-Type: %s\r\n"              \
+    "Content-Length: %d\r\n"            \
+	"Cache-control: no-cache\r\n"       \
     "\r\n"
 
+/*
+Cache-Control:
+max-age=180, public
+no-cache
+no-store
 
+ */
 
 
 SSL_CTX * ssl_new (void) {
@@ -108,35 +123,59 @@ void ssl_free (SSL_CTX *ctx) {
 int main(int argc, char * argv[]) {
 	SSL_CTX *ctx = NULL;
 	BIO *web = NULL;
-	char buffer[BUFIZE + 1];
+	char buffer[BUFIZE + 1] = {0};
 	int len;
 
 	char ipv4[] = "127.0.0.1";
-	char hostname[] = "127.0.0.1:443";
+	char *host, hostname[] = "127.0.0.1:443";
 
+	host = hostname;
+	if (argv[1])
+		host = argv[1];
+
+	/* */
 	openlog("ssl_req", LOG_PID | LOG_PERROR, LOG_USER);
-
 	syslog(LOG_DEBUG, "init SSL context ...");
 	ctx = ssl_new();
 
-	syslog(LOG_DEBUG, "connect server ...");
-	web = ssl_connect(ctx, "127.0.0.1:443");
-
-	/** */
-	syslog(LOG_DEBUG, "send request ...");
-
-
-	snprintf(buffer, BUFIZE, HTML_POST_REQ_HEAD_FMT, "/api/cgi1", "127.0.0.1", 443, "text/plain", 0);
-	hexdump(buffer,strlen(buffer));
-	BIO_write(web, buffer, strlen(buffer));
-
-
-	while ( 0 < (len = BIO_read(web, buffer, BUFIZE))) {
-		hexdump(buffer, len);
+	/* default timeout: 7200 sec */
+	SSL_CTX_set_timeout(ctx, 60);
+	syslog(LOG_DEBUG, "connect server %s: %ld ...", host, SSL_CTX_get_timeout(ctx));
+	if (!(web = ssl_connect(ctx, host))) {
+		return -1;
 	}
 
-	ssl_close(web);
-	ssl_free(ctx);
+	BIO_set_nbio(web, 1);
 
+	/* head */
+	syslog(LOG_DEBUG, "send request ...");
+	snprintf(buffer, BUFIZE, HTML_POST_REQ_HEAD_FMT, "/api/cgi", "127.0.0.1", 443, "text/plain", 3 * 10);
+	BIO_write(web, buffer, strlen(buffer));
+
+	/* write body */
+	for (int i =0; i < 10; i++) {
+		syslog(LOG_DEBUG, "wirte time %d ...", i);
+		snprintf(buffer, BUFIZE, "123");
+		if ( BIO_write(web, buffer, strlen(buffer)) <= 0) {
+			syslog(LOG_DEBUG, "wirte error");
+		}
+		sleep(1);
+	}
+
+
+
+	/* delay for nginx proxy */
+	syslog(LOG_DEBUG, "close connection ...");
+	// len = BIO_read(web, buffer, BUFIZE);
+	// hexdump(buffer, len);
+	sleep(1);
+	/* */
+	ssl_close(web);
+
+
+
+	/* */
+	ssl_free(ctx);
+	closelog();
 	return 0;
 }

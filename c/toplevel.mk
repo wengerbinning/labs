@@ -19,7 +19,7 @@ all: $(prepare) $(relos) $(mods) $(stlibs) $(shlibs) $(execs)
 	@$(if $(execs),  $(call target_push, execs,  $(execs),  .target))
 
 clean: FORCE $(mods-clean)
-	-rm -f *.o .target
+	-rm -f *.o *.i .target
 	-$(if $(stlibs), rm -f $(stlibs))
 	-$(if $(shlibs), rm -f $(shlibs))
 	-$(if $(relos),  rm -f $(relos))
@@ -37,5 +37,8 @@ uninstall: $(mods-uninstall) FORCE
 help: FORCE
 	@$(SCRIPTS_HOME)/build-help.sh $(mods) $(stlibs)
 
-.PHONY: FORCE all install unistall clean help $(phony) $(mdirs) $(mods-clean) $(mods-install) $(mods-uninstall)
 FORCE:
+PHONY += FORCE all help
+PHONY += install unistall clean dist-clean
+.PHONY: $(PHONY) $(phony) $(mdirs) $(mods-clean) $(mods-install) $(mods-uninstall)
+
