@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>配置文件</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/styles/handsontable.min.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/styles/ht-theme-main.min.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/styles/ht-theme-horizon.min.css" />
+
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+	<h1>配置文件</h1>
+
+	<!-- 文件上传按钮 -->
+	<input id="load-csv" type="file" accept=".csv" />
+	<button id="save-csv">保存</button>
+	<input id="cols-val" />
+	<button id="cols-add">新增列</button>
+	<button id="cols-mod">修改列</button>
+	<button id="cols-del">删除列</button>
+	<div id="table"></div>
+
+</body>
+
+<script>
+	class Table {
+		cols = [ ];
+		data = [[]];
+		tabler;
+		theme = 'ht-theme-main-dark-auto';
+		filename = "table.csv";
+		constructor(column) {
+			this.cols = column;
+		}
+		columns() {
+			let val = [];
+			for (let i = 0; i < this.cols.length; i++) {
+				let col = {};
+				col.data = i;
+				if (this.cols[i].name)
+					col.title = this.cols[i].name;
+				if (this.cols[i].type)
+					col.type = this.cols[i].type;
+				if (this.cols[i].algin)
+					col.className = this.cols[i].algin;
+				val[i] = col;
+			}
+			return val;
+		}
+		title(idx) {
+			return this.cols[idx] ? this.cols[idx].name : null;
+		}
+		titles() {
+			let val = [];
+			for (const col of this.cols) {
+				val.push(col.name);
+			}
+			return val;
+		}
+	};
+
+	let columns = [
+		{ name: "名称", type: "text", algin: "htCenter" },
+		{ name: "类型", type: "text" },
+	];
+
+	let table = new Table(columns);
+	let elem;
+
+	// 加载表格
+	elem = document.getElementById('load-csv');
+	elem.addEventListener('change', function(e) {
+		const file = e.target.files[0];
+		if (file) {
+			table.filename = file.name;
+			Papa.parse(file, {
+				complete: function(results) {
+					const data = results.data;
+					console.log(data[0]);
+					for (let i= 0; i< data[0].length; i++) {
+						table.cols[i].name = data[0][i];
+					}
+					table.tabler.loadData(data.slice(1, data.length));
+				},
+				header: false
+			});
+		}
+	});
+
+	// 保存表格
+	elem = document.getElementById('save-csv');
+	elem.addEventListener('click', function(e) {
+		const title = table.titles().join(',');
+		const data = table.tabler.getData();
+		const csv = title + '\n' + Papa.unparse(data);
+
+		console.log(csv);
+		const blob = new Blob([csv], { type: 'text/csv' });
+		const link = document.createElement('a');
+		link.href = URL.createObjectURL(blob);
+		link.download = table.filename;
+		link.click();
+	});
+
+	// 新增列
+	elem = document.getElementById('cols-add');
+	elem.addEventListener('click', function(e) {
+		let val = document.getElementById('cols-val').value;
+		table.cols.push({name: val});
+		console.log(val, table.cols);
+		table.tabler.loadData([]);
+	});
+
+	// 修改列
+	elem = document.getElementById('cols-mod');
+	elem.addEventListener('click', function(e) {
+		const selected = table.tabler.getSelected();
+		const colIndex = selected ? selected[0][1] : table.tabler.countCols();
+		let val = document.getElementById('cols-val').value;
+		console.log(table.cols[colIndex - 1], colIndex);
+		table.cols[colIndex].name = val;
+	});
+
+	// 删除列
+	elem = document.getElementById('cols-del');
+	elem.addEventListener('click', function(e) {
+		let val = document.getElementById('cols-val').value;
+		console.log(val);
+	});
+
+	// DOM加载
+	document.addEventListener("DOMContentLoaded", (event) => {
+		const container = document.getElementById('table');
+		table.tabler = new Handsontable(container, {
+			themeName: table.theme,
+			data: table.data,
+			// colHeaders(idx) { return table.title(idx); },
+			rowHeaders: true,
+			columns: table.columns(),
+			contextMenu: true,
+			manualRowResize: true,
+			manualColumnResize: true,
+			// columnSorting: true,
+			// multiColumnSorting: true,
+			// filters: true,
+			// dropdownMenu: true,
+			licenseKey: 'non-commercial-and-evaluation',
+			// 使列标题可编辑
+			cells: function (row, col) {
+				var cellProperties = {};
+				cellProperties.readOnly = false; // 允许编辑标题
+				return cellProperties;
+			}
+		});
+	});
+</script>
+</html>
+<!-- https://handsontable.com/docs/javascript-data-grid/column-header/ -->
