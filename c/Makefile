@@ -17,10 +17,10 @@ include $(TOPDIR)/rule.mk
 CFLAGS := -std=c99
 
 mdirs :=  fcgi
-$(eval $(foreach mod,$(mdirs),$(call build, module, $(mod))))
+# $(eval $(foreach mod,$(mdirs),$(call build, module, $(mod))))
 
 
-# $(eval $(call build, object, executable, helloworld))
+$(eval $(call build, object, executable, helloworld))
 
 # =========================================================================== #
 include $(TOPDIR)/toplevel.mk

@@ -63,19 +63,14 @@ run_cmd() {
 ###############################################################################
 
 ##
-ARCH=x86_64
-TARGET="x86_64-unknown-linux-gnu"
-CROSS_PREFIX="x86_64-unknown-linux-gnu-"
+ARCH=arm64
+TARGET="arm64-unknown-linux-gnu"
+CROSS_PREFIX="arm64-unknown-linux-gnu-"
 
 ##
 TOOLCHAIN_HOME="/opt/toolchains"
 TOOLCHAIN_NAME="toolchain-${TARGET}"
 TOOLCHAIN_PATH="${TOOLCHAIN_HOME}/${TOOLCHAIN_NAME}"
-TOOLCHAIN_SYSROOT="${TOOLCHAIN_HOME}/target-x86_64-unknown-linux-gnu"
-##
-PATH="$TOOLCHAIN_PATH/bin${PATH:+:$PATH}"
-CC=${CROSS_PREFIX}gcc
-export PATH CC
 
 ##
 WORKPATH=".build"
@@ -87,20 +82,21 @@ test -d "$WORKPATH" && rm -rf "$WORKPATH"
 test -d "$WORKPATH" || mkdir -p $WORKPATH
 cd $WORKPATH && {
     notice "Start build project ..."
-###################
+###############################################################################
+alias "egrep=grep -E"
 
 #
-run_cmd $SRC_PATH/configure --host=$HOST \
-    --prefix=/
+run_cmd $SRC_PATH/configure --prefix='' \
+	--target=$TARGET \
+	--with-sysroot=/ \
 
 #
-run_cmd make -j${cpus:-4}
+run_cmd make -j$(nproc)
 
 #
-run_cmd make install DESTDIR=${DST_PATH}
+run_cmd make install DESTDIR=$DST_PATH
 
-###################
+###############################################################################
 	cd - </dev/null
 	notice "Project build successful!"
 }
-

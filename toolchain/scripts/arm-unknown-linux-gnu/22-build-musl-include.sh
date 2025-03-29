@@ -60,47 +60,64 @@ run_cmd() {
 	}
 }
 
-###############################################################################
+# =========================================================================== #
 
 ##
-ARCH=x86_64
-TARGET="x86_64-unknown-linux-gnu"
-CROSS_PREFIX="x86_64-unknown-linux-gnu-"
+ARCH=arm
+TARGET="arm-unknown-linux-eabi"
+CROSS_PREFIX="arm-unknown-linux-eabi-"
 
 ##
 TOOLCHAIN_HOME="/opt/toolchains"
 TOOLCHAIN_NAME="toolchain-${TARGET}"
 TOOLCHAIN_PATH="${TOOLCHAIN_HOME}/${TOOLCHAIN_NAME}"
-TOOLCHAIN_SYSROOT="${TOOLCHAIN_HOME}/target-x86_64-unknown-linux-gnu"
+
+##
+RELEASED_HOME="/mnt/srv/released/toolchains"
+RELEASED_PATH="${RELEASED_HOME}/${TOOLCHAIN_NAME}"
+
 ##
 PATH="$TOOLCHAIN_PATH/bin${PATH:+:$PATH}"
+export PATH
 CC=${CROSS_PREFIX}gcc
-export PATH CC
+CFLAGS="-O3 -g -Wno-attributes"
+export CC CFLAGS
 
 ##
 WORKPATH=".build"
 SRC_PATH=$PWD
 DST_PATH=${PWD}/dest
-#
+
 test -d "$DST_PATH" && mv -f $DST_PATH ${DST_PATH}.old
 test -d "$WORKPATH" && rm -rf "$WORKPATH"
 test -d "$WORKPATH" || mkdir -p $WORKPATH
 cd $WORKPATH && {
     notice "Start build project ..."
-###################
+# =========================================================================== #
 
+run_cmd $SRC_PATH/configure --prefix=/ \
+	--host=$TARGET \
+	--target=$TARGET \
+	--disable-multilib \
+	--with-headers=$TOOLCHAIN_PATH/usr/include
+
+run_cmd make install-bootstrap-headers=yes install-headers DESTDIR=$DST_PATH
 #
-run_cmd $SRC_PATH/configure --host=$HOST \
-    --prefix=/
-
+# run_cmd make -j$(nproc) csu/subdir_lib
 #
-run_cmd make -j${cpus:-4}
-
+# run_cmd install -d $DST_PATH/lib
+# run_cmd install -t $DST_PATH/lib csu/crt1.o csu/crti.o csu/crtn.o
 #
-run_cmd make install DESTDIR=${DST_PATH}
+# run_cmd ${CC} -nostdlib -nostartfiles -shared -x c /dev/null -o $DST_PATH/lib/libc.so
+#
+run_cmd install -d $DST_PATH/include/gnu/
+run_cmd touch $DST_PATH/include/gnu/stubs.h
 
-###################
+# =========================================================================== #
 	cd - </dev/null
 	notice "Project build successful!"
 }
 
+
+#
+#

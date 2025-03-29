@@ -53,6 +53,10 @@ Content-Type: text/plain
 */
 
 
+#define IPV4 "127.0.0.1"
+#define PORT "443"
+#define PATH "/api/cgi1"
+
 #define HTML_POST_REQ_HEAD_FMT \
     "POST %s HTTP/1.1\r\n"              \
     "User-Agent: FIOFCGIO\r\n"          \
@@ -70,12 +74,55 @@ no-store
 
  */
 
-int main(int argc, char * argv[]) {
-	/* */
-	SSL_CTX *ctx = NULL;
-	SSL *ssl;
-	BIO *web = NULL;
 
+SSL_CTX * ssl_new (void) {
+	SSL_library_init();
+	SSL_load_error_strings();
+
+	return SSL_CTX_new(TLS_client_method());
+}
+
+BIO * ssl_connect (SSL_CTX *ctx, char *hostname) {
+	BIO *web;
+	SSL *ssl;
+
+	web = BIO_new_ssl_connect(ctx);
+
+	BIO_get_ssl(web, &ssl);
+	SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
+
+	BIO_set_conn_hostname(web, hostname);
+
+	/* */
+	if (BIO_do_connect(web) <= 0) {
+		fprintf(stderr, "Error connecting to server\n");
+		ERR_print_errors_fp(stderr);
+		return NULL;
+	}
+
+	/* */
+	if (BIO_do_handshake(web) <= 0) {
+		fprintf(stderr, "Error connecting to server\n");
+		ERR_print_errors_fp(stderr);
+		return NULL;
+	}
+
+	return web;
+}
+
+void ssl_close (BIO *web) {
+	if (web)
+		BIO_free_all(web);
+}
+
+void ssl_free (SSL_CTX *ctx) {
+	if (ctx)
+    	SSL_CTX_free(ctx);
+}
+
+int main(int argc, char * argv[]) {
+	SSL_CTX *ctx = NULL;
+	BIO *web = NULL;
 	char buffer[BUFIZE + 1] = {0};
 	int len;
 
@@ -86,43 +133,19 @@ int main(int argc, char * argv[]) {
 	if (argv[1])
 		host = argv[1];
 
-
-
 	/* */
 	openlog("ssl_req", LOG_PID | LOG_PERROR, LOG_USER);
 	syslog(LOG_DEBUG, "init SSL context ...");
-
-	/* S1 */
-	SSL_library_init();
-	SSL_load_error_strings();
-	ctx = SSL_CTX_new(TLS_client_method());
-
+	ctx = ssl_new();
 
 	/* default timeout: 7200 sec */
 	SSL_CTX_set_timeout(ctx, 60);
 	syslog(LOG_DEBUG, "connect server %s: %ld ...", host, SSL_CTX_get_timeout(ctx));
-
-
-	web = BIO_new_ssl_connect(ctx);
-	BIO_set_conn_hostname(web, hostname);
-	BIO_get_ssl(web, &ssl);
-	SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
-
-	/* */
-	if (BIO_do_connect(web) <= 0) {
-		fprintf(stderr, "Error connecting to server\n");
-		ERR_print_errors_fp(stderr);
+	if (!(web = ssl_connect(ctx, host))) {
 		return -1;
 	}
 
-	/* */
-	if (BIO_do_handshake(web) <= 0) {
-		fprintf(stderr, "Error connecting to server\n");
-		ERR_print_errors_fp(stderr);
-		return -1;
-	}
-
-	// BIO_set_nbio(web, 1);
+	BIO_set_nbio(web, 1);
 
 	/* head */
 	syslog(LOG_DEBUG, "send request ...");
@@ -147,12 +170,12 @@ int main(int argc, char * argv[]) {
 	// hexdump(buffer, len);
 	sleep(1);
 	/* */
-	BIO_free_all(web);
+	ssl_close(web);
 
 
 
 	/* */
-	SSL_CTX_free(ctx);
+	ssl_free(ctx);
 	closelog();
 	return 0;
 }

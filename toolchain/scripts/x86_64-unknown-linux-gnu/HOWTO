@@ -1,9 +1,9 @@
 * bintuils = v2.42
 * linux-include
-* gcc-core-tools
-* glibc-include
-* gcc-core-libc
+* gcc-core: linux-include
+* glibc-include: linux-include
+* gcc-libc:
 * glibc
 * libcrypt
-* gcc-core-libc++
-* gcc-full
+* gcc-libc++
+* gcc

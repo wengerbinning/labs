@@ -60,22 +60,18 @@ run_cmd() {
 	}
 }
 
+
 ###############################################################################
 
 ##
-ARCH=x86_64
-TARGET="x86_64-unknown-linux-gnu"
-CROSS_PREFIX="x86_64-unknown-linux-gnu-"
+ARCH=arm
+TARGET="arm-unknown-linux-eabi"
+CROSS_PREFIX="arm-unknown-linux-eabi-"
 
 ##
 TOOLCHAIN_HOME="/opt/toolchains"
 TOOLCHAIN_NAME="toolchain-${TARGET}"
 TOOLCHAIN_PATH="${TOOLCHAIN_HOME}/${TOOLCHAIN_NAME}"
-TOOLCHAIN_SYSROOT="${TOOLCHAIN_HOME}/target-x86_64-unknown-linux-gnu"
-##
-PATH="$TOOLCHAIN_PATH/bin${PATH:+:$PATH}"
-CC=${CROSS_PREFIX}gcc
-export PATH CC
 
 ##
 WORKPATH=".build"
@@ -84,23 +80,15 @@ DST_PATH=${PWD}/dest
 #
 test -d "$DST_PATH" && mv -f $DST_PATH ${DST_PATH}.old
 test -d "$WORKPATH" && rm -rf "$WORKPATH"
-test -d "$WORKPATH" || mkdir -p $WORKPATH
-cd $WORKPATH && {
+# test -d "$WORKPATH" || mkdir -p $WORKPATH
+# cd $WORKPATH && {
     notice "Start build project ..."
-###################
+###############################################################################
 
 #
-run_cmd $SRC_PATH/configure --host=$HOST \
-    --prefix=/
+make ARCH=$ARCH headers_install INSTALL_HDR_PATH=$DST_PATH
 
-#
-run_cmd make -j${cpus:-4}
-
-#
-run_cmd make install DESTDIR=${DST_PATH}
-
-###################
+###############################################################################
 	cd - </dev/null
 	notice "Project build successful!"
-}
-
+# }

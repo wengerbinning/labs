@@ -91,7 +91,7 @@ cd $WORKPATH && {
 make -j6 all-target-libgcc
 
 # install-target-libstdc++-v3
-make install-target-libgcc  DESTDIR=${DEST_PATH}
+make install-target-libgcc  DESTDIR=${DST_PATH}
 
 ###################
 	cd - </dev/null

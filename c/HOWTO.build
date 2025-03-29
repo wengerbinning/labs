@@ -5,10 +5,11 @@
 
 
 
+make ARCH=$ARCH CROSS_COMPILE=${CROSS_COMPILE} menuconfig
+make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} -j$(nproc)
 
-
-
-
+make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} -j$(nproc) modules
+make ARCH=arm64 CROSS_COMPILE=${CROSS_COMPILE} -j$(nproc) install INSTALL_PATH=${PWD}/dest
 
 
 

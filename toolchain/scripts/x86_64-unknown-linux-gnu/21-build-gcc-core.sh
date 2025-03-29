@@ -71,7 +71,7 @@ CROSS_PREFIX="x86_64-unknown-linux-gnu-"
 TOOLCHAIN_HOME="/opt/toolchains"
 TOOLCHAIN_NAME="toolchain-${TARGET}"
 TOOLCHAIN_PATH="${TOOLCHAIN_HOME}/${TOOLCHAIN_NAME}"
-
+TOOLCHAIN_SYSROOT="${TOOLCHAIN_HOME}/target-x86_64-unknown-linux-gnu"
 ##
 PATH="$TOOLCHAIN_PATH/bin${PATH:+:$PATH}"
 export PATH
@@ -102,7 +102,7 @@ run_cmd $SRC_PATH/configure --prefix='' \
 	--disable-libquadmath \
 	--disable-decimal-float \
 	--with-sysroot=/ \
-	--with-build-sysroot=$TOOLCHAIN_PATH \
+	--with-build-sysroot=$TOOLCHAIN_SYSROOT \
 
 #
 run_cmd make -j$(nproc) all-gcc
@@ -114,3 +114,12 @@ run_cmd make install-gcc DESTDIR=$DST_PATH
 	cd - </dev/null
 	notice "Project build successful!"
 }
+
+
+#
+# 需要提前准备 gmp, mpc, isl, mpfr, 三个子项目
+#
+# * 依赖于linux内核头文件
+#
+#
+#

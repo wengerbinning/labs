@@ -71,7 +71,7 @@ CROSS_PREFIX="x86_64-unknown-linux-gnu-"
 TOOLCHAIN_HOME="/opt/toolchains"
 TOOLCHAIN_NAME="toolchain-${TARGET}"
 TOOLCHAIN_PATH="${TOOLCHAIN_HOME}/${TOOLCHAIN_NAME}"
-
+TOOLCHAIN_SYSROOT="${TOOLCHAIN_HOME}/target-x86_64-unknown-linux-gnu"
 ##
 RELEASED_HOME="/mnt/srv/released/toolchains"
 RELEASED_PATH="${RELEASED_HOME}/${TOOLCHAIN_NAME}"
@@ -99,7 +99,7 @@ run_cmd $SRC_PATH/configure --prefix=/ \
 	--host=$TARGET \
 	--target=$TARGET \
 	--disable-multilib \
-	--with-headers=$TOOLCHAIN_PATH/usr/include
+	--with-headers=$TOOLCHAIN_SYSROOT/usr/include
 
 run_cmd make install-bootstrap-headers=yes install-headers DESTDIR=$DST_PATH
 #
@@ -117,3 +117,7 @@ run_cmd touch $DST_PATH/include/gnu/stubs.h
 	cd - </dev/null
 	notice "Project build successful!"
 }
+
+
+#
+#

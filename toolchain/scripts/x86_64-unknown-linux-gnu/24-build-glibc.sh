@@ -71,7 +71,7 @@ CROSS_PREFIX="x86_64-unknown-linux-gnu-"
 TOOLCHAIN_HOME="/opt/toolchains"
 TOOLCHAIN_NAME="toolchain-${TARGET}"
 TOOLCHAIN_PATH="${TOOLCHAIN_HOME}/${TOOLCHAIN_NAME}"
-
+TOOLCHAIN_SYSROOT="${TOOLCHAIN_HOME}/target-x86_64-unknown-linux-gnu"
 #
 PATH="$TOOLCHAIN_PATH/bin${PATH:+:$PATH}"
 CC=${CROSS_PREFIX}gcc
