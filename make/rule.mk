@@ -344,6 +344,7 @@ define object_relocatable_perpare
   compflags := -c
   compflags += $(if $(cflags), $(cflags))$(if $(cppflags), $(cppflags))
 endef
+
 # usage: object_relocatable_build <taregt>
 define object_relocatable_build
 $(objs): %.o: %.c
@@ -437,4 +438,57 @@ endef
 
 
 # =========================================================================== #
+
+
+empty :=
+space := $(empty) $(empty)
+
+_class_type = $(shell v="$(strip $(1))"; echo $${v##*-})
+_class_next = $(shell v="$(strip $(1))"; w=$${v%-*}; test $${v} != $${w} && echo $$w)
+
+define do_build
+	@echo BUILD $(1) ...
+endef
+
+
+
+## executable object
+define build_executable_object
+	$(warning $(call C_COMP,$(target-objs)))
+	$(call C_COMP,$(target-objs))
+	$(call C_LINK, $(taregt), $(target-objs))
+endef
+
+define _build_object_prepare
+	target-type =$(if $(target-class),$(call _class_type, $(target-class)),executable)
+	target-class=$(if $(target-class),$(call _class_next, $(target-class)),shared)
+endef
+
+##
+define build_object
+	$(eval $(call _build_object_prepare,$(target)))
+	$(if $(value build_$(target-type)_object),,
+		$(error Not found build $(target-type)-object))
+	$(call build_$(target-type)_object,$(strip $(1)))
+endef
+
+## share library
+define build_share_library
+	$(foreach obj, $(target-objs), $(call C_COMP,$(obj),$(cflags),$(cppflags)))
+	echo $(target-objs)
+endef
+define _build_library_prepare
+	target-type =$(if $(target-class),$(call _class_type, $(target-class)),shared)
+	target-class=$(if $(target-class),$(call _class_next, $(target-class)),shared)
+endef
+define build_library
+	$(eval $(call _build_library_prepare,$(target)))
+	$(if $(value build_$(target-type)_library),,
+		$(error Not found build $(target-type)-library))
+	$(call build_$(target-type)_library,$(strip $(1)))
+endef
+
+
+## target
+
 

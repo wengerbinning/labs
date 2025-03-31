@@ -53,7 +53,7 @@ lib-cxxflags
 lib-cppflags
 
 
-
+targets := helloworld include
 
 $(target)-cflags
 $(target)-ldflags
@@ -62,12 +62,7 @@ $(target)-cppflags
 
 $(target)-libs
 $(target)-objs
-
 $(target)-type
-
-
-targets := helloworld include
-
 
 
 
