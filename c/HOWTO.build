@@ -53,3 +53,7 @@ $(eval $(foreach mod,$(mdirs),$(call build, module, $(mod))))
 
 x86_64-w64-mingw32
 
+
+
+
+mipsel-linux-gnu-gcc -EL -nostdlib -o boot.elf boot.c
