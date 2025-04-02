@@ -61,3 +61,123 @@ int main(int argc, char *argv[]) {
     printf("return: %d, MAC:" MACFMT3 "\n", ret, MAC2STR(mac.addr));
 
 }
+
+
+
+dev_connect() {
+
+}
+
+#define PATHIZE 1024
+typedef struct connect {
+	void *ctx, *priv;
+} connect_t;
+
+
+int tls_init (struct connect *conn) {
+	SSL_CTX *ctx;
+	BIO *bio;
+
+	if (!conn) {
+		return -1;
+	}
+
+	SSL_library_init();
+	// SSL_load_error_strings();
+	// OpenSSL_add_all_algorithms();
+
+	if (!(ctx = SSL_CTX_new(TLS_client_method()))) {
+		return -1;
+	}
+
+	// SSL_CTX_set_timeout(ctx, 30);
+
+	if (!(bio = BIO_new_ssl_connect(ctx))) {
+		SSL_CTX_free(ctx);
+		return -1;
+	}
+
+	conn->ctx = ctx;
+	conn->priv = bio;
+	return 0;
+}
+
+void tls_exit (struct connect *conn) {
+	SSL_CTX *ctx =conn->ctx;
+	SSL_CTX_free(ctx);
+}
+
+int tls_connect (struct connect *conn, char *host, unsigned int port) {
+	char path[PATHIZE + 1];
+	BIO *bio = conn->priv;
+	int ret, loop;
+
+	snprintf(path, PATHIZE, "%s:%u", host, port);
+	BIO_set_conn_hostname(bio, path);
+
+	BIO_set_nbio(bio, 1);
+
+	/* */
+	loop = 3;
+	while (loop-- && (ret = BIO_do_connect(bio)) <= 0) {
+		if (0 < loop && BIO_should_retry(bio)) {
+			continue;
+		} else {
+			return -1;
+		}
+	}
+
+	/* */
+	loop = 3;
+	while (loop-- && (ret = BIO_do_handshake(bio)) <= 0) {
+		if (0 < loop && BIO_should_retry(bio)) {
+			continue;
+		} else {
+			return -1;
+		}
+	}
+
+	return 0;
+
+}
+
+size_t tls_write (struct connect *conn, void *buf, size_t len) {
+	BIO *bio = conn->priv;
+	int ret, loop;
+
+	while (loop-- && ((ret = BIO_write(bio, buf, len)) <= 0)) {
+		syslog(LOG_DEBUG, "wirte data error %d: %d", ret, loop);
+		if (0 < loop && BIO_should_retry(bio)) {
+			continue;
+		} else {
+			return 0;
+		}
+	}
+
+	return len;
+}
+
+size_t tls_read (struct connect *conn, void *buf, size_t len) {
+	BIO *bio = conn->priv;
+	int ret, loop;
+
+	while (loop-- && ((ret = BIO_read(bio, buf, len)) <= 0)) {
+		syslog(LOG_DEBUG, "read data error %d: %d", ret, loop);
+		if (0 < loop && BIO_should_retry(bio)) {
+			continue;
+		} else {
+			return 0;
+		}
+	}
+
+	return len;
+
+}
+
+void tls_close(struct connect *conn) {
+	BIO *bio = conn->priv;
+
+	BIO_free_all(bio);
+}
+
+

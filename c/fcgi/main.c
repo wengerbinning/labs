@@ -71,135 +71,6 @@ static FCGX_Request fcgx_req;
 
 
 
-
-
-int tcp_connect (char *ipaddr, int port) {
-	int sock;
-	struct sockaddr_in addr;
-    char buffer[BUFIZE + 1];
-
-    sock = socket(PF_INET, SOCK_STREAM, IPPROTO_IP);
-
-    addr.sin_family = AF_INET;
-    addr.sin_addr.s_addr = inet_addr(ipaddr);
-    addr.sin_port = htons(port);
-
-    // syslog(LOG_DEBUG, "%d connect %s:%d %s %d ...", sock,
-    //     inet_ntoa(addr.sin_addr), ntohs(addr.sin_port));
-    connect(sock, (struct sockaddr *)&addr, sizeof(addr));
-
-    return sock;
-}
-
-size_t tcp_send (int sock, char *buf, size_t len) {
-    send(sock, buf, len, 0);
-    return len;
-}
-
-void tcp_close (int sock) {
-    close(sock);
-}
-
-
-SSL_CTX * ssl_new (void) {
-	SSL_library_init();
-	SSL_load_error_strings();
-
-	return SSL_CTX_new(TLS_client_method());
-}
-
-BIO * ssl_connect (SSL_CTX *ctx, char *hostname) {
-	BIO *web;
-	SSL *ssl;
-
-	web = BIO_new_ssl_connect(ctx);
-
-	BIO_get_ssl(web, &ssl);
-	SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
-
-	BIO_set_conn_hostname(web, hostname);
-
-	/* */
-	if (BIO_do_connect(web) <= 0) {
-		fprintf(stderr, "Error connecting to server\n");
-		ERR_print_errors_fp(stderr);
-		return NULL;
-	}
-
-	/* */
-	if (BIO_do_handshake(web) <= 0) {
-		fprintf(stderr, "Error connecting to server\n");
-		ERR_print_errors_fp(stderr);
-		return NULL;
-	}
-
-	return web;
-}
-
-size_t ssl_send(BIO *web, char *buf, size_t len) {
-    BIO_write(web, buf, len);
-    return len;
-}
-
-void ssl_close (BIO *web) {
-	if (web)
-		BIO_free_all(web);
-}
-
-void ssl_free (SSL_CTX *ctx) {
-	if (ctx)
-    	SSL_CTX_free(ctx);
-}
-
-struct device {
-    char *ipaddr;
-    unsigned int port;
-    bool ssl;
-
-    /**/
-    SSL_CTX *ctx;
-    BIO *session;
-    int sock;
-
-};
-
-int dev_connect (struct device *dev) {
-    char path[PATHIZE + 1];
-
-    syslog(LOG_DEBUG, "connect %s:%d ...", dev->ipaddr, dev->port);
-    if (dev->ssl) {
-        dev->ctx = ssl_new();
-        sprintf(path, "%s:%u", dev->ipaddr, dev->port);
-        dev->session = ssl_connect(dev->ctx, path);
-    } else {
-        dev->sock = tcp_connect(dev->ipaddr, dev->port);
-    }
-
-    return 0;
-}
-
-size_t dev_send (struct device *dev, char *buf, size_t len) {
-
-    hexdump(buf, len);
-    if (dev->ssl) {
-        return ssl_send(dev->session, buf, len);
-    }
-
-    return tcp_send(dev->sock, buf, len);
-}
-
-void dev_close (struct device *dev) {
-    if (dev->ssl) {
-        ssl_close(dev->session);
-        ssl_free(dev->ctx);
-    } else {
-        tcp_close(dev->sock);
-    }
-}
-
-
-
-
 int server_main (char *name, int port, char *dst, int argc, char *argv[]) {
 	char *buf, *buf1;
 
@@ -227,10 +98,8 @@ int server_main (char *name, int port, char *dst, int argc, char *argv[]) {
 	while (1) {
 		int rlen;
 		int fiofcgi = 0;
-		struct device device = {0}, *dev;
 		char *caddr, *cport, *method;
 
-		dev = &device;
 		sprintf(path, "127.0.0.1:%u", port);
 		syslog(LOG_DEBUG, "listen %s ...", path);
 		FCGX_Accept_r(req);
@@ -244,12 +113,20 @@ int server_main (char *name, int port, char *dst, int argc, char *argv[]) {
 
 
 		/* read */
-		len = FCGX_GetStr(buffer, BUFIZE, req->in);
-		syslog(LOG_DEBUG, "read %d ...", len);
-		hexdump(buffer, len);
+		int i = 0;
+		while (0 < (len = FCGX_GetStr(buffer, BUFIZE, req->in))) {
+			syslog(LOG_DEBUG, "read %4d -> %d ...", ++i, len);
+			// hexdump(buffer, len);
+		}
+
+		if (len == 0 ) {
+			syslog(LOG_DEBUG, "read finish ...");
+		}
 
 
 
+
+		sleep(5);
 
 		/* response */
 		FCGX_FPrintF(req->out, FCGI_RES_HTML_FMT_HEADER);
