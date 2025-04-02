@@ -22,6 +22,9 @@
 #include <openssl/tls1.h>
 #include <openssl/x509v3.h>
 
+
+#include <sys/time.h>
+
 #include "hexdump.h"
 #define BUFIZE 512
 
@@ -53,10 +56,6 @@ Content-Type: text/plain
 */
 
 
-#define IPV4 "127.0.0.1"
-#define PORT "443"
-#define PATH "/api/cgi1"
-
 #define HTML_POST_REQ_HEAD_FMT \
     "POST %s HTTP/1.1\r\n"              \
     "User-Agent: FIOFCGIO\r\n"          \
@@ -74,55 +73,13 @@ no-store
 
  */
 
-
-SSL_CTX * ssl_new (void) {
-	SSL_library_init();
-	SSL_load_error_strings();
-
-	return SSL_CTX_new(TLS_client_method());
-}
-
-BIO * ssl_connect (SSL_CTX *ctx, char *hostname) {
-	BIO *web;
-	SSL *ssl;
-
-	web = BIO_new_ssl_connect(ctx);
-
-	BIO_get_ssl(web, &ssl);
-	SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
-
-	BIO_set_conn_hostname(web, hostname);
-
-	/* */
-	if (BIO_do_connect(web) <= 0) {
-		fprintf(stderr, "Error connecting to server\n");
-		ERR_print_errors_fp(stderr);
-		return NULL;
-	}
-
-	/* */
-	if (BIO_do_handshake(web) <= 0) {
-		fprintf(stderr, "Error connecting to server\n");
-		ERR_print_errors_fp(stderr);
-		return NULL;
-	}
-
-	return web;
-}
-
-void ssl_close (BIO *web) {
-	if (web)
-		BIO_free_all(web);
-}
-
-void ssl_free (SSL_CTX *ctx) {
-	if (ctx)
-    	SSL_CTX_free(ctx);
-}
-
 int main(int argc, char * argv[]) {
+	/* */
 	SSL_CTX *ctx = NULL;
+	SSL *ssl;
 	BIO *web = NULL;
+	struct timeval tv;
+
 	char buffer[BUFIZE + 1] = {0};
 	int len;
 
@@ -133,23 +90,50 @@ int main(int argc, char * argv[]) {
 	if (argv[1])
 		host = argv[1];
 
-	/* */
+
+
+	/* 任务准备 */
 	openlog("ssl_req", LOG_PID | LOG_PERROR, LOG_USER);
-	syslog(LOG_DEBUG, "init SSL context ...");
-	ctx = ssl_new();
+	syslog(LOG_DEBUG, "task [%d]: init SSL context ...", getpid());
+
+	/* 环境准备 */
+	SSL_library_init();
+	SSL_load_error_strings();
+	if ((ctx = SSL_CTX_new(TLS_client_method()))) {
+		syslog(LOG_ERROR, "failed to new SSL context!");
+		return -1;
+	}
 
 	/* default timeout: 7200 sec */
 	SSL_CTX_set_timeout(ctx, 60);
 	syslog(LOG_DEBUG, "connect server %s: %ld ...", host, SSL_CTX_get_timeout(ctx));
-	if (!(web = ssl_connect(ctx, host))) {
+
+
+	web = BIO_new_ssl_connect(ctx);
+	BIO_set_conn_hostname(web, host);
+	BIO_get_ssl(web, &ssl);
+	SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
+
+	/* */
+	if (BIO_do_connect(web) <= 0) {
+		fprintf(stderr, "Error connecting to server\n");
+		ERR_print_errors_fp(stderr);
 		return -1;
 	}
 
-	BIO_set_nbio(web, 1);
+	/* */
+	if (BIO_do_handshake(web) <= 0) {
+		fprintf(stderr, "Error connecting to server\n");
+		ERR_print_errors_fp(stderr);
+		return -1;
+	}
+
+	// BIO_set_nbio(web, 1);
 
 	/* head */
 	syslog(LOG_DEBUG, "send request ...");
 	snprintf(buffer, BUFIZE, HTML_POST_REQ_HEAD_FMT, "/api/cgi", "127.0.0.1", 443, "text/plain", 3 * 10);
+	hexdump(buffer, strlen(buffer));
 	BIO_write(web, buffer, strlen(buffer));
 
 	/* write body */
@@ -165,17 +149,21 @@ int main(int argc, char * argv[]) {
 
 
 	/* delay for nginx proxy */
-	syslog(LOG_DEBUG, "close connection ...");
-	// len = BIO_read(web, buffer, BUFIZE);
-	// hexdump(buffer, len);
+	gettimeofday(&tv, NULL);
+	syslog(LOG_DEBUG, "close connection: %ld ...", tv.tv_sec);
+	len = BIO_read(web, buffer, BUFIZE);
+	gettimeofday(&tv, NULL);
+	syslog(LOG_DEBUG, "response: %ld ...", tv.tv_sec);
+	hexdump(buffer, len);
 	sleep(1);
 	/* */
-	ssl_close(web);
+
+	BIO_free_all(web);
 
 
 
 	/* */
-	ssl_free(ctx);
+	SSL_CTX_free(ctx);
 	closelog();
 	return 0;
 }

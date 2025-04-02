@@ -28,7 +28,28 @@ BIO_free_all
 
 
 
+BIO_ADDRINFO
+BIO_socket
+BIO_connect
+BIO_ADDRINFO_free
+
+
 
 openlog
 syslog
 closelog
+
+
+* 连接超时
+* 写超时(10次重传, 缓存100K数据)
+* 读超时()
+
+
+
+fastcgi_request_buffering off; 处理最小数据单位由接收buffer决定.
+
+
+
+* 子路由返回502的结果
+* 子路有没有返回结果
+

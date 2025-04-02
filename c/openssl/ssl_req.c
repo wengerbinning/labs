@@ -22,6 +22,9 @@
 #include <openssl/tls1.h>
 #include <openssl/x509v3.h>
 
+
+#include <sys/time.h>
+
 #include "hexdump.h"
 #define BUFIZE 512
 
@@ -75,6 +78,7 @@ int main(int argc, char * argv[]) {
 	SSL_CTX *ctx = NULL;
 	SSL *ssl;
 	BIO *web = NULL;
+	struct timeval tv;
 
 	char buffer[BUFIZE + 1] = {0};
 	int len;
@@ -90,7 +94,7 @@ int main(int argc, char * argv[]) {
 
 	/* */
 	openlog("ssl_req", LOG_PID | LOG_PERROR, LOG_USER);
-	syslog(LOG_DEBUG, "init SSL context ...");
+	syslog(LOG_DEBUG, "task [%d]: init SSL context ...", getpid());
 
 	/* S1 */
 	SSL_library_init();
@@ -104,7 +108,7 @@ int main(int argc, char * argv[]) {
 
 
 	web = BIO_new_ssl_connect(ctx);
-	BIO_set_conn_hostname(web, hostname);
+	BIO_set_conn_hostname(web, host);
 	BIO_get_ssl(web, &ssl);
 	SSL_set_mode(ssl, SSL_MODE_AUTO_RETRY);
 
@@ -127,6 +131,7 @@ int main(int argc, char * argv[]) {
 	/* head */
 	syslog(LOG_DEBUG, "send request ...");
 	snprintf(buffer, BUFIZE, HTML_POST_REQ_HEAD_FMT, "/api/cgi", "127.0.0.1", 443, "text/plain", 3 * 10);
+	hexdump(buffer, strlen(buffer));
 	BIO_write(web, buffer, strlen(buffer));
 
 	/* write body */
@@ -142,11 +147,15 @@ int main(int argc, char * argv[]) {
 
 
 	/* delay for nginx proxy */
-	syslog(LOG_DEBUG, "close connection ...");
-	// len = BIO_read(web, buffer, BUFIZE);
-	// hexdump(buffer, len);
+	gettimeofday(&tv, NULL);
+	syslog(LOG_DEBUG, "close connection: %ld ...", tv.tv_sec);
+	len = BIO_read(web, buffer, BUFIZE);
+	gettimeofday(&tv, NULL);
+	syslog(LOG_DEBUG, "response: %ld ...", tv.tv_sec);
+	hexdump(buffer, len);
 	sleep(1);
 	/* */
+
 	BIO_free_all(web);
 
 
