@@ -1,0 +1,23 @@
+qemu-system-aarch64
+
+
+qemu-system-aarch64 -name vm-aarch64 -nographic \
+	-machine virt -smp 1 -m 512M \
+	-kernel vmlinux -append "console=ttyS0, loglevel=8" \
+	-initrd initramfs.img
+
+qemu-system-aarch64 -name vm-aarch64 \
+	-machine virt -smp 2 -m 2G \
+	-kernel vmlinux -append "console=ttyS0, loglevel=8" \
+	-initrd initramfs.img
+
+install
+
+
+qemu-system-aarch64 -serial stdio -machine virt -smp 1 -m 512M \
+	-kernel vmlinux -append "console=ttyS0, loglevel=8" \
+	-initrd initramfs.img
+
+
+
+- <https://www.qemu.org/docs/master/system/arm/virt.html>

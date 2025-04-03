@@ -26,11 +26,15 @@
 
 #define PATHIZE 1024
 typedef struct connect {
+	int sock;
 	void *ctx, *priv;
-	size_t connect_timeout, write_timeout, read_timeout;
+	size_t conn_timeout, send_timeout, recv_timeout;
 } connect_t;
 
 
+/* TLS APIs
+ * Those apis for TLS connection
+ */
 int tls_init (struct connect *conn) {
 	SSL_CTX *ctx;
 	BIO *bio;
@@ -60,33 +64,33 @@ int tls_init (struct connect *conn) {
 	return 0;
 }
 
-void tls_exit (struct connect *conn) {
+int tls_exit (struct connect *conn) {
 	SSL_CTX *ctx;
 
-	if (!conn && !conn->ctx)
-		return;
+	if (!conn || !conn->ctx)
+		return -1;
 
 	ctx = (SSL_CTX *)conn->ctx;
 	if (ctx)
 		SSL_CTX_free(ctx);
 }
 
-int tls_connect (struct connect *conn, char *host, unsigned int port) {
+int tls_connect (struct connect *conn, char *addr, unsigned int port) {
 	BIO *bio;
 	int ret, loop;
 	char path[PATHIZE + 1];
 
-	if (!conn && !conn->priv)
+	if (!conn || !conn->priv)
 		return -1;
 
 	bio = (BIO *)conn->priv;
-	snprintf(path, PATHIZE, "%s:%u", host, port);
+	snprintf(path, PATHIZE, "%s:%u", addr, port);
 	BIO_set_conn_hostname(bio, path);
 	BIO_set_nbio(bio, 1);
 
 	/* connect with server */
 
-	loop = conn->connect_timeout ? conn->connect_timeout : 3;
+	loop = conn->conn_timeout ? conn->conn_timeout : 3;
 	while (loop-- && (ret = BIO_do_connect(bio)) <= 0) {
 		if (0 < loop && BIO_should_retry(bio)) {
 			sleep(1);
@@ -96,7 +100,7 @@ int tls_connect (struct connect *conn, char *host, unsigned int port) {
 	}
 
 	/* handshake with server */
-	loop = conn->connect_timeout ? conn->connect_timeout : 3;
+	loop = conn->conn_timeout ? conn->conn_timeout : 3;
 	while (loop-- && (ret = BIO_do_handshake(bio)) <= 0) {
 		if (0 < loop && BIO_should_retry(bio)) {
 			sleep(1);
@@ -108,15 +112,15 @@ int tls_connect (struct connect *conn, char *host, unsigned int port) {
 	return 0;
 }
 
-int tls_write (struct connect *conn, void *buf, size_t len) {
+int tls_send (struct connect *conn, void *buf, size_t len) {
 	BIO *bio;
 	int ret, loop;
 
-	if (!conn && !conn->priv)
+	if (!conn || !conn->priv)
 		return -1;
 
 	bio = (BIO *)conn->priv;
-	loop = conn->read_timeout ? conn->write_timeout : 3;
+	loop = conn->send_timeout ? conn->send_timeout : 3;
 	while (loop-- && ((ret = BIO_write(bio, buf, len)) <= 0)) {
 		if (0 < loop && BIO_should_retry(bio)) {
 			sleep(1);
@@ -128,38 +132,36 @@ int tls_write (struct connect *conn, void *buf, size_t len) {
 	return len;
 }
 
-int tls_read (struct connect *conn, void *buf, size_t len) {
+int tls_recv (struct connect *conn, void *buf, size_t len) {
 	BIO *bio;
 	int ret, loop;
 
-	if (!conn && !conn->priv)
+	if (!conn || !conn->priv)
 		return -1;
 
 	bio = (BIO *)conn->priv;
-	loop = conn->read_timeout ? conn->read_timeout : 3;
+	loop = conn->recv_timeout ? conn->recv_timeout : 3;
 	while (loop-- && ((ret = BIO_read(bio, buf, len)) <= 0)) {
-		if (0 < loop && BIO_should_retry(bio)) {
-			sleep(1);
-		} else {
+		if (ret == 0)
 			return 0;
-		}
+		if (loop <= 0 && !BIO_should_retry(bio))
+			return -1;
+		sleep(1);
 	}
 
 	return len;
 }
 
-void tls_close(struct connect *conn) {
+int tls_close (struct connect *conn) {
 	BIO *bio = (BIO *)conn->priv;
 
-	if (!conn && !conn->priv)
-		return;
+	if (!conn || !conn->priv)
+		return -1;
 
 	bio = (BIO *)conn->priv;
 	if (bio)
 		BIO_free_all(bio);
 }
-
-
 
 
 
@@ -195,9 +197,9 @@ int main(int argc, char * argv[]) {
 		return -1;
 	}
 
-	conn->connect_timeout = 3;
-	conn->write_timeout = 3;
-	conn->read_timeout = 10;
+	conn->conn_timeout = 3;
+	conn->send_timeout = 3;
+	conn->recv_timeout = 10;
 
 	/* connect server */
 	host = argv[1] ? argv[1] : "127.0.0.1";
@@ -218,7 +220,7 @@ int main(int argc, char * argv[]) {
 	snprintf(buffer, BUFIZE, HTML_POST_REQ_HEAD_FMT,
 		"/api/cgi", host, port, "text/plain", 1024 * 1024 );
 	hexdump(buffer, strlen(buffer));
-	if ((ret = tls_write(conn, buffer, strlen(buffer))) < 0) {
+	if ((ret = tls_send(conn, buffer, strlen(buffer))) < 0) {
 		syslog(LOG_ERR, "wirte head error: %d", ret);
 		return -1;
 	}
@@ -243,7 +245,7 @@ int main(int argc, char * argv[]) {
 			"%04X123456789ABCDEF123456789ABCDEF123456789ABCDEF123456789ABCDEF"
 			"%04X123456789ABCDEF123456789ABCDEF123456789ABCDEF123456789ABCDEF"
 			, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i, i );
-		if ((ret = tls_write(conn, buffer, strlen(buffer))) <= 0) {
+		if ((ret = tls_send(conn, buffer, strlen(buffer))) <= 0) {
 			syslog(LOG_ERR, "wirte data error: %d", ret);
 			return -1;
 		}
@@ -259,7 +261,7 @@ int main(int argc, char * argv[]) {
 	gettimeofday(&tv, NULL);
 	syslog(LOG_DEBUG, "close connection: %d/%ld ...", len, tv.tv_sec);
 
-	while (0 < (ret = tls_read(conn, buffer, 10))) {
+	while (0 < (ret = tls_recv(conn, buffer, 10))) {
 		syslog(LOG_DEBUG, "read %d: ...", ret);
 		hexdump(buffer, ret);
 	}

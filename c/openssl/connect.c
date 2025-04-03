@@ -105,12 +105,12 @@ int tcp_recv (struct connect *conn, void *buf, size_t len) {
 	sock = conn->sock;
 	loop = conn->recv_timeout ? conn->recv_timeout : 3;
 	while (loop-- && ((ret = read(sock, buf, len)) <= 0)) {
-		if (loop <= 0) {
+		if (ret == 0)
+			return 0;
+		if (loop <= 0)
 			return -1;
-		}
 		sleep(1);
 	}
-
 	return len;
 }
 
@@ -234,11 +234,11 @@ int tls_recv (struct connect *conn, void *buf, size_t len) {
 	bio = (BIO *)conn->priv;
 	loop = conn->recv_timeout ? conn->recv_timeout : 3;
 	while (loop-- && ((ret = BIO_read(bio, buf, len)) <= 0)) {
-		if (0 < loop && BIO_should_retry(bio)) {
-			sleep(1);
-		} else {
+		if (ret == 0)
 			return 0;
-		}
+		if (loop <= 0 && !BIO_should_retry(bio))
+			return -1;
+		sleep(1);
 	}
 
 	return len;
