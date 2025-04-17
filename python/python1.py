@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import time
+import signal
 import curses
 import threading
 from functools import partial
@@ -203,11 +204,6 @@ def curses_main1 (mwin, ctx):
 		except:
 			break
 
-
-
-
-
-
 def task_device(name, ctx):
 	pass
 
@@ -222,7 +218,6 @@ def task_log(name, ctx):
 			f.write("{}\n".format(ctx.ibuffer))
 
 	f.close()
-
 
 class ConsoleMonitor:
 	obuffer = ""
@@ -243,16 +238,31 @@ class ConsoleMonitor:
 	def watch(self):
 		curses.wrapper(partial(curses_main1, ctx=self))
 
+#
+#
+#
+
+
+running = True
+
+
+def sign_handler(sig, frame):
+	running = False
+	print("receive signal {}".format(sig))
 
 
 
 
 if __name__ == "__main__":
+	signal.signal(signal.SIGINT, sign_handler)
 	monitor = ConsoleMonitor()
 	monitor.threads["log"].start()
 
 	#
-	monitor.watch()
+	# monitor.watch()
+	while running:
+		print("running in master thread ...")
+		time.sleep(1)
 
 	monitor.running = False
 	monitor.threads["log"].join()
