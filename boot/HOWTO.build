@@ -1,0 +1,12 @@
+nasm -f bin boot.asm -o boot.bin
+gcc -m16 -ffreestanding -fno-pic -fno-builtin -nostdlib -c kernel.c -o kernel.o
+ld -T linker.ld kernel.o -o kernel.bin
+
+cat boot.bin kernel.bin > os-image.bin
+
+
+nasm -f elf boot.asm -o boot.o
+
+gcc -m16 -ffreestanding -fno-pic -fno-builtin -nostdlib -c main.c -o main.o
+
+ld -T linker.ld -o os-image.bin boot.o main.o
