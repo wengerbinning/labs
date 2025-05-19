@@ -10,5 +10,6 @@ Build
 
 go mod init helloworld
 
-go build
 # go build -o bin/helloworld
+go build
+go build helloworld
