@@ -208,6 +208,11 @@
 * `<span>`
 * `<slot>`
 
+#### Head
+
+* `<head>`
+* `<title>`
+* `<meta>`
 
 #### Text
 
@@ -260,6 +265,8 @@
 * `<video>`:
 * `<object>`:
 * `<source>`:
+
+
 
 ## LINKS
 
