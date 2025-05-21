@@ -41,17 +41,16 @@ td {
 
 
 <body>
-
 <table>
 	<!-- Table comment  -->
 	<caption> Table 1 - Example Table</caption>
 
-
+	<!-- Table Cols -->
 	<colgroup>
 		<col />
 		<col span="2" class="batman" />
 		<col span="2" class="flash" />
-	  </colgroup>
+	</colgroup>
 
 	<!-- Table header -->
 	<thead>
@@ -60,6 +59,7 @@ td {
 			<th scope="col">Name</th>
 			<th scope="col">Label</th>
 			<th scope="col">Comment</th>
+			<th scope="col">Attributes</th>
 		</tr>
 	</thead>
 
@@ -67,15 +67,21 @@ td {
 	<tbody>
 		<tr>
 			<th scope="row">A</th>
-			<td>Alpha A</th>
-			<td>Aa</th>
-			<td>word A</th>
+			<td>Alpha A</td>
+			<td>Aa</td>
+			<td>word A</td>
 		</tr>
 		<tr>
 			<th scope="row">B</th>
-			<td>Alpha B</th>
-			<td>Bb</th>
-			<td>word B</th>
+			<td>Alpha B</td>
+			<td>Bb</td>
+			<td>word B</td>
+		</tr>
+		<tr>
+			<th scope="row">B</th>
+			<td>Alpha C</td>
+			<td>Cc</td>
+			<td>word C</td>
 		</tr>
 	</tbody>
 
@@ -83,17 +89,13 @@ td {
 	<tfoot>
 		<tr>
 			<th scope="row">end</th>
-			<td>Alphas</th>
-			<td>end</th>
-			<td>word end</th>
+			<td>Alphas</td>
+			<td>end</td>
+			<td>word end</td>
 		</tr>
 	</tfoot>
 
 </table>
-
-
-
-
 
 </body>
 </html>
