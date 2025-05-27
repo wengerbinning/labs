@@ -5,8 +5,15 @@
 </head>
 
 <style>
+
+* {
+	outline: black solid thin;
+}
+
 table {
+	/* align: center; */
 	border-collapse: collapse;
+	/* border-inline-style: hidden; */
 	border: 2px solid rgb(140 140 140);
 	letter-spacing: 1px;
 
@@ -15,19 +22,27 @@ table {
 }
 
 caption {
-	caption-side: bottom;
+	caption-side:top;
 	padding: 10px;
 }
 
+thead, tbody, tfoot {
+	border: 1px solid;
+}
+
 th, td {
-  border: 1px solid rgb(160 160 160);
-  padding: 8px 6px;
+	/* border-inline-style: solid; */
+	border: 1px solid;
+	padding: 8px 6px;
+}
+
+tr {
+	border: 1px solid;
 }
 
 td {
   text-align: center;
 }
-
 
 .batman {
   background-color: #d7d9f2;
@@ -41,7 +56,7 @@ td {
 
 
 <body>
-<table>
+<table align="center" valign="center">
 	<!-- Table comment  -->
 	<caption> Table 1 - Example Table</caption>
 
@@ -67,19 +82,20 @@ td {
 	<tbody>
 		<tr>
 			<th scope="row">A</th>
-			<td>Alpha A</td>
-			<td>Aa</td>
+			<td colspan="2">Alpha A</td>
+			<!-- <td>Aa</td> -->
 			<td>word A</td>
+			<td rowspan="0">3</td>
 		</tr>
 		<tr>
 			<th scope="row">B</th>
-			<td>Alpha B</td>
+			<td rowspan="2">Alpha B</td>
 			<td>Bb</td>
 			<td>word B</td>
 		</tr>
 		<tr>
-			<th scope="row">B</th>
-			<td>Alpha C</td>
+			<th scope="row">C</th>
+			<!-- <td>Alpha C</td> -->
 			<td>Cc</td>
 			<td>word C</td>
 		</tr>
