@@ -1,0 +1,26 @@
+
+
+
+
+* 创建项目
+
+```shell
+npx create-react-app helloworld
+# npx create-react-router@latest
+# npx create-next-app@latest
+```
+
+## 2
+
+```shell
+npm run build
+```
+
+```shell
+npm run start
+```
+
+
+
+## TSX(TypeScript Execute)
+
