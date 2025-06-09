@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HTML Table Labs</title>
+</head>
+
+<style>
+
+* {
+	outline: black solid thin;
+}
+
+table {
+	/* align: center; */
+	border-collapse: collapse;
+	/* border-inline-style: hidden; */
+	border: 2px solid rgb(140 140 140);
+	letter-spacing: 1px;
+
+	font-family: sans-serif;
+	font-size: 0.8rem;
+}
+
+caption {
+	caption-side:top;
+	padding: 10px;
+}
+
+thead, tbody, tfoot {
+	border: 1px solid;
+}
+
+th, td {
+	/* border-inline-style: solid; */
+	border: 1px solid;
+	padding: 8px 6px;
+}
+
+tr {
+	border: 1px solid;
+}
+
+td {
+  text-align: center;
+}
+
+.batman {
+  background-color: #d7d9f2;
+}
+
+.flash {
+  background-color: #ffe8d4;
+}
+</style>
+
+
+
+<body>
+<table align="center" valign="center">
+	<!-- Table comment  -->
+	<caption> Table 1 - Example Table</caption>
+
+	<!-- Table Cols -->
+	<colgroup>
+		<col />
+		<col span="2" class="batman" />
+		<col span="2" class="flash" />
+	</colgroup>
+
+	<!-- Table header -->
+	<thead>
+		<tr>
+			<th scope="col">ID</th>
+			<th scope="col">Name</th>
+			<th scope="col">Label</th>
+			<th scope="col">Comment</th>
+			<th scope="col">Attributes</th>
+		</tr>
+	</thead>
+
+	<!-- table body -->
+	<tbody>
+		<tr>
+			<th scope="row">A</th>
+			<td colspan="2">Alpha A</td>
+			<!-- <td>Aa</td> -->
+			<td>word A</td>
+			<td rowspan="0">3</td>
+		</tr>
+		<tr>
+			<th scope="row">B</th>
+			<td rowspan="2">Alpha B</td>
+			<td>Bb</td>
+			<td>word B</td>
+		</tr>
+		<tr>
+			<th scope="row">C</th>
+			<!-- <td>Alpha C</td> -->
+			<td>Cc</td>
+			<td>word C</td>
+		</tr>
+		<tr>
+			<th scope="row">C</th>
+			<!-- <td>Alpha C</td> -->
+			<td>Cc</td>
+			<td>word C</td>
+		</tr>
+	</tbody>
+
+	<!-- table footer -->
+	<tfoot>
+		<tr>
+			<th scope="row">end</th>
+			<td>Alphas</td>
+			<td>end</td>
+			<td>word end</td>
+		</tr>
+	</tfoot>
+
+</table>
+
+</body>
+</html>
