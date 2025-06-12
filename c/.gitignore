@@ -19,3 +19,12 @@ configure
 # configure
 config.log
 config.status
+# autoconf with automake
+COPYING
+INSTALL
+Makefile.in
+aclocal.m4
+compile
+depcomp
+install-sh
+missing
