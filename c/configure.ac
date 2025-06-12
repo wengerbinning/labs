@@ -3,6 +3,7 @@
 
 AC_PREREQ([2.72])
 AC_INIT([clabs], [0.1], [wengerbinning@163.com])
+AM_INIT_AUTOMAKE
 
 # Checks for programs.
 AC_PROG_CC
