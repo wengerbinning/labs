@@ -1,8 +1,0 @@
-TOPDIR ?= $(CURDIR)
-
-
-targets += helloworld
-
-
-# =========================================================================== #
-include $(TOPDIR)/toplevel.mk
