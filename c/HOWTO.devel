@@ -1,15 +1,102 @@
 
 
+* run `autoscan`
+
+```shell
+autoscan
+```
+
+* move `configure.scan` to `configure.ac` & edit `configure.ac`
+* support automake
+
+```shell
+touch AUTHORS ChangeLog NEWS README Makefile.am
+```
 
 
 
-Build Framework
-===============
-
-- rule.mk
-- toplevel.mk
-- scripts/build-help.sh*
-- scripts/build-target.sh*
 
 
 
+
+* srcdir
+* top_srcdir
+
+
+* bin_PROGRAMS
+* sbin_PROGRAMS
+* noinst_PROGRAMS
+* lib_LIBRARIES
+* noinst_LIBRARIES
+* lib_LTLIBRARIES
+* noinst_LTLIBRARIES
+* include_HEADERS
+* SUBDIRS
+
+
+* @target@_SOURCES
+* @target@_LIBADD
+* @target@_LBADD
+* @target@_CFLAGS
+* @target@_CPPFLAGS
+* @target@_CPPFLAGS
+* @target@_LDFLAGS
+
+
+
+## Links
+
+* <https://www.cnblogs.com/xiaocer/p/17772574.html>
+* <https://www.gnu.org/software/autoconf/manual/autoconf-2.64/html_node/Making-configure-Scripts.html#Making-configure-Scripts>
+* <https://www.gnu.org/software/autoconf/manual/autoconf-2.64/html_node/Existing-Tests.html#Existing-Tests>
+* <https://www.gnu.org/software/autoconf/manual/autoconf-2.64/html_node/Setup.html#Setup>
+* <https://www.gnu.org/software/automake/manual/html_node/A-Library.html>
+
+
+```
+# FIXME: Replace 'main' with a function in '-lblobmsg_json':
+AC_CHECK_LIB([blobmsg_json], [main])
+# FIXME: Replace 'main' with a function in '-lcairo':
+AC_CHECK_LIB([cairo], [main])
+# FIXME: Replace 'main' with a function in '-lcrypto':
+AC_CHECK_LIB([crypto], [main])
+# FIXME: Replace 'main' with a function in '-lfcgi':
+AC_CHECK_LIB([fcgi], [main])
+# FIXME: Replace 'main' with a function in '-lharfbuzz':
+AC_CHECK_LIB([harfbuzz], [main])
+# FIXME: Replace 'main' with a function in '-lssl':
+AC_CHECK_LIB([ssl], [main])
+# FIXME: Replace 'main' with a function in '-lubox':
+AC_CHECK_LIB([ubox], [main])
+# FIXME: Replace 'main' with a function in '-lubus':
+AC_CHECK_LIB([ubus], [main])
+# FIXME: Replace 'main' with a function in '-luci':
+AC_CHECK_LIB([uci], [main])
+# FIXME: Replace 'main' with a function in '-lz':
+AC_CHECK_LIB([z], [main])
+
+
+
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h stdint.h sys/file.h sys/socket.h sys/time.h syslog.h unistd.h])\
+
+
+AC_CHECK_HEADER_STDBOOL
+AC_C_INLINE
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_STRUCT_TIMEZONE
+AC_TYPE_UID_T
+AC_TYPE_UINT32_T
+AC_TYPE_UINT64_T
+AC_TYPE_UINT8_T
+
+
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_FORK
+AC_FUNC_MALLOC
+AC_FUNC_MKTIME
+AC_CHECK_FUNCS([clock_gettime dup2 fchdir getcwd gettimeofday inet_ntoa memchr memset mkdir regcomp socket strdup strerror strstr])
+
+
+# AC_CONFIG_SUBDIRS([curl])
+```
