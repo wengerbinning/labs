@@ -27,3 +27,7 @@ config.guess
 config.lt
 libtool
 ltmain.sh
+#
+config.h
+config.h.in
+stamp-h1
