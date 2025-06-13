@@ -31,3 +31,7 @@ ltmain.sh
 config.h
 config.h.in
 stamp-h1
+#
+dest
+*.o
+helloworld
