@@ -3,8 +3,10 @@
 
 AC_PREREQ([2.72])
 AC_INIT([labs], [0.0], [wengerbining@163.com])
+AM_INIT_AUTOMAKE
 
 # Checks for programs.
+AC_PROG_CC
 
 # Checks for libraries.
 

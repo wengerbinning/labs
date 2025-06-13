@@ -3,3 +3,7 @@
 ```shell
 autoscan
 ```
+
+
+
+* Makefile.am AUTHORS ChangeLog NEWS README

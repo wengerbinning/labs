@@ -1,7 +1,19 @@
-# autoscan
+## autoscan
 autoscan.log
-# autoreconf
+## autoreconf
 autom4te.cache
-# configure
+configure
+## configure
 config.log
 config.status
+## bootstrap
+aclocal.m4
+install-sh
+missing
+INSTALL
+COPYING
+configure.ac
+compile
+depcomp
+Makefile.in
+configure~
