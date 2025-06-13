@@ -17,3 +17,13 @@ compile
 depcomp
 Makefile.in
 configure~
+# configure
+Makefile
+config.sub
+# make
+.deps/
+# configure
+config.guess
+config.lt
+libtool
+ltmain.sh

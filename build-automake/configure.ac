@@ -2,8 +2,10 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.72])
+LT_PREREQ([2.5.4])
 AC_INIT([labs], [0.0], [wengerbining@163.com])
 AM_INIT_AUTOMAKE
+LT_INIT
 
 # Checks for programs.
 AC_PROG_CC
@@ -18,3 +20,4 @@ AC_PROG_CC
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
+LT_OUTPUT
