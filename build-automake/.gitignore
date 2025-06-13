@@ -1,2 +1,7 @@
 # autoscan
 autoscan.log
+# autoreconf
+autom4te.cache
+# configure
+config.log
+config.status
