@@ -1,0 +1,5 @@
+* run `autoscan` make `configure.scan`
+
+```shell
+autoscan
+```
