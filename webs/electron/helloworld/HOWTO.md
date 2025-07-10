@@ -9,6 +9,8 @@ sudo apt install npm libnss3 libatk1.0-0 libatk-bridge2.0-0
 sudo apt install libgtkd-3-0 libasound2
 ```
 
+### ArchLinux
+
 ##  项目开发
 
 ```shell
@@ -24,7 +26,7 @@ npm install --save-dev electron
 
 #### 开发调试
 
-```
+```shell
 npm run start
 ```
 
@@ -38,4 +40,11 @@ npm install --save-dev @electron-forge/cli
 
 ```shell
 npx electron-forge import
+```
+
+### 发行程序
+
+
+```shell
+npm run make
 ```
