@@ -11,7 +11,7 @@ sudo apt install libgtkd-3-0 libasound2
 
 ### ArchLinux
 
-##  项目开发
+## 项目开发
 
 ```shell
 npm init
@@ -30,9 +30,9 @@ npm install --save-dev electron
 npm run start
 ```
 
-### 发布版本
+## 发布版本
 
-#### 准备环境
+### 准备环境
 
 ```shell
 npm install --save-dev @electron-forge/cli
@@ -42,9 +42,11 @@ npm install --save-dev @electron-forge/cli
 npx electron-forge import
 ```
 
-### 发行程序
+### 分发程序
 
+#### ArchLinux
 
 ```shell
 npm run make
 ```
+

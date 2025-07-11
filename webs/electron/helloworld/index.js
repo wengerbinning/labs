@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, nativeTheme, Menu } = require('electron')
 const path = require('node:path')
 
 
@@ -6,6 +6,7 @@ function createWindow () {
 	const win = new BrowserWindow({
 		width: 800,
 		height: 600,
+		frame: false,
 		webPreferences: { preload: path.join(__dirname, 'preload.js') }
 	})
 
@@ -15,6 +16,7 @@ function createWindow () {
 app.whenReady().then(() => {
 	createWindow()
 
+	nativeTheme.themeSource = "dark"
 	app.on('activate', () => {
 		if (BrowserWindow.getAllWindows().length === 0) {
 			createWindow()
