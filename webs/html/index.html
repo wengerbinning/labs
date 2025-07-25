@@ -6,45 +6,72 @@
 	<meta charset="utf-8"/>
 
 <style>
-* {
-	outline: black solid thin;
-}
-</style>
-	<link rel="stylesheet" type="text/css" href="css/page.css"/>
-	<link rel="stylesheet" type="text/css" href="css/index.css"/>
 
+body {
+	margin: 0;
+	padding: 0;
+	/* backgroud */
+	background-color: azure;
+
+	/**/
+	border: 1px solid black;
+
+}
+
+
+#header {
+	height: 4%;
+	width: 100%;
+	border: 1px solid black;
+
+	display: flex;
+}
+
+#menu {
+	border: 1px solid black;
+}
+
+#menu > div {
+	display: none;
+	border: 1px solid black;
+}
+
+#menu:hover {
+	color: red;
+}
+
+#main {
+	height: 90%;
+	width: 100%;
+	border: 1px solid black;
+}
+
+#footer {
+	border: 1px solid black;
+}
+
+</style>
 </head>
 
 
 <body>
-	<div id="page">
-		<!-- header -->
-		<div id="header" class="text_header">
+	<div id="header">
+		<div id="menu">
+			<p>Menu</p>
 			<div>
-				<p>A</p>
-			</div>
-			<div>
-				<p>B</p>
+				<div>A</div>
 			</div>
 		</div>
-		<!-- content -->
-		<div id="content" class="text_content">
-			<div id="menu_left" class="flex-item">
-				<p>A</p>
-			</div>
+		<div id="icon">
+			<p>Icon</p>
+		</div>
+		<div>
+			<p>Header</p>
+		</div>
 
-			<div id="text" class="flex-item">
-				<p>B</p>
-			</div>
-
-			<div id="menu_right" class="flex-item">
-				<p>C</p>
-			</div>
-		</div>
-		<!-- footer -->
-		<div id="footer" class="text_footer">
-			<p>3</p>
-		</div>
+	</div>
+	<div id="main">
+		<p>Content</p>
 	</div>
 </body>
 

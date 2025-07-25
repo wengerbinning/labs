@@ -1,0 +1,1 @@
+The `<style>` element must be included inside the `<head>` of the document.

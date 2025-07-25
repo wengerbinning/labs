@@ -1,6 +1,8 @@
 The `<col>` HTML element defines one or more columns in a column group
 represented by its parent `<colgroup>` element.
 
+## Attibutes
+
 
 ## Links
 

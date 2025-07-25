@@ -7,13 +7,14 @@ data.
 
 ### Global Attibutes
 
-#### ~~align~~
-#### ~~bgcolor~~
-#### ~~border~~
-#### ~~cellpadding~~
-#### ~~cellspacing~~
-#### ~~frame~~
-#### ~~rules~~
-#### ~~summary~~
-#### ~~width~~
+* ~~align~~
+* ~~bgcolor~~
+* ~~border~~
+* ~~cellpadding~~
+* ~~cellspacing~~
+* ~~frame~~
+* ~~rules~~
+* ~~summary~~
+* ~~width~~
 
+### Personal Attibutes

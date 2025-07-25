@@ -9,25 +9,20 @@ Table
 * tbody
 * tfoot
 
-Row & Col
+Title
+
+* caption
+
+Row
 
 * tr
 * th
 * td
 
-
-Title
-
-* caption
-
-Color
+Col
 
 * colgroup
 * col
-
-
-
-
 
 ## Links
 
