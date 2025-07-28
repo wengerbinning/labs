@@ -1,0 +1,67 @@
+Node.js 是一个基于Chrome V8引擎的JavaScript运行环境。
+
+* 事件驱动模型
+* 非阻塞IO
+* 模组化
+* npm(Node Package Manager)是Node.js的模块管理工具
+* Express是一个基于Node.js的Web应用框架
+
+
+
+
+
+npm
+---
+
+npm是Node.js的默认包管理工具， 是一个CS架构,npm客户端是npm工具， npm服务端是npm的注册表。
+注册表默认是`https://registry.npmjs.org`
+
+* 解析包中package.json文件
+* 连接注册表并查询需要的版本
+* 下载软件解压并安装
+* 符号连接
+* 锁文件：自npm v5引入package-lock.json文件，用于锁定具体的依赖版本
+* scripts
+* hooks
+* audit
+* 扁平化依赖树：自npm v3起使用
+
+* 软件发布：npm publish,版本验证，内容打包，资源上传， 访问控制， 版本管理
+
+* 全局安装： npm list -g
+
+
+package.json
+------------
+
+* 固定版本号: `1.0.1`
+* 标签版本号: `latest`
+* 范围版本号: `>=4.0.0`, `<5.0.0`
+* 区间版本号:
+
+
+
+
+
+
+
+
+
+包列表
+-----
+
+
+* `corepack`：Node.js 的内置软件，用于包管理工具的版本控制
+* `node-gyp`：跨平台工具
+* `nopt`: 命令行解析工具
+* `semver`：规范标准版本号
+* `npm` or `yarn`: 软件包管理工具
+
+
+
+* `hightlight.js`:
+
+Markdown
+
+* `marked`
+* `micromark`
