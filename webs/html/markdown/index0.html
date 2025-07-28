@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!-- AJAX & marked -->
+<html>
+<head>
+
+</head>
+
+<body>
+	<p id="p1">gwn700x.md</p>
+	<button onclick="loadXMLDoc('/try/ajax/ajax_info.txt')">Get header information</button>
+
+
+
+
+<script>
+function request_markdown() {
+	var http;
+	if (window.XMLHttpRequest) {
+		// IE7+, FireFox, Chrome,Opera, Safari
+		http=new XMLHttpRequest();
+	} else {
+		//IE5, IE6
+		http=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	http.onreadystatechange = function() {
+		if (http, readyState == 4 && http.status == 200) {
+			document.getElementById('p1'). innerHTML = http.getAllResponseHeaders();
+		}
+	}
+
+	http.open("GET", url, true);
+	http.send();
+}
+</script>
+</body>
+</html>
