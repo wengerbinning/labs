@@ -1,0 +1,13 @@
+mariadb -u root -p
+
+mkfifo stdi.sock
+mkfifo stdo.sock
+mkfifo stde.sock
+
+tr -s 'A-Z' 'a-z' <stdi.sock >stdo.sock
+
+cat < stdi.sock | tr -s 'A-Z' 'a-z' >stdo.sock &
+
+exec 3> stdi.sock
+exec 4> stdo.sock
+exec 5> std3.sock
