@@ -6,7 +6,7 @@ _class_type = $(shell v="$(strip $(1))"; echo $${v##*-})
 _class_next = $(shell v="$(strip $(1))"; w=$${v%-*}; \
 	test $${v} != $${w} && echo $$w)
 
-Q=@
+# Q=@
 DEPS = FORCE
 
 define log
@@ -39,7 +39,7 @@ endef
 define executable_prepare_rule
 $(target-objs): %.o: %.c
 	$$(call log, CC, $$@)
-	$(Q)$(CC) -c $(if $(compflags), $(compflags))-o $$@ $$^
+	$(Q)$(CC) -c $(if $(compflags), $(compflags)) -o $$@ $$^
 $(target): $(objs) $(deps)
 	$$(call log, LD, $$@)
 	$(Q)$(CC)$(if $(linkflags), $(linkflags)) -o $$@ $(objs) $(libs)

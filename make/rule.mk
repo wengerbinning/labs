@@ -394,8 +394,8 @@ endef
 # usage: object_executable_build <target>
 define object_executable_build
 $(objs): %.o: %.c FORCE
-	@$(call log, info, CC, $(if $(MOD_NAME),$(MOD_NAME)/)$$@)
-	@$(CC) $(if $(compflags), $(compflags)) $$<
+	@$(call log, info, CCD, $(if $(MOD_NAME),$(MOD_NAME)/)$$@)
+	$(CC) $(if $(compflags), $(compflags))  $$<
 $(1): $(objs) $(relo-objs)
 	@$(call log, info, LD, $(if $(MOD_NAME),$(MOD_NAME)/)$$@ $(mods-libs))
 	@$(CC)$(if $(linkflags), $(linkflags)) -o $$@$(if $(link), $(link))
