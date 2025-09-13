@@ -1,99 +1,128 @@
 
-targets := helloworld
-
-helloworld-language=c
 
 # helloworld-type=dede-share-library
 
 
 
-# Q=@
+Q=@
 
 
 all:
 
-
-
-## C Programming Languages
+########################### C Programming Languages ###########################
 # usage: T_C_COMPILING <object...> [flags]
 define T_C_COMPILING
 $(strip $(1)): %.o: %.c
-	$(Q)echo COMP $$@ $$< ...
-	$(Q)$(CC)$(if $(2),$(strip $(2))) -o $$@ -c $$^
+	@echo COMP $$@ $$< ...
+	$(Q)$(CC)$(if $(2), $(strip $(2))) -o $$@ -c $$^
 endef
 # usage: T_C_PACK_SHARED <target> <object...> [flags] [link]
 define T_C_PACK_SHARED
 $(1): $(2)
-	$(Q)echo LINK $$@ $$^...
+	@echo LINK $$@ $$^ ...
 	$(Q)$(CC)$(if $(3), $(3)) -shared -o $$@ $$< $(if $(4), $(4))
 endef
 # usage: T_C_PACK_STATIC <target> <objet...>
 define T_C_PACK_STATIC
 $(1): $(2)
-	$(Q)echo LINK $$@ $$<...
+	@echo LINK $$@ $$< ...
 	$(Q)$(AR) crv $$@ $$< >/dev/null
 endef
 # usage: T_C_LINK_RELO <target> <object...>
 define T_C_LINK_RELO
 $(1): $(2)
-	$(Q)echo LINK $$@ $$^...
+	@echo LINK $$@ $$^ ...
 	$(Q)$(LD) --no-gc-sections -o $$@ -r $$^
 endef
 # usage: T_C_LINK_EXEC <target> <objtect...> [flags] [link]
 define T_C_LINK_EXEC
 $(1): $(2)
-	$(Q)echo LINK $$@ $$^ ...
-	$(LD)$(if $(3), $(3)) -o $$@ $$< $(if $(4), $(4))
+	@echo LINK $$@ $$^ ...
+	$(Q)$(LD)$(if $(3), $(3)) -o $$@ $$<$(if $(4), $(4))
 endef
 
 
-# Library
-define build_library_prepare
+### Library
+define c_library_prepare
 	target-type =$(if $(target-class),$(call _class_type, $(target-class)),shared)
 	target-class=$(if $(target-class),$(call _class_next, $(target-class)),shared)
+	clean-targets += $(target)
 endef
-define build_static_library
- 	$(eval $(call T_C_COMPILING, $(target-objs)), $(cflags) $(cppflags))
-	$(eval $(call T_C_LINK_EXEC, $(target), $(target-objs), $(cflags) $(ldflags)))
+define c_library_variable
+	compflags := $(if $(target-cflags), $(target-cflags))
+	compflags += $(if $(target-cppflags), $(target-cppflags))
+	linkflags := $(if $(target-cflags), $(target-cflags))
+	linkflags += $(if $(target-ldlags), $(target-ldflags))
+	link := $(if $(target-libs), $(target-libs))
 endef
-define build_shared_library
-	$(eval $(call T_C_COMPILING, $(target-objs)), $(cflags) $(cppflags))
-	$(eval $(call T_C_LINK_EXEC, $(target), $(target-objs), $(cflags) $(ldflags)))
+define c_static_build
+ 	$(eval $(call T_C_COMPILING, $(target-objs)),$(compflags))
+	$(eval $(call T_C_LINK_EXEC, $(target),$(target-objs)))
 endef
-define build_library
-	$(eval $(call build_library_prepare,$(target)))
-	$(if $(value build_$(target-type)_library),,
+define c_shared_build
+	$(eval $(call T_C_COMPILING, $(target-objs)),$(compflags))
+	$(eval $(call T_C_LINK_EXEC, $(target),$(target-objs),$(linkflags),$(link)))
+endef
+# usage:
+define c_library_build
+	$(eval $(call c_library_prepare,  $(strip $(1))))
+	$(eval $(call c_library_variable, $(strip $(1))))
+	$(if $(value c_$(target-type)_build),,
 		$(error Not found build $(target-type)-library))
-	$(call build_$(target-type)_library,$(strip $(1)))
+	$(call c_$(target-type)_build, $(strip $(1)))
 endef
 
-# Object
+### Object
 define c_object_prepare
 	target-type=$(if $(target-class),$(call _class_type, $(target-class)),executable)
 	target-class=$(if $(target-class),$(call _class_next, $(target-class)),shared)
+	clean-targets += $(target)
 endef
 define c_object_variable
-	flags=$(if $(target-cflags), $(target-cflags))
+	compflags := $(if $(target-cflags), $(target-cflags))
+	compflags += $(if $(target-cppflags), $(target-cppflags))
+	linkflags := $(if $(target-cflags), $(target-cflags))
+	linkflags += $(if $(target-ldlags), $(target-ldflags))
+	link := $(if $(target-libs), $(target-libs))
 endef
-define c_relocatable_object_build
-	$(eval $(call T_C_COMPILING,$(target-objs), ))
-	$(eval $(call T_C_LINK_EXEC, $(target), $(target-objs), $(cflags) $(ldflags)))
+define c_relocatable_build
+	$(eval $(call T_C_COMPILING, $(target-objs),$(compflags)))
+	$(eval $(call T_C_LINK_EXEC, $(target),$(target-objs)))
 endef
-define c_executable_object_build
-	$(eval $(call T_C_COMPILING, $(target-objs), $(if $(flags),$(flags))))
-	$(eval $(call T_C_LINK_EXEC, $(target), $(target-objs), $(cflags) $(ldflags)))
+define c_executable_build
+	$(eval $(call T_C_COMPILING, $(target-objs),$(compflags)))
+	$(eval $(call T_C_LINK_EXEC, $(target),$(target-objs),$(linkflags),$(link)))
 endef
 # usage: c_object_build <target>
 define c_object_build
-	$(eval $(call c_object_prepare, $(target)))
+	$(eval $(call c_object_prepare, $(strip $(1))))
 	$(eval $(call c_object_variable, $(target)))
-	$(if $(value c_$(target-type)_object_build),,
+	$(if $(value c_$(target-type)_build),,
 		$(error Not found build $(target-type)-object))
-	$(call c_$(target-type)_object_build,$(strip $(1)))
+	$(call c_$(target-type)_build,$(strip $(1)))
+endef
+###############################################################################
+
+define T_MAKE
+$(1):
+	@echo RUNNING IN HERE
+
+$(strip $(1))-clean:
+	@echo RUNNING IN HERE
 endef
 
 
+define module_prepare
+	clean-modules += $(strip $(1))-clean
+endef
+#
+define module_build
 
+	$(eval $(call module_prepare, $(strip $(1))))
+	$(eval $(call T_MAKE, $(target)))
+endef
+
+###############################################################################
 
 ###
 empty :=
@@ -111,13 +140,12 @@ _target_class = $$(if $(_target_types),$(_target_types),$(_target_detect))
 define target_prepare
 	target=$(strip $(1))
 	target-class = $(call _target_class, $(strip $(1)))
-	target-language = $(if $($(strip $(1))-language), c)
+	target-language = $(if $($(strip $(1))-language),$($(strip $(1))-language),c)
 endef
 # usage: target_variable <target>
 define target_variable
 	target-type = $(call _class_type,$(target-class))
 	target-class = $(call _class_next,$(target-class))
-
 	target-cflags := $(if $(CFLAGS), $(CFLAGS))
 	target-cflags += $(if $($(target)-cflags), $($(target)-cflags))
 	target-cxxflags := $(if $(CXXFLAGS), $(CXXFLAGS))
@@ -134,9 +162,9 @@ endef
 define target_build
 	$(eval $(call target_prepare, $(strip $(1))))
 	$(eval $(call target_variable, $(strip $(1))))
-	$(if $(value $(target-language)_$(target-type)_build),,
-		$(error Not found build $(target):$(target-type)))
-	$(call $(target-language)_$(target-type)_build, $(strip $(1)))
+	$(if $(filter module,$(strip $(target-type))),
+		$(call $(target-type)_build, $(strip $(1))),
+		$(call $(target-language)_$(target-type)_build, $(strip $(1))))
 endef
 # foreach all targets
 $(foreach target, $(targets), $(call target_build, $(target)))
@@ -144,11 +172,13 @@ $(foreach target, $(targets), $(call target_build, $(target)))
 all: $(targets)
 	@echo NOTHING ...
 
-clean:
-	-rm -f *.o $(targets)
+clean: $(clean-modules)
+	- echo $(clean-modules)
+	-rm -f *.o $(clean-targets)
 
 .PHONY: all
 
 
 # target target-language target-class target-type
 # target-cflags target-cxxflags target-cppflags target-ldflags
+# clearn-targets

@@ -3,13 +3,14 @@ export default Login;
 
 class Login extends React.Component {
 
-	constructor() {
+	constructor(props) {
+		super(props);
 		// todo
 	}
 
 
 	render() { return (
-		<div></div>
+		<div>Running in here ...</div>
 	)}
 }
 

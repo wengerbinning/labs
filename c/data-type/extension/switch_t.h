@@ -3,10 +3,6 @@
 
 #include <stdbool.h>
 
-/*
-
-
- */
 typedef union {
 	bool _bool;
 	unsigned char _raw;

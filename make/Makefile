@@ -1,14 +1,14 @@
 
-
-
 TOPDIR ?= $(PWD)
 
+override CPPFLAGS := $(CPPFLAGS)
+override LDFLAGS := $(LDFLAGS)
+
+override CPPFLAGS += -DVERBOSE
+
+export CPPFLAGS
 
 
-
-targets := helloworld
-
-# helloworld-ldflags := -nolibc -e demo
-# helloworld-type := dedemo-demo-object
+targets := helloworld libs
 
 include $(TOPDIR)/Makefile.mk
