@@ -1,0 +1,77 @@
+/*
+
+ - name
+ - type
+ - size
+ - opts
+ - apis
+ - data
+ - deps
+ - cite
+ - data
+
+ - attrs
+ - scope
+ - label
+ - state
+
+ - params
+ - return
+
+ - pattern
+
+ */
+[
+    {
+        "name": "int",
+        "type": "type",
+        "size": 4,
+        "opts": [],
+        "apis": [],
+        "deps": [],
+        "cite": [],
+        "data": [],
+
+        "attrs": ["standard"],
+        "scope": [],
+        "label": [],
+        "state": [],
+
+        "pattern": []
+    }, {
+        "name": "var",
+        "type": "object",
+        "size": 1,
+        "opts": [],
+        "apis": [],
+        "data": [],
+        "deps": [],
+        "cite": [],
+
+        "attrs": ["standard"],
+        "scope": [],
+        "label": [],
+        "state": [],
+
+        "pattern": []
+    }, {
+        "name": "func",
+        "type": "function",
+        // "size": 1,
+        "opts": [],
+        "apis": [],
+        "data": [],
+        "deps": [],
+        "cite": [],
+
+        "attrs": ["standard"],
+        "scope": [],
+        "label": [],
+        "state": [],
+
+        "params": [],
+        "return": [],
+
+        "pattern": []
+    }
+]

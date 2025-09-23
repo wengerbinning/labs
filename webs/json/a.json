@@ -1,0 +1,20 @@
+[{
+    "id": "type",
+    "name": "数据类型",
+
+    "pattern": [],
+    "attribute": {}
+}, {
+    "id": "object",
+    "name": "数据对象",
+
+    "pattern": [],
+    "attribute": {}
+}, {
+    "id": "function",
+    "name": "函数",
+
+    "pattern": [],
+    "attribute": {}
+}
+]
