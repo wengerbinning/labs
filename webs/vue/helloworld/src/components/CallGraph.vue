@@ -5,18 +5,10 @@
 
 
 <template>
-    <div>
-        <ul>
-            <li v-for="(each, idex) in type" :key="each.id">
-                {{ each.id }} - {{ each.name }}
-            </li>
-        </ul>
-        <p>内容</p>
-        <ul>
-            <li v-for="(each, idex) in data" :key="each.name">
-                {{ each.name }} - {{ each.type }} {{ each.attrs }}
-            </li>
-        </ul>
+    <div id="list">
+        <div v-for="(each, idex) in data" :key="each.name">
+            <p> {{ each.name }} </p>
+        </div>
     </div>
 </template>
 
@@ -76,3 +68,11 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+#list {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+}
+</style>
