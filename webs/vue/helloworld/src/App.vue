@@ -5,7 +5,7 @@ import CallGraph  from './components/CallGraph.vue'
 </script>
 
 <template>
-    <CallGraph />
+    <HelloWorld />
 
 </template>
 
