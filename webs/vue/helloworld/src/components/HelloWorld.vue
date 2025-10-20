@@ -8,6 +8,7 @@
 function parseData (name, data) {
 	console.log(name);
 	// console.log(data);
+	let cnt = 0;
 
 	data.split(/\r?\n/).forEach((each, idx) => {
 		const line = each.trimStart();
@@ -15,20 +16,14 @@ function parseData (name, data) {
 		if (line.startsWith("#")) {
 			return;
 		}
-		// console.log(`${idx}: ${key[0]}`);
+		// console.log(`${idx++}: ${key[0]}`);
 
 		switch (key[0]) {
 		case 'config':
-			console.log(`${idx}: ${line}`);
+			cnt ++;
+			console.log(`${cnt}: ${key[2]}`);
 			break;
 		}
-
-
-
-		if (line.startsWith("config")) {
-			// console.log(`${idx}: ${line}`);
-		}
-
 	});
 
 }
