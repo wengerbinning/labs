@@ -25,3 +25,9 @@ MariaDB数据库管理系统是MySQL的一个分支，主要由开源社区在�
 * 复合键
 * 参照完整性
 
+
+
+
+* MySQL, MariaDB,SQLite
+* MongoDB
+* Redis
