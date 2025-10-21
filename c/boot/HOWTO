@@ -1,0 +1,32 @@
+
+* x0 - 传递参数, 返回结果
+* x1 - 传递参数
+* x2 - 传递参数
+* x3 - 传递参数
+* x4 - 传递参数
+* x5 - 传递参数
+* x6 - 传递参数
+* x7 - 传递参数
+* x8 - 系统调用
+
+
+* 64 - wirte
+* 93 - exit
+
+
+* `.global <symbol>`
+* `.section <section>`
+* `.asciz <string>`
+
+指令
+
+* `mov` - Move
+* `ldr` - Load Register, 用于将内存中的值加载到寄存器。
+
+```asm
+ldr x1, =msg
+ldr x0, [x1]
+ldr x0, [x1, #8]
+```
+
+* `svc` -

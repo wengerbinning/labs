@@ -1,0 +1,16 @@
+
+
+
+aarch64-linux-gnu-as -o start.o start.S
+aarch64-linux-gnu-ld -o start start.o
+qemu-aarch64 ./start
+
+
+
+
+CROSS_PREFIX=aarch64-linux-gnu-
+
+
+
+AS=$CROSS_PREFIX-as
+LD=$CROSS_PREFIX-ld
