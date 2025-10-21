@@ -5,7 +5,7 @@
 .ignore
 .target
 .environment
-
+.deps/
 dest/**
 
 
