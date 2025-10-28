@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>WebGL 离散点动画 Demo</title>
+<style>
+  body { margin: 0; background: #000; overflow: hidden; }
+  canvas { display: block; }
+</style>
+</head>
+<body>
+<canvas id="glcanvas"></canvas>
+<script>
+const canvas = document.getElementById("glcanvas");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// 获取 WebGL 上下文
+const gl = canvas.getContext("webgl");
+if (!gl) {
+  alert("浏览器不支持 WebGL");
+}
+
+// 顶点着色器（控制每个点的位置）
+const vertexShaderSource = `
+attribute vec2 a_position;
+uniform float u_pointSize;
+void main() {
+  gl_Position = vec4(a_position, 0.0, 1.0);
+  gl_PointSize = u_pointSize;
+}`;
+
+// 片段着色器（控制每个点的颜色）
+const fragmentShaderSource = `
+precision mediump float;
+uniform vec4 u_color;
+void main() {
+  gl_FragColor = u_color;
+}`;
+
+function createShader(gl, type, source) {
+  const shader = gl.createShader(type);
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    console.error("Shader compile failed:", gl.getShaderInfoLog(shader));
+  }
+  return shader;
+}
+
+const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+// 创建并链接程序
+const program = gl.createProgram();
+gl.attachShader(program, vertexShader);
+gl.attachShader(program, fragmentShader);
+gl.linkProgram(program);
+gl.useProgram(program);
+
+// 生成随机点
+const POINT_COUNT = 100;
+const positions = new Float32Array(POINT_COUNT * 2);
+const speeds = new Float32Array(POINT_COUNT * 2);
+for (let i = 0; i < POINT_COUNT; i++) {
+  positions[i * 2] = Math.random() * 2 - 1;      // X in [-1,1]
+  positions[i * 2 + 1] = Math.random() * 2 - 1;  // Y in [-1,1]
+  speeds[i * 2] = (Math.random() - 0.5) * 0.01;
+  speeds[i * 2 + 1] = (Math.random() - 0.5) * 0.01;
+}
+
+// 创建顶点缓冲区
+const positionBuffer = gl.createBuffer();
+const aPositionLoc = gl.getAttribLocation(program, "a_position");
+gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+gl.enableVertexAttribArray(aPositionLoc);
+gl.vertexAttribPointer(aPositionLoc, 2, gl.FLOAT, false, 0, 0);
+
+// uniform 变量
+const uPointSizeLoc = gl.getUniformLocation(program, "u_pointSize");
+const uColorLoc = gl.getUniformLocation(program, "u_color");
+
+// 鼠标交互参数
+let mouse = { x: 0, y: 0, active: false };
+canvas.addEventListener("mousemove", e => {
+  mouse.active = true;
+  mouse.x = (e.clientX / canvas.width) * 2 - 1;
+  mouse.y = -((e.clientY / canvas.height) * 2 - 1);
+});
+canvas.addEventListener("mouseleave", () => mouse.active = false);
+
+function animate() {
+  // 更新点位置
+  for (let i = 0; i < POINT_COUNT; i++) {
+    let x = positions[i * 2];
+    let y = positions[i * 2 + 1];
+    x += speeds[i * 2];
+    y += speeds[i * 2 + 1];
+
+    // 边界反弹
+    if (x > 1 || x < -1) speeds[i * 2] *= -1;
+    if (y > 1 || y < -1) speeds[i * 2 + 1] *= -1;
+
+    // 鼠标吸引
+    if (mouse.active) {
+      const dx = mouse.x - x;
+      const dy = mouse.y - y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 0.2) {
+        x += dx * 0.02;
+        y += dy * 0.02;
+      }
+    }
+
+    positions[i * 2] = x;
+    positions[i * 2 + 1] = y;
+  }
+
+  // 清屏
+  gl.clearColor(0, 0, 0, 1);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+
+  // 传输数据到 GPU
+  gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STREAM_DRAW);
+  gl.uniform1f(uPointSizeLoc, 6.0);
+  gl.uniform4f(uColorLoc, 0.1, 1.0, 1.0, 1.0);
+
+  // 绘制点
+  gl.drawArrays(gl.POINTS, 0, POINT_COUNT);
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>

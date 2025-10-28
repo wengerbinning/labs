@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+<meta charset="UTF-8">
+<title>离散点动画交互 Demo</title>
+
+<style>
+body {
+	margin: 0;
+	background: #000;
+	overflow: hidden;
+}
+canvas {
+	display: block;
+}
+</style>
+
+</head>
+
+<body>
+<canvas id="canvas"></canvas>
+
+
+<script>
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const POINT_COUNT = 100;
+const points = [];
+
+let mouse = { x: null, y: null, radius: 120 };
+
+window.addEventListener("mousemove", (e) => {
+	mouse.x = e.x;
+	mouse.y = e.y;
+});
+
+window.addEventListener("resize", () => {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+});
+
+
+/*
+{
+	x, y, z
+	t
+	w, h, l
+}
+
+
+
+ */
+
+
+// 初始化随机点
+for (let i = 0; i < POINT_COUNT; i++) {
+	const radius = 3;
+	const x = Math.random() * (canvas.width - radius * 2) + radius;
+	const y = Math.random() * (canvas.height - radius * 2) + radius;
+	const dx = (Math.random() - 0.5) * 2;
+	const dy = (Math.random() - 0.5) * 2;
+	points.push({ x, y, dx, dy, radius });
+}
+
+
+
+function drawPoint(p) {
+	ctx.beginPath();
+	ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2, false);
+	ctx.fillStyle = "rgba(0, 255, 255, 0.8)";
+	ctx.fill();
+}
+
+function update() {
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	for (let p of points) {
+
+		// 反弹逻辑
+		if (p.x + p.radius > canvas.width || p.x - p.radius < 0) p.dx = -p.dx;
+		if (p.y + p.radius > canvas.height || p.y - p.radius < 0) p.dy = -p.dy;
+
+		// 鼠标吸引逻辑
+		const dx = mouse.x - p.x;
+		const dy = mouse.y - p.y;
+		const dist = Math.sqrt(dx * dx + dy * dy);
+
+		if (dist < mouse.radius && mouse.x && mouse.y) {
+			p.x += dx * 0.03;
+			p.y += dy * 0.03;
+		} else {
+			p.x += p.dx;
+			p.y += p.dy;
+		}
+
+		drawPoint(p);
+	}
+
+  requestAnimationFrame(update);
+}
+
+update();
+</script>
+</body>
+
+</html>

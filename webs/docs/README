@@ -1,0 +1,16 @@
+
+
+
+
+
+
+2025-10-27 01
+-------------
+
+* 服务/协议/端口/密钥
+* 地址/路径/流量
+
+
+iptables -t raw -D PREROUTING -s 172.20.20.124 -p icmp -j TRACE
+iptables -t raw -A PREROUTING -s 172.20.20.124 -p icmp --icmp-type echo-request -j TRACE
+tcpdump -nei lan1 src host 172.20.20.124 and icmp and 'icmp[icmptype] == icmp-echo'
