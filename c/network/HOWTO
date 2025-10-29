@@ -1,0 +1,8 @@
+gcc -o test main.c -l pcap
+gcc -o test main.c hexdump.c -l pcap
+
+void (*)(unsigned char *, const struct pcap_pkthdr *, const unsigned char *)
+void (*)(unsigned char *, const struct pcap_pkthdr *, const unsigned char *)
+
+
+c0:74:ad:b9:f0:50 > 68:77:24:77:56:cf
