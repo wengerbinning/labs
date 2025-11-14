@@ -1,7 +1,9 @@
 The `<body>` HTML element represents the content of an HTML document.
 There can be only one `<body>` element in a document.
 
+### CSS Attribute
 
+* body默认的CSS属性
 
 
 ### Event Attributes

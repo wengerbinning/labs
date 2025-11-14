@@ -7,22 +7,14 @@
 
 
 * body
+* script
+
+
 * header
 * footer
 * menu
 * aside
 * nav
-
-
-
-
-
-
-
-
-* script
-
-
 * hgroup
 * h1
 * article
@@ -48,3 +40,8 @@
 * div
 * form
 * map
+
+
+
+
+HTML显示div列表
