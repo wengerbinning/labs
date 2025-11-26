@@ -1,0 +1,10 @@
+
+* AC_CHECK_LIB
+* AC_MSG_WARN
+* AC_PROG_CC
+
+m4
+* AC_DEFUN
+
+configure.ac
+* AC_SUBST
