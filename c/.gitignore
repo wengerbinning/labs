@@ -20,7 +20,6 @@ configure
 config.log
 config.status
 # autoconf with automake
-
 COPYING
 INSTALL
 Makefile.in
