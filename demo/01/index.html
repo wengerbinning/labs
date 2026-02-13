@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>DeepSeek · 深度求索</title>
+	<!-- 字体与图标 -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<!-- 代码高亮 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+	<!--  -->
+	<link rel="stylesheet" href="index.css">
+	<script src="index.js" defer></script>
+</head>
+<body>
+<div class="app">
+	<!-- 侧边栏 -->
+	<aside class="sidebar" id="sidebar">
+		<div class="sidebar-header">
+			<div class="logo">
+				<i class="fas fa-brain"></i>
+				<span>DeepSeek</span>
+			</div>
+		</div>
+
+		<button class="new-chat">
+			<i class="fas fa-plus"></i>
+			新建对话
+		</button>
+
+		<div class="chat-history">
+			<div class="history-item active">
+				<i class="fas fa-comment"></i>
+				<span>React 性能优化</span>
+			</div>
+			<div class="history-item">
+				<i class="fas fa-comment"></i>
+				<span>TypeScript 高级类型</span>
+			</div>
+			<div class="history-item">
+				<i class="fas fa-comment"></i>
+				<span>Next.js 14 新特性讨论</span>
+			</div>
+			<div class="history-item">
+				<i class="fas fa-comment"></i>
+				<span>Tailwind CSS 最佳实践</span>
+			</div>
+			<div class="history-item">
+				<i class="fas fa-comment"></i>
+				<span>Node.js 微服务架构</span>
+			</div>
+		</div>
+
+		<div class="user-section">
+			<div class="avatar">
+				<span>张</span>
+			</div>
+			<div class="user-info">
+				<div class="user-name">张三</div>
+				<div class="user-plan">免费账户 · 3/30</div>
+			</div>
+			<i class="fas fa-ellipsis-v" style="color: var(--text-tertiary); cursor: pointer;"></i>
+		</div>
+	</aside>
+
+	<!-- 主聊天区 -->
+	<main class="main">
+		<div class="chat-header">
+			<div class="menu-toggle" id="menuToggle">
+				<i class="fas fa-bars"></i>
+			</div>
+			<div class="model-selector">
+				<i class="fas fa-microchip"></i>
+				<span class="model-name">DeepSeek Chat V3</span>
+				<i class="fas fa-chevron-down" style="font-size: 12px;"></i>
+			</div>
+			<div class="header-actions">
+				<i class="fas fa-search" data-tooltip="搜索对话"></i>
+				<i class="fas fa-bell" data-tooltip="通知"></i>
+				<i class="fas fa-cog" data-tooltip="设置"></i>
+			</div>
+		</div>
+
+		<!-- 消息列表 -->
+		<div class="messages-container" id="messagesContainer">
+			<!-- 欢迎消息 -->
+			<div class="message ai">
+				<div class="message-avatar">
+					<i class="fas fa-robot"></i>
+				</div>
+				<div class="message-content">
+					<div class="message-meta">
+						<span class="message-sender">DeepSeek</span>
+						<span class="message-time">刚刚</span>
+					</div>
+				<div class="message-text">
+					<p>👋 你好！我是 DeepSeek，深度求索公司创造的 AI 助手。</p>
+					<p>我可以帮你：</p>
+					<ul style="margin-left: 20px; margin-bottom: 12px;">
+						<li>💻 编写和调试代码</li>
+						<li>📝 撰写文章和报告</li>
+						<li>🔍 分析和解答问题</li>
+						<li>🎨 创意构思和头脑风暴</li>
+					</ul>
+					<p>有什么我可以帮你的吗？</p>
+				</div>
+				<div class="message-actions">
+					<span><i class="far fa-copy"></i> 复制</span>
+					<span><i class="far fa-thumbs-up"></i> 有用</span>
+					<span><i class="far fa-thumbs-down"></i> 无用</span>
+					<span><i class="fas fa-rotate-right"></i> 重新生成</span>
+				</div>
+			</div>
+		</div>
+
+        <!-- 用户消息示例 -->
+        <div class="message user">
+          <div class="message-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">你</span>
+              <span class="message-time">10:32</span>
+            </div>
+            <div class="message-text">
+              <p>请用 React 写一个防抖搜索组件</p>
+            </div>
+            <div class="message-actions">
+              <span><i class="far fa-copy"></i> 复制</span>
+              <span><i class="fas fa-pencil"></i> 编辑</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI 回复示例（包含代码块） -->
+        <div class="message ai">
+          <div class="message-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">DeepSeek</span>
+              <span class="message-time">10:33</span>
+            </div>
+            <div class="message-text">
+              <p>这是一个带有防抖功能的搜索组件示例：</p>
+              <pre><code class="language-jsx">import React, { useState, useEffect, useCallback } from 'react';
+import { debounce } from 'lodash';
+
+const SearchComponent = () => {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const searchAPI = async (searchTerm) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/search?q=${searchTerm}`);
+      const data = await response.json();
+      setResults(data);
+    } catch (error) {
+      console.error('搜索失败:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const debouncedSearch = useCallback(
+    debounce((nextValue) => searchAPI(nextValue), 500),
+    []
+  );
+
+  useEffect(() => {
+    if (query) {
+      debouncedSearch(query);
+    }
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [query, debouncedSearch]);
+
+  return (
+    &lt;div className="search-container"&gt;
+      &lt;input
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="搜索..."
+        className="search-input"
+      /&gt;
+      {loading && &lt;div&gt;加载中...&lt;/div&gt;}
+      &lt;ul className="results-list"&gt;
+        {results.map((item) => (
+          &lt;li key={item.id}&gt;{item.title}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default SearchComponent;</code></pre>
+              <p>这个组件会在用户停止输入 500ms 后自动发起搜索请求，避免频繁调用 API。</p>
+            </div>
+            <div class="message-actions">
+              <span><i class="far fa-copy"></i> 复制代码</span>
+              <span><i class="far fa-thumbs-up"></i> 有用</span>
+              <span><i class="far fa-thumbs-down"></i> 无用</span>
+              <span><i class="fas fa-rotate-right"></i> 重新生成</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 带引用的回复 -->
+        <div class="message user">
+          <div class="message-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">你</span>
+              <span class="message-time">10:35</span>
+            </div>
+            <div class="message-text">
+              <p>debounce 函数是怎么实现的？</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="message ai">
+          <div class="message-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="message-content">
+            <div class="message-meta">
+              <span class="message-sender">DeepSeek</span>
+              <span class="message-time">10:36</span>
+            </div>
+            <div class="message-text">
+              <p>这是一个简化版的防抖函数实现：</p>
+              <pre><code class="language-javascript">function debounce(func, wait) {
+  let timeout;
+
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}</code></pre>
+              <p>核心思想：在时间窗口内多次调用只会执行最后一次。</p>
+            </div>
+            <div class="message-actions">
+              <span><i class="far fa-copy"></i> 复制</span>
+              <span><i class="far fa-thumbs-up"></i> 有用</span>
+              <span><i class="far fa-star"></i> 收藏</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 打字指示器（模拟AI正在输入） -->
+        <div class="message ai">
+          <div class="message-avatar">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="message-content">
+            <div class="typing-indicator">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+            </div>
+          </div>
+        </div>
+		</div>
+
+		<!-- 输入区域 -->
+		<div class="input-area">
+			<div class="input-wrapper">
+				<div class="input-field">
+					<textarea
+						rows="1"
+						placeholder="给 DeepSeek 发送消息..."
+						id="messageInput"
+					></textarea>
+				</div>
+				<div class="input-actions">
+					<button data-tooltip="上传文件">
+						<i class="fas fa-paperclip"></i>
+					</button>
+					<button data-tooltip="使用联网搜索">
+						<i class="fas fa-globe"></i>
+					</button>
+					<button data-tooltip="深度思考">
+						<i class="fas fa-brain"></i>
+					</button>
+					<button class="send" data-tooltip="发送消息 (Enter)">
+						<i class="fas fa-arrow-up"></i>
+					</button>
+				</div>
+			</div>
+			<!-- 快捷提示词 -->
+			<div class="suggestions">
+				<span class="suggestion-chip">📊 分析数据</span>
+				<span class="suggestion-chip">💡 头脑风暴</span>
+				<span class="suggestion-chip">📝 写周报</span>
+				<span class="suggestion-chip">🐛 调试代码</span>
+				<span class="suggestion-chip">📚 学习计划</span>
+			</div>
+			<div style="text-align: center; margin-top: 12px; font-size: 12px; color: var(--text-tertiary);">
+				DeepSeek 生成的内容仅供参考，不构成专业建议。由深度求索提供技术支持。
+			</div>
+		</div>
+	</main>
+</div>
+
+</body>
+</html>

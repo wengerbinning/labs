@@ -1,75 +1,50 @@
 <!DOCTYPE html>
-<html>
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>列表演示</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<title>表格</title>
 
-<style>
-:root {
-	--flex-primary: #3498db;
-	--flex-secondary: #2980b9;
-	--grid-primary: #2ecc71;
-	--grid-secondary: #27ae60;
-	--dark: #2c3e50;
-	--light: #ecf0f1;
-	--gray: #95a5a6;
-	--warning: #e74c3c;
-	--success: #2ecc71;
-	--info: #3498db;
-}
-
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-	background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
-	color: #333;
-	line-height: 1.6;
-	min-height: 100vh;
-}
-
-
-/*  */
-.board {
-	background-color: aquamarine;
-}
-
-.board-menu {
-	background-color: brown;
-}
-
-.board-list {
-	background-color:black;
-}
-
-.board-stat {
-	background-color:blueviolet;
-}
-
-
-</style>
+	<link rel="stylesheet" href="index.css">
+	<script src="index.js" defer></script>
 </head>
 
 
 <body>
-<!--  -->
-<div class="board">
-	<div class="board-menu"> A </div>
-	<div class="board-list"> B </div>
-	<div class="board-stat"> C </div>
-</div>
-
-
-
-header
-
-footer
-
+	<table>
+		<caption>标题</caption>
+		<colgroup>
+			<col style="width: 5%;">      <!-- 第1列：百分比 -->
+			<col style="width: 100px;">    <!-- 第2列：固定像素 -->
+			<col style="width: 15%;">      <!-- 第3列：百分比 -->
+			<col style="width: 200px;">    <!-- 第4列：固定像素 -->
+			<col style="width: auto;">     <!-- 第5列：自适应 -->
+		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col" rowspan="2">名称</th>
+				<th scope="colgroup" colspan="4">类型</th>
+				<th scope="col" rowspan="2">说明</th>
+			</tr>
+			<tr>
+				<th scope="col">uci</th>
+				<th scope="col">type</th>
+				<th scope="col">default</th>
+				<th scope="col">optional</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th scope="row">A</th>
+				<td>option</td>
+				<td>number</td>
+				<td>0</td>
+				<td>false</td>
+			</tr>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th scope="row">总计</th>
+				<td>1</td>
+			</tr>
+		</tfoot>
+	</table>
 </body>
 </html>

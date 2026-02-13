@@ -1,0 +1,50 @@
+
+
+
+渲染流程
+
+* HTML -> HTML Parser -> DOM Tree
+* CSS -> CSS Parser -> CSSDOM Tree
+* Javascript ->JS Engine
+
+
+* RenderTree -> layout/Reflow -> LayertTree -> Paint -> Compositing
+
+
+
+
+* DOM树 + CSSDOM树 > 渲染树
+
+
+* 布局 -> 绘制
+
+
+
+* <script> 默认阻塞DOM解析转向js处理
+
+
+
+page
+widx
+windows
+window.title
+
+#window-header
+#window-center
+#widnow-footer
+
+
+#window.title
+#window.setting
+#window.account
+#window.profile
+#window.content
+#window.search
+#window.icon
+#window.menu
+#window.stat
+#windos.info - 版权信息
+#window.page
+#window.list
+#window.tab
+#window.nav
