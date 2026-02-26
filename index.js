@@ -26,6 +26,10 @@ const symbols = [{
 	"name": "t0_t",
 	"type": "type",
 	"desc": ""
+}, {
+	"name": "t1_t",
+	"type": "type",
+	"desc": ""
 }]
 
 
@@ -59,6 +63,24 @@ function symb_attribute(symb){
 
 
 
-for (let i = 0; i < symbols.length; i++) {
-	console.log(symb_prototype(symbols[i]));
+
+function func0(board, symb) {
+	const div = document.createElement('div');
+	const p = document.createElement('p');
+	p.textContent = symb.name;
+	div.appendChild(p);
+	board.appendChild(div);
 }
+
+/* */
+const board = document.getElementById('symb-list');
+for (let i = 0; i < symbols.length; i++) {
+	func0(board, symbols[i]);
+}
+
+
+
+/* Test */
+// for (let i = 0; i < symbols.length; i++) {
+// 	console.log(symb_prototype(symbols[i]));
+// }
