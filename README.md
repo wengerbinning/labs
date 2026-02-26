@@ -151,3 +151,56 @@ Q1: 前端框架列表
 * CodeMirror 6
 * Ace Editor
 * Quill()
+
+
+
+
+
+
+* 项目
+* 模块
+* 配置组
+* 配置集
+
+
+* 配置属性
+* 演示代码
+* 配置标签
+* 配置说明
+
+
+
+
+
+名称
+类型(project, module, folder, file, group, symbol)
+
+
+
+
+symbol(类型， 数据， 接口， 函数)
+
+
+名称
+类型
+文件类型/符号类型
+
+
+name
+type
+icon
+
+
+
+
+
+name
+icon
+nest
+type
+fold
+data
+attr
+label
+fileType
+symbType

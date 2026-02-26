@@ -1,0 +1,20 @@
+#
+mkdir vue && cd vue
+#
+npm init -y
+#
+npm install vue
+npm install -D vite @vitejs/plugin-vue
+
+
+
+
+
+
+
+
+
+
+
+#
+npm config ls -l

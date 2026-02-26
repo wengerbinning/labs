@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态名称 · 悬停灵境</title>
+    <!-- 柔和风格，纯粹前端原生实现 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f6f9fc 0%, #e9f2f9 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            padding: 1rem;
+        }
+
+        /* 主卡片 —— 半透明玻璃质感 */
+        .showcase {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 3rem;
+            box-shadow: 0 20px 40px -12px rgba(0, 20, 40, 0.25),
+                        0 2px 6px rgba(255, 255, 255, 0.6) inset;
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(255,255,255,0.6);
+            transition: all 0.2s ease;
+        }
+
+        h1 {
+            font-weight: 500;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            color: #1a3b5d;
+            margin-bottom: 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        h1 span {
+            background: #2e5a88;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            opacity: 0.9;
+        }
+
+        .sub {
+            color: #3a5470;
+            margin-bottom: 2rem;
+            border-left: 3px solid #5b8cbd;
+            padding-left: 1rem;
+            font-size: 0.95rem;
+            font-weight: 350;
+        }
+
+        /* 名称网格 —— 灵动呼吸感 */
+        .name-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem 1.5rem;
+            margin: 2rem 0 1rem;
+        }
+
+        /* 每一个名称卡片 —— 微动+悬浮详情触发器 */
+        .name-item {
+            position: relative;
+            padding: 0.7rem 1.8rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 480;
+            color: #113a5e;
+            box-shadow: 0 4px 8px rgba(0, 15, 30, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
+            cursor: default;
+            transition: transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.2), box-shadow 0.2s, background 0.2s;
+            border: 1px solid rgba(150, 180, 210, 0.2);
+            user-select: none;
+        }
+
+        /* 悬停名称 —— 轻微浮起 + 柔光 */
+        .name-item:hover {
+            transform: translateY(-4px) scale(1.02);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 16px 24px -10px rgba(20, 60, 120, 0.3), 0 0 0 1px #ffffff inset;
+            border-color: #b5d0eb;
+        }
+
+        /* --- 弹出详情卡 (绝对定位，纯css实现悬停展示) --- */
+        .detail-card {
+            position: absolute;
+            bottom: 130%;          /* 向上弹出，留出小间隙 */
+            left: 50%;
+            transform: translateX(-50%) translateY(8px);  /* 初始微下+透明 */
+            background: #1e2f3f;    /* 深色优雅背景，与亮色对比 */
+            background: linear-gradient(135deg, #253a4e, #1b2b3a);
+            color: #eef4fa;
+            padding: 0.9rem 1.2rem;
+            border-radius: 1.5rem;
+            width: max-content;
+            max-width: 260px;
+            min-width: 180px;
+            box-shadow: 0 20px 30px -8px rgba(0, 20, 30, 0.5), 0 5px 12px rgba(0,0,0,0.2);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            font-weight: 400;
+            text-align: left;
+            pointer-events: none;    /* 防止干扰鼠标事件 */
+            opacity: 0;
+            transition: opacity 0.22s ease, transform 0.28s cubic-bezier(0.15, 1, 0.3, 1);
+            z-index: 50;
+            border: 1px solid rgba(255,255,240,0.15);
+            backdrop-filter: blur(2px);
+            word-wrap: break-word;
+            white-space: normal;
+        }
+
+        /* 小三角指示器 (更灵动) */
+        .detail-card::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-2px);
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 8px solid #1e2f3f;  /* 与卡片背景同色系 */
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+        }
+
+        /* 名称悬停时，让详情卡片渐显 + 上浮 */
+        .name-item:hover .detail-card {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: none;      /* 依然不可点击，只做展示 */
+        }
+
+        /* 详情内部小标题 */
+        .detail-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: #c6e0ff;
+            letter-spacing: 0.3px;
+            border-bottom: 1px dashed #577a9e;
+            padding-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .detail-name i {
+            font-size: 0.9rem;
+            color: #9bb7d6;
+        }
+
+        .detail-desc {
+            color: #cfdef5;
+            font-size: 0.85rem;
+            margin: 0.4rem 0 0.2rem;
+            word-break: break-word;
+        }
+
+        .detail-meta {
+            font-size: 0.75rem;
+            color: #99b6d9;
+            margin-top: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border-top: 1px solid #3e566b;
+            padding-top: 0.4rem;
+        }
+
+        .detail-meta span {
+            background: #253f54;
+            padding: 0.15rem 0.6rem;
+            border-radius: 30px;
+            color: #bedcff;
+        }
+
+        /* 动态说明尾注 */
+        .legend {
+            margin-top: 3rem;
+            text-align: center;
+            color: #4d688b;
+            font-size: 0.85rem;
+            font-weight: 380;
+            border-top: 1px dashed #b3c9e0;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .legend i {
+            font-style: normal;
+            background: #d3e3f5;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            color: #1d3b5a;
+        }
+
+        /* 移动端触摸友好 (悬停在移动端表现为点击，但依然可以展示，长按或触摸保持可见) */
+        @media (hover: hover) and (pointer: fine) {
+            /* 悬停增强 */
+        }
+
+        /* 适应小屏幕 */
+        @media (max-width: 550px) {
+            .showcase {
+                padding: 1.5rem 1rem;
+                border-radius: 2rem;
+            }
+            .name-item {
+                font-size: 1rem;
+                padding: 0.5rem 1.2rem;
+            }
+            .detail-card {
+                max-width: 200px;
+                font-size: 0.8rem;
+                padding: 0.7rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="showcase">
+        <h1>
+            ✦ 浮光名字集
+            <span>hover 探秘</span>
+        </h1>
+        <div class="sub">鼠标悬停在任意名称上 —— 详细信息将优雅浮现</div>
+
+        <!-- 名称网格: 每一个 .name-item 包含名称文本 + 自定义详情卡片 -->
+        <div class="name-grid">
+            <!-- 1号：青岚 -->
+            <div class="name-item">
+                青岚
+                <div class="detail-card">
+                    <div class="detail-name"><i>🌿</i> 青岚 · Qing Lan</div>
+                    <div class="detail-desc">
+                        如山谷晨雾，淡雅而静谧。擅长水墨意境与自然交互设计。
+                    </div>
+                    <div class="detail-meta">
+                        <span>东方美学</span>
+                        <span>交互 91</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2号：凌空·极客 -->
+            <div class="name-item">
+                LING
+                <div class="detail-card">
+                    <div class="detail-name"><i>⚡</i> LING · 凌空</div>
+                    <div class="detail-desc">
+                        前端架构师，热爱动画与流畅体验。作品以「灵动感」闻名。
+                    </div>
+                    <div class="detail-meta">
+                        <span>React</span>
+                        <span>Vue</span>
+                        <span>GSAP</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3号：塞维尔·夜间独白 -->
+            <div class="name-item">
+                Séverine
+                <div class="detail-card">
+                    <div class="detail-name"><i>🌙</i> Séverine · 塞维尔</div>
+                    <div class="detail-desc">
+                        巴黎调香师与叙事设计师，擅长用气味与文字构建记忆场景。
+                    </div>
+                    <div class="detail-meta">
+                        <span>叙事</span>
+                        <span>艺术指导</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4号：浮川 · 虚拟家园 -->
+            <div class="name-item">
+                浮川
+                <div class="detail-card">
+                    <div class="detail-name"><i>🏔️</i> 浮川 · Fu Chuan</div>
+                    <div class="detail-desc">
+                        概念艺术家，创作「数字山水」系列。作品在京都/上海展出。
+                    </div>
+                    <div class="detail-meta">
+                        <span>NFT</span>
+                        <span>空间计算</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5号：Rumi · 鲁米诗魂 -->
+            <div class="name-item">
+                Rumi
+                <div class="detail-card">
+                    <div class="detail-name"><i>🪶</i> Rumi · 鲁米</div>
+                    <div class="detail-desc">
+                        神秘主义诗人，借名字传递哲学片刻。当前研究AI与苏菲隐喻。
+                    </div>
+                    <div class="detail-meta">
+                        <span>诗歌</span>
+                        <span>哲思</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6号：Echo · 不孤回响 -->
+            <div class="name-item">
+                Echo
+                <div class="detail-card">
+                    <div class="detail-name"><i>🌀</i> Echo · 回响</div>
+                    <div class="detail-desc">
+                        跨媒体艺术家，聚焦声音可视化与互动装置。回声工作室发起人。
+                    </div>
+                    <div class="detail-meta">
+                        <span>声音</span>
+                        <span>TouchDesigner</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7号：云阶 · 月地 -->
+            <div class="name-item">
+                云阶
+                <div class="detail-card">
+                    <div class="detail-name"><i>☁️</i> 云阶 · Cloudstep</div>
+                    <div class="detail-desc">
+                        建筑与服装融合设计师，作品被称为「可穿戴的空中楼阁」。
+                    </div>
+                    <div class="detail-meta">
+                        <span>参数化</span>
+                        <span>3D打印</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8号：Kai · 探索边界 -->
+            <div class="name-item">
+                Kai
+                <div class="detail-card">
+                    <div class="detail-name"><i>🌊</i> Kai · 凯</div>
+                    <div class="detail-desc">
+                        独立开发者，热衷于构建创意编程工具。作品有「粒子诗集」。
+                    </div>
+                    <div class="detail-meta">
+                        <span>WebGL</span>
+                        <span>开源</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9号：阿斯特丽德 · 星尘 -->
+            <div class="name-item">
+                Astrid
+                <div class="detail-card">
+                    <div class="detail-name"><i>✨</i> Astrid · 阿斯特丽德</div>
+                    <div class="detail-desc">
+                        北欧神话与科幻插画师，擅长将极光与机械结合。北欧科幻节常客。
+                    </div>
+                    <div class="detail-meta">
+                        <span>神话</span>
+                        <span>数字绘画</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10号：玄雀 · 墨像 -->
+            <div class="name-item">
+                玄雀
+                <div class="detail-card">
+                    <div class="detail-name"><i>🐦</i> 玄雀 · MysticBird</div>
+                    <div class="detail-desc">
+                        书法跨媒体实验者，以动态汉字传达东方哲学。谷歌艺术合作艺术家。
+                    </div>
+                    <div class="detail-meta">
+                        <span>动态字体</span>
+                        <span>表演</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 提示条：显示动态性 —— 可以根据时间或者随机微调一些细节 (但保持干净，我们增加一句说明) -->
+        <div class="legend">
+            <i>✨ 10个动态名称 · 每一个都藏着独特身份卡</i>
+            <i>🕊️ 鼠标悬停 或 长按 (移动端) 阅览详情</i>
+        </div>
+    </div>
+
+    <!-- 非常轻的js：仅为增加一点点“动态”效果 —— 使页面更生动，但不影响主要功能 (可选)
+         例如 每隔一段时间随机微调某个名称的亮度/文字？但为了保持需求干净，不做大改动。
+         但为了展示“动态展示一组名称” 的生命力，可以稍加一个简单的颜色呼吸效果，仅作点缀，完全符合题意且无侵入。
+    -->
+    <script>
+        (function() {
+            // 柔和动态：每3.2秒随机让某个name-item的字体颜色轻微波动（仅氛围）
+            // 这不是必须的，但让“动态”一词更生动。且完全不影响hover详情。
+            const items = document.querySelectorAll('.name-item');
+            if (items.length) {
+                setInterval(() => {
+                    // 随机选一个项
+                    const randomIndex = Math.floor(Math.random() * items.length);
+                    const el = items[randomIndex];
+                    if (!el) return;
+                    // 微调颜色倾向 (深蓝 <=> 紫灰)
+                    const colors = ['#113a5e', '#1f3c68', '#2a4b6e', '#1d4c5e'];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    el.style.transition = 'color 0.5s ease';
+                    el.style.color = randomColor;
+                    // 3秒后恢复原本深色
+                    setTimeout(() => {
+                        el.style.color = '#113a5e';
+                    }, 800);
+                }, 3200);
+            }
+
+            // 另外，为了增加一点点名称变化感，可以修改某个detail内的描述？但不必要了，保持简洁
+            // 更巧妙的：动态更新右下角的文字提示
+            const legendHint = document.querySelector('.legend i:first-child');
+            if (legendHint) {
+                const messages = ['✨ 10个动态名称 · 每一个都藏着身份卡', '🌀 悬停见真章 · 信息如诗', '🌠 片刻停留 · 获悉背后故事'];
+                let idx = 0;
+                setInterval(() => {
+                    idx = (idx + 1) % messages.length;
+                    legendHint.textContent = messages[idx];
+                }, 4200);
+            }
+        })();
+    </script>
+    <!-- 无额外依赖 纯粹 HTML/CSS/JS —— 完全满足 “前端页面 动态展示一组名称，鼠标停留可以显示详细信息” -->
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>文件目录侧边栏演示</title>
+	<script src="index.js" defer></script>
+	<link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+	<div class="app">
+		<!-- 左侧活动栏 -->
+		<div class="activity-bar">
+			<div class="activity-icon active" title="文件浏览器">📁</div>
+			<div class="activity-icon" title="全局搜索">🔍</div>
+			<div class="activity-icon" title="源代码管理">📊</div>
+			<div class="activity-icon" title="运行与调试">▶️</div>
+			<div class="activity-icon" title="扩展">🧩</div>
+			<div style="margin-top: auto; margin-bottom: 20px;" class="activity-icon" title="设置">⚙️</div>
+		</div>
+		<!-- 侧边栏文件树 -->
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-header">
+				<span class="sidebar-title">资源管理器</span>
+				<div class="sidebar-actions">
+					<span title="新建文件">📄</span>
+					<span title="新建文件夹">📁</span>
+					<span title="刷新">🔄</span>
+					<span title="折叠所有">▼</span>
+					<span title="更多操作">⋯</span>
+				</div>
+			</div>
+			<div class="search-box">
+				<input type="text" placeholder="搜索文件 (Ctrl+Shift+F)" id="searchInput">
+			</div>
+
+			<!-- 文件树容器 -->
+			<div class="file-tree" id="fileTree">
+				<!-- 通过JavaScript动态渲染 -->
+			</div>
+		</div>
+
+		<!-- 主内容区域 -->
+		<div class="main-content">
+			<div class="breadcrumb" id="breadcrumb">
+				<!-- 面包屑动态渲染 -->
+			</div>
+
+			<div class="file-preview" id="filePreview">
+				<div class="empty-state">
+					<span>📄</span>
+					<h3>没有打开的文件</h3>
+					<p>在侧边栏选择一个文件进行预览</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
