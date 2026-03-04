@@ -1,16 +1,97 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>列表显示</title>
+	<title>三个标签页 · 简洁切换</title>
+
 	<script src="index.js" defer></script>
 	<link rel="stylesheet" href="index.css">
 </head>
 
-<body>
-	<div class="app">
-		<div id="symb-list"></div>
-	</div>
-</body>
+	<body>
+		<div class="card">
+			<!-- 页眉 -->
+			<div class="card-header" role="tablist">
+				<button class="tab" id="tab-1" role="tab" aria-selected="false" aria-controls="pnl-1">
+					<span>🌱</span> 探索
+				</button>
+				<button class="tab" id="tab-2" role="tab" aria-selected="false" aria-controls="pnl-2">
+					<span>💡</span> 灵感
+				</button>
+				<button class="tab" id="tab-3" role="tab" aria-selected="false" aria-controls="pnl-3">
+					<span>⚙️</span> 设置
+				</button>
+			</div>
+
+			<!-- 面板 -->
+			<div class="card-pannel">
+				<!-- 面板1: 探索 -->
+				<div class="pnl" id="pnl-1" role="pnl" aria-labelledby="tab-1">
+					<div style="display: flex; align-items: center; justify-content: space-between;">
+						<h2><span class="icon">🌿</span> 发现角落</h2>
+						<span class="badge">今日推荐</span>
+					</div>
+
+					<p>切换标签就像翻开不同的笔记本。这里是第一个标签页，展示一些清新小语和随想。</p>
+
+					<ul class="feature-list">
+						<li>“山不见我，我自去见山”</li>
+						<li>在代码里种一棵薄荷</li>
+						<li>今日宜：专注 + 微光</li>
+					</ul>
+					<div style="margin-top: 1.2rem; font-style: italic; opacity: 0.8;">—— 第一页 · 留白 ——</div>
+				</div>
+				<!-- 面板2: 灵感 -->
+				<div class="pnl" id="pnl-2" role="pnl" aria-labelledby="tab-2">
+					<h2><span class="icon">✨</span> 灵感速写</h2>
+
+					<p>一些闪现的念头、配色方案或者简单的构想，都收集在第二个标签里。</p>
+
+					<div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.2rem 0;">
+						<span style="background: #A7C7E7; padding: 0.4rem 1.2rem; border-radius: 40px;">#静谧蓝</span>
+						<span style="background: #F3D9DC; padding: 0.4rem 1.2rem; border-radius: 40px;">#晚霞粉</span>
+						<span style="background: #D1D5DE; padding: 0.4rem 1.2rem; border-radius: 40px;">#雾灰</span>
+						<span style="background: #C1E1C1; padding: 0.4rem 1.2rem; border-radius: 40px;">#薄荷</span>
+					</div>
+
+					<ul class="feature-list" style="margin-top: 0.8rem;">
+						<li>极简主义 + 圆角逻辑</li>
+						<li>每个标签都是一次深呼吸</li>
+					</ul>
+				</div>
+				<!-- 面板3: 设置 -->
+				<div class="pnl" id="pnl-3" role="pnl" aria-labelledby="tab-3">
+					<h2><span class="icon">⚙️</span> 微调偏好</h2>
+
+					<p>第三个标签常用来放一些设置项、假想的开关，或者是极简控制台。</p>
+
+					<div style="background: rgba(255,255,255,0.6); border-radius: 1.4rem; padding: 1rem;">
+						<div style="display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0;">
+							<span>🌙 暗色模式</span>
+							<span class="label">demo</span>
+						</div>
+
+						<div style="display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0; border-top: 1px solid rgba(0,0,0,0.05);">
+							<span>🔔 安静标签切换</span>
+							<span class="label">开启</span>
+						</div>
+
+						<div style="display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 0; border-top: 1px solid rgba(0,0,0,0.05);">
+							<span>📐 圆角强度</span>
+							<span>极柔 · 中 · 硬</span>
+						</div>
+					</div>
+
+					<p style="margin-top: 1.2rem; font-size: 1rem;">第三个标签同样可以承载许多想象。</p>
+				</div>
+			</div>
+
+			<!-- 页脚 -->
+			<div class="card-footer">
+				—— 点按标签切换 ——
+			</div>
+		</div>
+	</body>
 </html>

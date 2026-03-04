@@ -123,6 +123,15 @@ Q1: 前端框架列表
 
 
 
+page
+card
+panel 面板(pnl)
+header 页眉(hdr)
+tabula 标签(tab)
+footer 页脚(ftr)
+window 窗口(wid)
+button 按钮(btn)
+
 
 
 
