@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>文件编辑器</title>
+	    <!-- local -->
+		<link rel="stylesheet" type="text/css" href="index.css">
+		<!-- <script src="index.js" defer></script> -->
+</head>
+<body>
+<div class="editor-shell">
+
+	<!-- 左侧目录侧边栏 -->
+	<div class="sidebar">
+		<div class="sidebar-header">
+			<span>📁 工作区</span>
+			<div style="display: flex; align-items: center;">
+				<div class="storage-indicator" id="storageIndicator">
+					<span class="storage-dot" id="storageDot"></span>
+					<span id="storageStatus">已保存</span>
+				</div>
+				<div class="header-actions">
+					<div class="menu-container" id="createMenu">
+						<button class="menu-button" id="menuToggle" title="新建">➕</button>
+						<div class="dropdown-menu" id="dropdownMenu">
+							<div class="menu-item" id="menuProject">
+								<span class="menu-icon">📂</span>
+								<span>新建项目</span>
+							</div>
+							<div class="menu-item" id="menuModule">
+								<span class="menu-icon">📦</span>
+								<span>新建模块</span>
+							</div>
+							<div class="menu-item" id="menuInterface">
+								<span class="menu-icon">🔌</span>
+								<span>新建接口</span>
+							</div>
+							<div class="menu-item" id="menuModel">
+								<span class="menu-icon">🧩</span>
+								<span>新建模型</span>
+							</div>
+							<div class="menu-divider"></div>
+							<div class="menu-item" id="menuFile">
+								<span class="menu-icon">📄</span>
+								<span>新建文件</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="tree-container" id="treeContainer">
+			<ul id="treeRoot" class="tree-item" style="padding-left:0;"></ul>
+		</div>
+	</div>
+
+	<!-- 中央编辑区 -->
+	<div class="editor-area">
+		<div class="editor-tabs" id="tabContainer">
+			<div class="placeholder-editor" style="padding:4px 0; color:#5f5f6b;">暂无打开文件</div>
+		</div>
+		<div class="editor-toolbar" id="editorToolbar" style="display: none;">
+			<div class="toolbar-item" id="wordWrapToggle">
+				<input type="checkbox" id="wordWrapCheckbox"> 自动换行
+			</div>
+			<div class="toolbar-item" id="editorStats">
+				<span id="cursorPos">行 1, 列 1</span>
+			</div>
+		</div>
+		<div class="editor-content" id="editorContentArea" style="height:100%; overflow:hidden;">
+			<div class="placeholder-editor">选择一个文件开始编辑</div>
+		</div>
+	</div>
+
+	<!-- 右侧符号表面板 (支持群组添加符号) -->
+	<div class="symbol-panel">
+		<div class="panel-header">
+			<span>📋 符号表</span>
+			<span class="file-badge" id="currentSymbolFile">未选中</span>
+		</div>
+
+		<!-- 输入框 - 用于输入新组名 -->
+		<div class="group-input-area">
+			<input type="text" class="group-input" id="groupNameInput" placeholder="输入新组名称..." maxlength="30">
+			<button class="group-input-btn" id="createGroupBtn">创建</button>
+		</div>
+
+		<!-- 输出框 - 显示选中数量 -->
+		<div class="output-area" id="outputArea">
+			<span class="output-label">选中:</span>
+			<span class="output-value" id="selectedCount">0</span>
+			<span style="color:#888"> 个符号</span>
+		</div>
+
+		<div class="symbol-scroll" id="symbolListContainer">
+			<div class="empty-symbol">← 从左侧选择文件</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- 添加符号对话框模板 -->
+<div id="addSymbolDialog" style="display: none;">
+	<div class="dialog-overlay" id="dialogOverlay"></div>
+	<div class="add-symbol-dialog">
+		<div class="dialog-title" id="dialogTitle">添加新符号</div>
+		<input type="text" class="dialog-input" id="symbolNameInput" placeholder="符号名称" maxlength="30">
+		<div class="dialog-type-selector" id="symbolTypeSelector">
+			<div class="dialog-type-btn selected" data-type="data">📊 数据</div>
+			<div class="dialog-type-btn" data-type="type">📐 类型</div>
+			<div class="dialog-type-btn" data-type="interface">🔌 接口</div>
+		</div>
+		<div class="dialog-actions">
+			<button class="dialog-btn cancel" id="cancelAddSymbol">取消</button>
+			<button class="dialog-btn confirm" id="confirmAddSymbol">添加</button>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
