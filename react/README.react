@@ -1,0 +1,24 @@
+React 一个由数据驱动、通过虚拟DOM高效渲染的声明式UI库
+
+* 虚拟DOM (Virtual DOM) - 一个轻量级的JavaScript对象树
+* 协调 (Reconciliation) - 当组件发生变化时，生成一个新的VDOM,
+
+---
+
+依赖
+
+
+基础
+
+* @types/react
+* react
+
+组件
+
+* react-dom
+* react-scripts
+
+模块
+
+* @ant-design/icons
+* React Router

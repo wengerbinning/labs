@@ -1,0 +1,84 @@
+/* src/App.css */
+
+.App {
+	min-height: 100vh;
+	background-color: #f0f2f5;
+}
+
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+/* 表格展开行样式 */
+.ant-table-expanded-row .ant-table-cell {
+	background-color: #fafafa !important;
+}
+
+/* 模态框样式 */
+.ant-modal-body {
+	max-height: 70vh;
+	overflow-y: auto;
+	padding: 24px;
+}
+
+/* 折叠面板样式 */
+.ant-collapse {
+	margin-bottom: 16px;
+}
+
+/* 表单间距 */
+.ant-form-item {
+	margin-bottom: 16px;
+}
+
+/* 标签样式 */
+.ant-tag {
+	margin: 4px;
+}
+
+/* 卡片样式 */
+.ant-card {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.ant-card:hover {
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 搜索框样式 */
+.ant-input-search {
+	width: 250px;
+}
+
+/* 按钮样式 */
+.ant-btn {
+	border-radius: 4px;
+}
+
+/* 表格操作列按钮组 */
+.ant-space.ant-space-horizontal {
+	gap: 4px !important;
+}
+
+/* 预格式化文本区域 */
+pre {
+	margin: 0;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}

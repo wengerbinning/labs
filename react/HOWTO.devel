@@ -1,0 +1,17 @@
+
+
+# 0. creat react project
+# npm config set registry https://registry.npmmirror.com
+npx create-react-app 0 --template typescript
+
+# 1. repare environment
+npm install
+
+
+# 2. 
+npm run start
+
+
+
+* create app.tsx
+*
