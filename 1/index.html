@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>管理平台</title>
+
+		<!-- Font Awesome 6 免费图标库 -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+		<!-- Local Resource -->
+		<link rel="stylesheet" type="text/css" href="index.css">
+	</head>
+
+	<body>
+		<div class="platform">
+			<!-- 左侧侧边栏 -->
+			<div class="sidebar" id="sidebar">
+				<div class="sidebar-inner">
+				<div class="collapse-header">
+					<!-- 只有这个logo-wrap可以点击展开菜单 (包含图标和文字) -->
+					<div class="logo-wrap" id="expandTrigger">
+						<i class="fas fa-cubes"></i>
+						<span class="menu-text">管理平台</span>
+					</div>
+					<!-- 折叠按钮依然存在，但只负责折叠，不负责展开 (双向操作保留) -->
+					<button class="collapse-btn" id="collapseBtn" title="折叠菜单">
+						<i class="fas fa-chevron-left"></i>
+					</button>
+				</div>
+
+				<div class="menu-container">
+					<div class="menu-item active" data-page="dashboard">
+						<i class="fas fa-chart-pie"></i>
+						<span class="menu-text">展示面板</span>
+					</div>
+					<div class="menu-item" data-page="user">
+						<i class="fas fa-users"></i>
+						<span class="menu-text">用户管理</span>
+					</div>
+					<div class="menu-item" data-page="permission">
+						<i class="fas fa-lock"></i>
+						<span class="menu-text">权限管理</span>
+					</div>
+					<div class="menu-item" data-page="doc">
+						<i class="fas fa-file-alt"></i>
+						<span class="menu-text">文档管理</span>
+					</div>
+					<div class="menu-item" data-page="model">
+						<i class="fas fa-brain"></i>
+						<span class="menu-text">模型管理</span>
+					</div>
+					<div class="menu-item" data-page="tech">
+						<i class="fas fa-microchip"></i>
+						<span class="menu-text">技术管理</span>
+					</div>
+					<div class="menu-item" data-page="solution">
+						<i class="fas fa-clipboard-list"></i>
+						<span class="menu-text">方案管理</span>
+					</div>
+					<div class="menu-item" data-page="feature">
+						<i class="fas fa-puzzle-piece"></i>
+						<span class="menu-text">功能管理</span>
+					</div>
+					<div class="menu-item" data-page="template">
+						<i class="fas fa-copy"></i>
+						<span class="menu-text">模板管理</span>
+					</div>
+					<div class="menu-item" data-page="product">
+						<i class="fas fa-boxes"></i>
+						<span class="menu-text">产品管理</span>
+					</div>
+					<div class="menu-item" data-page="source">
+						<i class="fas fa-code"></i>
+						<span class="menu-text">源码管理</span>
+					</div>
+					<div class="menu-item" data-page="issue">
+						<i class="fas fa-exclamation-triangle"></i>
+						<span class="menu-text">问题管理</span>
+					</div>
+					<div class="menu-item" data-page="project">
+						<i class="fas fa-tasks"></i>
+						<span class="menu-text">项目管理</span>
+					</div>
+				</div>
+
+				<div class="bottom-info">
+					<i class="fas fa-database"></i>
+					<span class="menu-text"> 数据同步 · 在线8人</span>
+				</div>
+				</div>
+			</div>
+
+			<!-- 右侧主面板 -->
+			<div class="main-panel">
+			<div class="top-bar">
+				<div class="page-title" id="pageTitle">
+					<i class="fas fa-chart-pie" id="titleIcon"></i>
+					<span id="titleText">展示面板</span>
+				</div>
+				<div class="user-profile">
+					<i class="fas fa-bell" style="color: #4f6f8f;"></i>
+					<div class="avatar">PM</div>
+				</div>
+			</div>
+			<div class="content-area" id="contentArea">
+				<!-- 页面内容 (保持不变) -->
+				<div class="page active-page" id="dashboard">
+					<div class="welcome-row">
+						<h2><i class="fas fa-hand-wave" style="color: #f6b100;"></i> 下午好，管理员</h2>
+						<span class="stat-badge">展示面板 · 聚合视图</span>
+					</div>
+					<div class="page-grid">
+						<div class="info-card"><div class="card-header"><i class="fas fa-eye"></i> 今日访问</div><h2>1,284</h2><span>+8%</span></div>
+						<div class="info-card"><div class="card-header"><i class="fas fa-users"></i> 活跃用户</div><h2>892</h2><span>在线142</span></div>
+						<div class="info-card"><div class="card-header"><i class="fas fa-file"></i> 文档总数</div><h2>3.9k</h2><span>新增32</span></div>
+						<div class="info-card"><div class="card-header"><i class="fas fa-tasks"></i> 项目进度</div><h2>67%</h2><span>进行中16</span></div>
+					</div>
+					<hr>
+					<div style="background:white; border-radius:24px; padding:22px;">近期动态：模型部署、权限变更、问题单 #112</div>
+				</div>
+
+				<div class="page" id="user"><h2><i class="fas fa-users"></i> 用户管理</h2><div class="page-grid"><div class="info-card">总用户 2,430</div><div class="info-card">新增今日 12</div><div class="info-card">角色 7个</div></div></div>
+				<div class="page" id="permission"><h2><i class="fas fa-lock"></i> 权限管理</h2><div>RBAC策略、角色: admin, editor, viewer</div></div>
+				<div class="page" id="doc"><h2><i class="fas fa-file-alt"></i> 文档管理</h2><div class="page-grid"><div class="info-card">技术文档 58</div><div class="info-card">产品手册 13</div></div></div>
+				<div class="page" id="model"><h2><i class="fas fa-brain"></i> 模型管理</h2><div>v3.5, v2.0, 微调任务2</div></div>
+				<div class="page" id="tech"><h2><i class="fas fa-microchip"></i> 技术管理</h2><div>K8s / Docker / React / Python</div></div>
+				<div class="page" id="solution"><h2><i class="fas fa-clipboard-list"></i> 方案管理</h2><div>数据迁移方案、权限升级方案</div></div>
+				<div class="page" id="feature"><h2><i class="fas fa-puzzle-piece"></i> 功能管理</h2><div>功能开关: 3个实验性</div></div>
+				<div class="page" id="template"><h2><i class="fas fa-copy"></i> 模板管理</h2><div>合同模板、代码模板 共21个</div></div>
+				<div class="page" id="product"><h2><i class="fas fa-boxes"></i> 产品管理</h2><div>核心产品: 3 / 迭代中2</div></div>
+				<div class="page" id="source"><h2><i class="fas fa-code"></i> 源码管理</h2><div>main/dev/feature · 最新commit 2h前</div></div>
+				<div class="page" id="issue"><h2><i class="fas fa-exclamation-triangle"></i> 问题管理</h2><div>待处理BUG: 12 · 低优: 24</div></div>
+				<div class="page" id="project"><h2><i class="fas fa-tasks"></i> 项目管理</h2><div>平台重构(70%) 模型训练(45%)</div></div>
+			</div>
+			</div>
+		</div>
+	</body>
+</html>
