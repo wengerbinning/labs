@@ -1,9 +1,113 @@
-/* src/App.css */
 
-.App {
+.app {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: stretch;
+
 	min-height: 100vh;
 	background-color: #f0f2f5;
 }
+
+.header {
+	/* display: none; */
+	justify-content: center;
+
+	background: #ffffff;
+	border-bottom: 1px solid #eeeeee;
+	padding: 0.75rem 1rem;
+	/* background-color: #888; */
+}
+
+.cernter {
+	/* display: flex; */
+	justify-content: center;
+}
+
+.footer {
+	/* display: none; */
+	justify-content:center;
+
+	background: #ffffff;
+	border-top: 1px solid #eeeeee;
+	padding: 1rem;
+	/* background-color: #888; */
+}
+
+
+
+.header-container, .footer-container {
+	/* max-width: 1200px; */
+	margin: 0 auto;
+	
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+/* header container */
+.logo {
+	font-weight: 700;
+	font-size: 1.5rem;
+	letter-spacing: -0.02em;
+	color: #000;
+	text-decoration: none;
+	line-height: 1.2;
+}
+
+/* nav */
+nav ul {
+	display: flex;
+	list-style: none;
+	gap: 2rem;
+	flex-wrap: wrap;
+}
+
+nav a {
+	text-decoration: none;
+	color: #333;
+	font-weight: 450;
+	font-size: 1rem;
+	transition: color 0.15s ease;
+	padding: 0.25rem 0;
+}
+
+nav a:hover {
+	color: #0077cc;
+}
+
+/* footer container */
+.footer-container {
+	align-items: center;
+}
+
+.copyright {
+	color: #666;
+	font-size: 0.9rem;
+}
+
+.footer-links ul {
+	display: flex;
+	list-style: none;
+	gap: 1.8rem;
+	flex-wrap: wrap;
+}
+
+.footer-links a {
+	text-decoration: none;
+	color: #555;
+	font-size: 0.9rem;
+	transition: color 0.15s ease;
+}
+
+.footer-links a:hover {
+	color: #0077cc;
+}
+
+
+/* Others */
 
 /* 自定义滚动条样式 */
 ::-webkit-scrollbar {
