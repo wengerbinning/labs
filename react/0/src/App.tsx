@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 import SymbolManagement from './components/SymbolManagement';
 import DisplayPanel from './components/DisplayPanel';
-
 import './App.css';
 
 function App() {
