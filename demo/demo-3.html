@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>简约 · header & footer</title>
+  <style>
+    /* 重置 & 基础 —— 干净、极简 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background: #ffffff;
+      color: #1e1e1e;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* 柔和的边界线，仅用于区分层次 */
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #eeeeee;
+      padding: 0.75rem 1rem;
+    }
+
+    footer {
+      background: #ffffff;
+      border-top: 1px solid #eeeeee;
+      padding: 1rem;
+    }
+
+    /* 容器 —— 内容居中，宽度自适应 */
+    .header-container,
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* logo 简约粗体 */
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+      color: #000;
+      text-decoration: none;
+      line-height: 1.2;
+    }
+
+    /* 导航列表 */
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 450;
+      font-size: 1rem;
+      transition: color 0.15s ease;
+      padding: 0.25rem 0;
+    }
+
+    nav a:hover {
+      color: #0077cc;      /* 低调的蓝色，不张扬 */
+    }
+
+    /* 主内容区域 —— 自然撑开，保证footer置底 */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    /* 页面内简约排版 */
+    .message {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .message h1 {
+      font-weight: 400;
+      font-size: 2.2rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      color: #111;
+    }
+
+    .message p {
+      color: #555;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .message small {
+      color: #aaa;
+      font-size: 0.9rem;
+      display: block;
+      margin-top: 2.5rem;
+    }
+
+    /* footer 内部布局 */
+    .footer-container {
+      align-items: center;
+    }
+
+    .copyright {
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .footer-links ul {
+      display: flex;
+      list-style: none;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: #555;
+      font-size: 0.9rem;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: #0077cc;
+    }
+
+    /* 小屏幕 —— 温柔地堆叠，内容居中 */
+    @media (max-width: 600px) {
+      .header-container,
+      .footer-container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .logo,
+      nav,
+      .copyright,
+      .footer-links {
+        width: 100%;
+      }
+
+      nav ul {
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      .footer-links ul {
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      main {
+        padding: 2rem 1rem;
+      }
+
+      .message h1 {
+        font-size: 1.8rem;
+      }
+    }
+
+    /* 更窄时保留呼吸感 */
+    @media (max-width: 380px) {
+      nav ul {
+        gap: 1rem;
+      }
+      .footer-links ul {
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 简约头部 -->
+  <header>
+    <div class="header-container">
+      <div class="logo">⸻  minimal  ⸻</div>
+      <nav aria-label="主导航">
+        <ul>
+          <li><a href="#">首页</a></li>
+          <li><a href="#">关于</a></li>
+          <li><a href="#">作品</a></li>
+          <li><a href="#">联系</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 主内容区：仅用于展示 header/footer 之间的自然过渡 -->
+  <main>
+    <div class="message">
+      <h1>干净 · 留白 · 克制</h1>
+      <p>header 仅有一条下边框，footer 只留一条上边框。<br>
+      没有多余的色彩，没有冗余的装饰。</p>
+      <p style="color:#777">导航与版权各居一侧，小屏温柔折叠。</p>
+      <small>—— 简约到只剩下必要的线条与间距 ——</small>
+    </div>
+  </main>
+
+  <!-- 简约底部 -->
+  <footer>
+    <div class="footer-container">
+      <div class="copyright">
+        &copy; 2025 minimal. 未经许可 不得复制
+      </div>
+      <div class="footer-links">
+        <ul>
+          <li><a href="#">隐私条款</a></li>
+          <li><a href="#">使用条款</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
