@@ -25,29 +25,10 @@ const DisplayPanel: React.FC = () => {
 
 	return (
 		<div className="panel">
-			<aside className={`sidebar menu ${collapsedMenu ? 'collapsed' : ''}`}>
-				{!collapsedMenu ? (
-					<h2>功能菜单</h2>
-				) : (
-					<h2>Menu</h2>
-				)}
-				<button className="toggle-btn" onClick={() => setCollapsedMenu(!collapsedMenu)}>
-					{collapsedMenu ? '→' : '←'}
-				</button>
-			</aside>
-			<main className="main">
-				<Card></Card>
-			</main>
-			<aside className={`sidebar list ${collapsedList ? 'collapsed' : ''}`}>
-				{!collapsedList ? (
-					<h2>内容列表</h2>
-				) : (
-					<h2>List</h2>
-				)}
-				<button className="toggle-btn" onClick={() => setCollapsedList(!collapsedList)}>
-					{collapsedList ? '←' : '→'}
-				</button>
-			</aside>
+			<Card>Test</Card>
+			<Card>Test</Card>
+			<Card>Test</Card>
+			<Card>Test</Card>
 		</div>
 	);
 };
