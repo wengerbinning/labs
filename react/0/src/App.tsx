@@ -30,12 +30,12 @@ function App() {
 								<li><a href="#">插件</a></li>
 							</ul>
 						</nav>
-						<div className="list">List</div>
+						{/* <div className="list">List</div> */}
 					</div>
 				</div>
 			</header>
 			<center className="center">
-				<aside className={`sidebar-menu sidebar ${collapsedMenu ? 'collapsed' : ''}`}>
+				<aside className={`aside menu ${collapsedMenu ? 'collapsed' : ''}`}>
 					{!collapsedMenu ? (<h2>功能菜单</h2>) : (<h2>Menu</h2>)}
 					<button className="toggle-btn" onClick={() => setCollapsedMenu(!collapsedMenu)}>
 						{collapsedMenu ? '→' : '←'}
@@ -49,7 +49,7 @@ function App() {
 					</Routes>
 					</Suspense>
 				</main>
-				<aside className={`sidebar-list sidebar ${collapsedList ? 'collapsed' : ''}`}>
+				<aside className={`aside list ${collapsedList ? 'collapsed' : ''}`}>
 					{!collapsedList ? (<h2>内容列表</h2>) : (<h2>List</h2>)}
 					<button className="toggle-btn" onClick={() => setCollapsedList(!collapsedList)}>
 						{collapsedList ? '←' : '→'}
