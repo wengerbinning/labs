@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 import SymbolManagement from './components/SymbolManagement';
 import DisplayPanel from './components/DisplayPanel';
+import FileImport from './components/FileImport';
 import './App.css';
 
 function App() {
@@ -41,14 +42,20 @@ function App() {
 						{collapsedMenu ? '→' : '←'}
 					</button>
 				</aside>
+
+
+
 				<main className="main">
 					<Suspense fallback={<div>加载中...</div>}>
 					<Routes>
-						<Route path="/" element={<DisplayPanel /> } />
+						<Route path="/" element={<FileImport /> } />
 						<Route path="/display" element={<SymbolManagement /> } />
 					</Routes>
 					</Suspense>
 				</main>
+
+
+
 				<aside className={`aside list ${collapsedList ? 'collapsed' : ''}`}>
 					{!collapsedList ? (<h2>内容列表</h2>) : (<h2>List</h2>)}
 					<button className="toggle-btn" onClick={() => setCollapsedList(!collapsedList)}>
