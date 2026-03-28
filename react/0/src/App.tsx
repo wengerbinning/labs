@@ -6,7 +6,12 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 
 import SymbolManagement from './components/SymbolManagement';
 import DisplayPanel from './components/DisplayPanel';
+
 import FileImport from './components/FileImport';
+import FileExport from './components/FileExport';
+
+import DigitalCertificate from './components/DigitalCertificate';
+
 import './App.css';
 
 function App() {
@@ -48,8 +53,13 @@ function App() {
 				<main className="main">
 					<Suspense fallback={<div>加载中...</div>}>
 					<Routes>
-						<Route path="/" element={<FileImport /> } />
-						<Route path="/display" element={<SymbolManagement /> } />
+						<Route path="/" element={ <FileImport /> } />
+						<Route path="/display" element={ <SymbolManagement /> } />
+
+						<Route path="/file/export" element = { <FileExport /> } />
+						<Route path="/file/import" element = { <FileImport /> } />
+
+						<Route path="/model/certificate" element={ <DigitalCertificate /> } />
 					</Routes>
 					</Suspense>
 				</main>
