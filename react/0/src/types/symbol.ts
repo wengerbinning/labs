@@ -1,13 +1,6 @@
 
 export type SymbolType = 'macro-switch' | 'macro-constant' | 'macro-function' | 'data' | 'type' | 'function';
 
-export interface BaseSymbol {
-  id: string;
-  name: string;
-  description?: string;
-  references: string[];
-  type: SymbolType;
-}
 
 export interface Parameter {
   name: string;
@@ -28,10 +21,17 @@ export interface Method {
   description?: string;
 }
 
+export interface BaseSymbol {
+  uuid  : string;
+  name  : string;
+  desc ?: string;
+  type ?: SymbolType;
+}
+
 export interface MacroSwitch extends BaseSymbol {
-  type: 'macro-switch';
-  defaultValue: boolean;
-  possibleValues: boolean[];
+  type  : 'macro-switch';
+  defaultValue ?: boolean;
+  possibleValues ?: boolean[];
 }
 
 export interface MacroConstant extends BaseSymbol {
@@ -65,4 +65,6 @@ export interface FunctionSymbol extends BaseSymbol {
   returnType: string;
 }
 
-export type Symbol = MacroSwitch | MacroConstant | MacroFunction | DataSymbol | TypeSymbol | FunctionSymbol;
+export type Symbol = BaseSymbol |
+	MacroSwitch | MacroConstant | MacroFunction |
+	DataSymbol | TypeSymbol | FunctionSymbol;

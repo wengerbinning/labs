@@ -1,0 +1,88 @@
+/* FileList.css */
+.file-list-container {
+    max-width: 600px;
+    margin: 20px auto;
+    font-family: sans-serif;
+  }
+  .toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .toolbar button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #f0f0f0;
+    transition: background-color 0.2s;
+  }
+  .toolbar button:hover {
+    background-color: #e0e0e0;
+  }
+  .btn-add {
+    background-color: #4caf50;
+    color: white;
+  }
+  .btn-add:hover {
+    background-color: #45a049;
+  }
+  .btn-batch-delete {
+    background-color: #f44336;
+    color: white;
+  }
+  .btn-batch-delete:hover {
+    background-color: #d32f2f;
+  }
+  .empty-message {
+    text-align: center;
+    color: #888;
+    padding: 40px;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+  }
+  .file-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .file-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    gap: 12px;
+  }
+  .file-item:hover {
+    background-color: #f9f9f9;
+  }
+  .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+  }
+  .file-name {
+    flex: 1;
+    font-size: 16px;
+  }
+  .item-actions {
+    display: flex;
+    gap: 8px;
+  }
+  .item-actions button {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    background-color: #e9ecef;
+  }
+  .btn-edit:hover {
+    background-color: #ffc107;
+    color: #333;
+  }
+  .btn-delete:hover {
+    background-color: #dc3545;
+    color: white;
+  }

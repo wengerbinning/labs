@@ -22,3 +22,25 @@ React 一个由数据驱动、通过虚拟DOM高效渲染的声明式UI库
 
 * @ant-design/icons
 * React Router
+
+
+数据维护
+
+组件内
+
+* useState
+* useReducer
+
+组件间
+
+* 提升状态(Lifting State Up) -  React 中一种常见的数据管理模式.
+* Context API - React 内置的跨组件树传递数据的机制，用于解决“prop drilling”（逐层传递 props）的痛点。
+* 外部状态管理库（Redux、Zustand、Valtio）
+
+
+* 维护不可变性（Immutability）
+* 副作用与同步（useEffect）
+
+
+* 类型安全（TypeScript）
+* 性能优化
