@@ -119,7 +119,7 @@ const columns: ColumnsType<Symbol> = [
 			<Button type="text" icon={<CopyOutlined />} onClick={() => handleDuplicate(record)} />
 		  </Tooltip>
 		  <Tooltip title="删除">
-			<Button type="text" danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.id)} />
+			<Button type="text" danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.uuid)} />
 		  </Tooltip>
 		</Space>
 	  ),
@@ -142,12 +142,12 @@ const columns: ColumnsType<Symbol> = [
   // 处理编辑符号
   const handleEdit = (symbol: Symbol) => {
     setEditingSymbol(symbol);
-    setSelectedType(symbol.type);
+    // setSelectedType(symbol?.type);
 
     // 格式化表单数据
     const formData = {
       ...symbol,
-      references: symbol.references?.join(', '),
+      references: 1,
     };
 
     form.setFieldsValue(formData);
@@ -162,7 +162,7 @@ const columns: ColumnsType<Symbol> = [
       okText: '确认',
       cancelText: '取消',
       onOk: () => {
-        setSymbols(symbols.filter(s => s.id !== id));
+        setSymbols(symbols.filter(s => s.uuid !== id));
         message.success('删除成功');
       },
     });
@@ -189,12 +189,12 @@ const columns: ColumnsType<Symbol> = [
 
       const newSymbol: Symbol = {
         ...values,
-        id: editingSymbol?.id || `${Date.now()}`,
+        id: editingSymbol?.uuid || `${Date.now()}`,
         references,
       };
 
       if (editingSymbol) {
-        setSymbols(symbols.map(s => s.id === editingSymbol.id ? newSymbol : s));
+        setSymbols(symbols.map(s => s.uuid === editingSymbol.uuid ? newSymbol : s));
         message.success('更新成功');
       } else {
         setSymbols([...symbols, newSymbol]);
