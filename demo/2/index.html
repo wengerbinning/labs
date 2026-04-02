@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+	<title>CSV动态列表加载器 - 名称与版本</title>
+	<!-- PapaParse 用于稳健解析 CSV -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+	<!-- Local -->
+	<link rel="stylesheet" href="index.css">
+	<script src="index.js" defer></script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="header-card">
+			<h1>📁 CSV 动态列表</h1>
+			<div class="sub">上传 CSV 文件，自动识别「名称」与「版本」列，生成动态卡片列表</div>
+		</div>
+
+		<!-- 上传区域 + 示例 -->
+		<div class="upload-zone">
+			<div class="drop-area" id="dropZone">
+				<div class="drop-icon">📂📎</div>
+				<div>拖拽 CSV 文件至此区域，或</div>
+				<label class="file-input-label">
+					📄 点击选择文件
+					<input type="file" id="fileInput" accept=".csv, .text/csv, .csv">
+				</label>
+				<div style="font-size: 0.7rem; margin-top: 8px; color: #6c86a3;">支持 .csv 格式，首行为列名</div>
+			</div>
+			<div class="example-area">
+				<div style="font-weight: 600; font-size: 0.9rem;">📌 没有测试文件？</div>
+				<button class="btn-outline" id="downloadSampleBtn">⬇️ 下载示例 CSV</button>
+				<div style="font-size: 0.7rem; color:#4f6f8f;">包含「名称」「版本」及额外列</div>
+			</div>
+		</div>
+
+		<!-- 动态信息栏: 列映射 + 搜索 + 排序 + 重置 -->
+		<div class="info-bar" id="infoBar">
+			<div class="detected-badge" id="columnMappingBadge">⚙️ 等待上传文件</div>
+			<div class="search-box">
+				<input type="text" id="searchInput" placeholder="🔍 按名称或版本筛选..." autocomplete="off">
+				<button class="sort-btn reset-btn" id="resetFilterBtn">🗑️ 重置筛选</button>
+			</div>
+			<div class="sort-group">
+				<button class="sort-btn" data-sort="name-asc">📛 名称 A→Z</button>
+				<button class="sort-btn" data-sort="name-desc">📛 名称 Z→A</button>
+				<button class="sort-btn" data-sort="version-asc">🔢 版本 升序</button>
+				<button class="sort-btn" data-sort="version-desc">🔢 版本 降序</button>
+			</div>
+			<div class="counter" id="recordCounter">0 条记录</div>
+		</div>
+
+		<!-- 列表容器 -->
+		<div id="listContainer" class="list-grid">
+			<div class="empty-state">✨ 上传 CSV 文件，将显示名称和版本动态列表</div>
+		</div>
+
+		<footer>智能识别中英文列名（名称/name，版本/version），支持实时搜索与排序</footer>
+	</div>
+</body>
+
+</html>
