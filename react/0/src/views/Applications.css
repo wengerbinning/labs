@@ -1,0 +1,18 @@
+
+.app-list {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas: "main";
+
+}
+
+
+.app-card {
+    width: 300px;
+    height: 50px;
+    border: 1px solid black;
+
+    display: flex;
+    flex-direction: column;
+}

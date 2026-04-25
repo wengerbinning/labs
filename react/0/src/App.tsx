@@ -12,6 +12,8 @@ import FileExport from './components/FileExport';
 
 import DigitalCertificate from './components/DigitalCertificate';
 
+import Applications from './views/Applications';
+
 import './App.css';
 
 function App() {
@@ -53,7 +55,7 @@ function App() {
 				<main className="main">
 					<Suspense fallback={<div>加载中...</div>}>
 					<Routes>
-						<Route path="/" element={ <FileImport /> } />
+						<Route path="/" element={ <Applications /> } />
 						<Route path="/display" element={ <SymbolManagement /> } />
 
 						<Route path="/file/export" element = { <FileExport /> } />

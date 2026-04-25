@@ -19,6 +19,10 @@ page
         page-stat
     page-footer
 
+* HTML
+* CSS
+* JavaScript
+* TypeScript: TypeScript 的主要目的是为 JavaScript 添加静态类型系统，从而提升开发效率和代码质量。
 
 
 
