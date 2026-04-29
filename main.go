@@ -3,11 +3,10 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"encoding/json"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/" , func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello, World!")
 	})
 
