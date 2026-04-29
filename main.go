@@ -1,14 +1,24 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 )
 
-func main() {
-	http.HandleFunc("/" , func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, World!")
-	})
 
-	http.ListenAndServe(":8080", nil)
+
+type DevelHandler struct{}
+func (h DevelHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("Hello, World!"))
+}
+
+
+
+
+
+func main() {
+	mux := http.NewServeMux()
+
+	mux.Handle("/", DevelHandler{})
+
+	http.ListenAndServe(":8080", mux)
 }
