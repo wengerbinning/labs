@@ -1,0 +1,14 @@
+
+
+dsn := "root:your_password@tcp(127.0.0.1:3306)/your_database?charset=utf8mb4&parseTime=True&loc=Local"
+
+
+// 2. 打开数据库（并不立即建立连接）
+db, err := sql.Open("mysql", dsn)
+if err != nil {
+    log.Fatal("Open DB failed: ", err)
+}
+defer db.Close()
+
+
+database/sql
