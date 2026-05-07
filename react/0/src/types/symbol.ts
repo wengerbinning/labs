@@ -65,6 +65,7 @@ export interface FunctionSymbol extends BaseSymbol {
   returnType: string;
 }
 
+
 export type Symbol = BaseSymbol |
 	MacroSwitch | MacroConstant | MacroFunction |
 	DataSymbol | TypeSymbol | FunctionSymbol;
