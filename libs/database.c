@@ -16,8 +16,8 @@ static db_context_t * db_context_created (db_config_t *conf) {
 	ctx = malloc(sizeof(db_context_t));
 	memset(ctx, 0, sizeof(db_context_t));
 
-	if (conf->hostname)
-		ctx->hostname = strdup(conf->hostname);
+	if (conf->host)
+		ctx->host = strdup(conf->host);
 	if (conf->username)
 		ctx->username = strdup(conf->username);
 	if (conf->password)
@@ -34,8 +34,8 @@ static db_context_t * db_context_destroy (db_context_t *ctx) {
 	if (!ctx)
 		return NULL;
 
-	if (ctx->hostname)
-		free(ctx->hostname);
+	if (ctx->host)
+		free(ctx->host);
 	if (ctx->username)
 		free(ctx->username);
 	if (ctx->password)
@@ -63,11 +63,11 @@ db_context_t * db_init (db_config_t *conf) {
 		}
 
 		ctx->context = mysql;
-		if (!ctx->hostname || !ctx->username || !ctx->password)
+		if (!ctx->host || !ctx->username || !ctx->password)
 			return ctx;
 
-		if (!(mysql_real_connect(ctx->context, ctx->hostname,
-			ctx->username, ctx->password, ctx->database, ctx->port, NULL, 0))) {
+		if (!(mysql_real_connect(mysql, ctx->host, ctx->username,
+			ctx->password, ctx->database, ctx->port, NULL, 0))) {
 			mysql_close(mysql);
 			ctx = db_context_destroy(ctx);
 			return NULL;
@@ -110,13 +110,20 @@ int db_config_dump (db_config_t *conf) {
 }
 
 int db_create_database (db_context_t *ctx, const char *name) {
-	char sql_cmd[SQL_CMD_MAXSIZE + 1];
 
-	snprintf(sql_cmd, sizeof(sql_cmd), "CREATE DATABASE %s", name);
-	if (mysql_query(ctx->context, sql_cmd)) {
-		// fprintf(stderr, "CREATE DATABASE failed: %s\n", mysql_error(conn));
-		return -1;
+	switch (ctx->type) {
+		case Mariadb: {
+			char sql_cmd[SQL_CMD_MAXSIZE + 1];
+			MYSQL *mysql = ctx->context;
+
+			snprintf(sql_cmd, sizeof(sql_cmd), "CREATE DATABASE %s", name);
+			if (mysql_query(mysql, sql_cmd)) {
+				fprintf(stderr, "CREATE DATABASE failed: %s\n", mysql_error(mysql));
+				return -1;
+			}
+		}
 	}
+
 	return 0;
 }
 
@@ -132,6 +139,20 @@ int db_select_database (db_context_t *ctx, const char *name) {
 }
 
 int db_delete_database (db_context_t *ctx, const char *name) {
+
+	switch (ctx->type) {
+		case Mariadb: {
+			char sql_cmd[SQL_CMD_MAXSIZE + 1];
+			MYSQL *mysql = ctx->context;
+
+			snprintf(sql_cmd, sizeof(sql_cmd), "DROP DATABASE %s", name);
+			if (mysql_query(mysql, sql_cmd)) {
+				fprintf(stderr, "DROP DATABASE failed: %s\n", mysql_error(mysql));
+				return -1;
+			}
+		}
+	}
+
 	return 0;
 }
 
@@ -175,3 +196,11 @@ int db_table_dump (db_context_t *ctx) {
 
 	return 0;
 }
+
+int db_create_table (db_context_t *ctx, const char *name) {
+
+}
+
+
+int db_add_entry
+int db_search()

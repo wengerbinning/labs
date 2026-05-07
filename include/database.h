@@ -10,8 +10,8 @@ typedef enum db_type {
 } db_type_t;
 
 typedef struct db_config {
-	uint32_t port;
-	char *hostname;
+	uint32_t  port;
+	char     *host;
 	char *username;
 	char *password;
 	char *database;
@@ -20,8 +20,10 @@ typedef struct db_config {
 
 typedef struct db_context {
 	void *context;
-	uint32_t port;
-	char *hostname;
+
+	//
+	uint32_t  port;
+	char     *host;
 	char *username;
 	char *password;
 	char *database;
@@ -30,6 +32,11 @@ typedef struct db_context {
 
 db_context_t * db_init (db_config_t *conf);
 db_context_t * db_exit (db_context_t *ctx);
+
+int db_create_database (db_context_t *ctx, const char *name);
+int db_delete_database (db_context_t *ctx, const char *name);
+
+
 
 #define _STR(name) #name
 #define  STR(name) _STR(name)
