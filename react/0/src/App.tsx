@@ -13,7 +13,9 @@ import FileExport from './components/FileExport';
 import DigitalCertificate from './components/DigitalCertificate';
 
 import Applications from './views/Applications';
-import Symbol from './views/Symbol';
+import SourceCode from './views/SourceCode/SourceCode';
+import SourceFile from './views/SourceCode/SourceFile';
+import SourceSymb from './views/SourceCode/SourceSymb';
 
 import './App.css';
 
@@ -56,7 +58,11 @@ function App() {
 				<main className="main">
 					<Suspense fallback={<div>加载中...</div>}>
 					<Routes>
-						<Route path="/" element={ <Symbol /> } />
+					<Route path="/"  element={ <Applications /> } />
+						<Route path="/0" element={ <SourceCode /> } />
+						<Route path="/1" element={ <SourceFile /> } />
+						<Route path="/2" element={ <SourceSymb /> } />
+
 						<Route path="/display" element={ <SymbolManagement /> } />
 
 						<Route path="/file/export" element = { <FileExport /> } />

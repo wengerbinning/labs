@@ -1,32 +1,31 @@
+
 import React, { useState } from 'react';
-import './Symbol.css';
+import './SourceCode.css';
 
-// interface Attr {
-// 	[key: string]: string;
-// };
-
-interface Symbol {
+interface Code {
 	name: string;
-	file: string;
-	line: number;
+	desc: string;
+	stat: string;
+	attr: string[];
+	vers: string[];
 };
 
-
-
-const Symbol: React.FC = () => {
-	// const [headers, setHeaders] = useState<string[]>([]);
-	// const [entries, setEntries] = useState<Attr[]>([]);
-	const [syms, setSymbol] = useState<Symbol[]>([
-		{
-			name: "a",
-			file: "A",
-			line: 1,
-		},
-		{
-			name: "b",
-			file: "B",
-			line: 1,
-		}
+const SourceCode: React.FC = () => {
+	const [codes, setCode] = useState<Code[]>([
+		// {
+		// 	name: "binutil",
+		// 	desc: "This is Basic Toolkit",
+		// 	stat: "develop",
+		// 	attr: ["fork"],
+		// 	vers: ["1.0.0"]
+		// },
+		// {
+		// 	name: "linux",
+		// 	desc: "This is Linux Kernel",
+		// 	stat: "develop",
+		// 	attr: ["fork"],
+		// 	vers: ["1.0.0"]
+		// }
 	]);
 
 	// const importCSV = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,18 +73,19 @@ const Symbol: React.FC = () => {
 
 
 	return(<div>
-		{/* <label>CSV文件</label> */}
-		{/* <input type="file" accept=".csv" onChange={importCSV} /> */}
-
-		<div className='sym-list'>
-			{ syms.map((app, idx) => (
-				<div className="sym-card" key={idx}>
-						<span>{app.name}</span>
-						<span>{app.file}</span>
+	{ codes && codes.length === 0 ? (
+		<span>Nothing</span>
+	):(
+		<div className='list'>
+			{ codes.map((code, idx) => (
+				<div className="card" key={idx}>
+					<span>{code.name}</span>
+					<span>{code.desc}</span>
 				</div>
 			))}
 		</div>
+	)}
 	</div>)
 };
 
-export default Symbol;
+export default SourceCode;
