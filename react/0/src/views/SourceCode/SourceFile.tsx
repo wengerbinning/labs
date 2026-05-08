@@ -31,9 +31,9 @@ const SourceFile: React.FC = () => {
 	{ files && files.length === 0 ? (
 		<span>Nothing</span>
 	):(
-		<div className='list'>
+		<div className='lists'>
 			{ files.map((file, idx) => (
-				<div className="card" key={idx}>
+				<div className="list" key={idx}>
 					<span>{file.name}</span>
 					<span>{file.path}</span>
 				</div>
