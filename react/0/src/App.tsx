@@ -12,6 +12,9 @@ import FileExport from './components/FileExport';
 
 import DigitalCertificate from './components/DigitalCertificate';
 
+
+import Project from './views/Project/Project';
+
 import Applications from './views/Applications';
 import SourceCode from './views/SourceCode/SourceCode';
 import SourceFile from './views/SourceCode/SourceFile';
@@ -27,73 +30,22 @@ function App() {
 
 	return (
 		<div className="app">
-			<header className="header">
-				<div className='header-container'>
-					<div className="logo">⸻  minimal  ⸻</div>
-					<div className="title">WebSite</div>
-					<div className="nav">
-						<nav aria-label="主导航">
-							<ul>
-								<li><a href="#">首页</a></li>
-								<li><a href="#">关于</a></li>
-								<li><a href="#">作品</a></li>
-								<li><a href="#">联系</a></li>
-								<li><a href="#">插件</a></li>
-							</ul>
-						</nav>
-						{/* <div className="list">List</div> */}
-					</div>
-				</div>
-			</header>
-			<center className="center">
-				<aside className={`aside menu ${collapsedMenu ? 'collapsed' : ''}`}>
-					{!collapsedMenu ? (<h2>功能菜单</h2>) : (<h2>Menu</h2>)}
-					<button className="toggle-btn" onClick={() => setCollapsedMenu(!collapsedMenu)}>
-						{collapsedMenu ? '→' : '←'}
-					</button>
-				</aside>
+			<Suspense fallback={<div>加载中...</div>}>
+				<Routes>
+					<Route path="/"  element={ <Project /> } />
 
+					<Route path="/0" element={ <SourceCode /> } />
+					<Route path="/1" element={ <SourceFile /> } />
+					<Route path="/2" element={ <SourceSymb /> } />
 
+					<Route path="/display" element={ <SymbolManagement /> } />
 
-				<main className="main">
-					<Suspense fallback={<div>加载中...</div>}>
-					<Routes>
-					<Route path="/"  element={ <Applications /> } />
-						<Route path="/0" element={ <SourceCode /> } />
-						<Route path="/1" element={ <SourceFile /> } />
-						<Route path="/2" element={ <SourceSymb /> } />
+					<Route path="/file/export" element = { <FileExport /> } />
+					<Route path="/file/import" element = { <FileImport /> } />
 
-						<Route path="/display" element={ <SymbolManagement /> } />
-
-						<Route path="/file/export" element = { <FileExport /> } />
-						<Route path="/file/import" element = { <FileImport /> } />
-
-						<Route path="/model/certificate" element={ <DigitalCertificate /> } />
-					</Routes>
-					</Suspense>
-				</main>
-
-
-
-				<aside className={`aside list ${collapsedList ? 'collapsed' : ''}`}>
-					{!collapsedList ? (<h2>内容列表</h2>) : (<h2>List</h2>)}
-					<button className="toggle-btn" onClick={() => setCollapsedList(!collapsedList)}>
-						{collapsedList ? '←' : '→'}
-					</button>
-				</aside>
-			</center>
-			<footer className="footer">
-				<div className='footer-container'>
-					<div className="copyright">&copy; 2025 minimal. 未经许可 不得复制</div>
-					<div className="footer-links">
-						<ul>
-							<li><a href="#">隐私条款</a></li>
-							<li><a href="#">使用条款</a></li>
-							<li><a href="#">GitHub</a></li>
-						</ul>
-					</div>
-				</div>
-			</footer>
+					<Route path="/model/certificate" element={ <DigitalCertificate /> } />
+				</Routes>
+			</Suspense>
 		</div>
 	);
 }

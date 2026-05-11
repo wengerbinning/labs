@@ -1,0 +1,56 @@
+Flex - 一维弹性布局
+
+display:
+* flex
+* inline-flex
+
+
+* 容器 - 主轴(Main Axis),交叉轴(Cross Axis)
+* 项目 -
+
+容器:
+
+* 交叉轴对齐 - align-items
+* 主轴的方向 - flex-direction
+* 主轴的对齐 - justify-content
++ flex-wrap
++ align-content
+
+项目
+
+* 放大比例 - flex-grow
+* 缩小比例 - flex-shrink
+* 对齐方式 - align-self
+* 分配尺寸 - flex-basis
+
+
+主轴的方向(flex-direction) - 默认row
+* row, row-reverse
+* column, column-reverse
+
+主轴的对齐(justify-content) - 默认flex-start
+* flex-start
+* center
+* flex-end
+* space-between
+* space-around
+* space-evenly
+交叉轴对齐(align-items/align-content)
+* flex-start
+* center
+* flex-end
+* baseline
+* stretch
+
+
+* 文档项目 - 需求、设计、用户、技术、方案
+* 硬件项目 - 设计、验证、评估、生产、维护
+* 软件项目 - 平台、服务、系统、应用、需求
+* 资源项目 - 资金、时间、人力、设备、软件
+
+* 00 - unknown
+* 01 - doc
+* 02 - hard
+* 03 - soft
+* 04 - res
+* 99 -
