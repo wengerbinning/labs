@@ -76,6 +76,61 @@ admin - root root
 数据管理(基础数据，用户数据)
 
 
-
+概念
+* 拓展
 
 gcc -o main -Iinclude test/main.c libs/database.c -L/usr/lib/ -lmariadb
+
+MAKE
+----
+
+* 工具: 基础工具、编译工具
+* 变量: 环境变量、命令参数、全局变量、命令变量、目标变量、规则变量、局部变量
+* 目标: 伪目标(Phony Target)
+* 依赖: 强制依赖
+* 赋值: 使用赋值、立即赋值、条件赋值、追加赋值、命令赋值
+* make 默认工具变量
+
+* AS
+* AR
+* CC
+* LD
+* RM
+* CPP
+* CXX
+* LEX
+* YACC
+* MAKEINFO
+
+CFLAGS
+YFLAGS
+ASFLAGS
+ARFLAGS
+LDFLAGS
+CPPFLAGS
+CXXFLAGS
+
+LDLIBS
+
+
+目标(Target) - make的基本规则是目标文件不存在或者依赖文件比较新时，执行相应规则。
+伪目标 - 存在一类目标不会生成目标文件，但是项目中又存在同名的文件，此时影响执行相应规则。
+    因此需要标记这类规则来确保存在对应的目标文件，也能正常执行规则。
+
+.PHONY:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Linux：
