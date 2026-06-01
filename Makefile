@@ -27,11 +27,15 @@ test:
 	$(ECHO) This $@ target rules
 
 phony += check build
+all: check
 check:
 	$(ECHO) This $@ target rules
 
+all: build
 build:
 	$(ECHO) This $@ target rules
+
+
 
 all:
 	$(ECHO) This $@ target rules
