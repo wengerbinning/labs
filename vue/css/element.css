@@ -1,0 +1,25 @@
+
+
+
+label {
+	font-weight: 600;
+	color: #2c3e4e;
+	display: block;
+	margin-bottom: 0.5rem;
+}
+
+input {
+	width: 100%;
+	padding: 0.8rem 1rem;
+	font-size: 1rem;
+	border: 2px solid #e2e8f0;
+	border-radius: 2rem;
+	outline: none;
+	transition: 0.2s;
+	font-family: inherit;
+}
+
+input:focus {
+	border-color: #42b883;
+	box-shadow: 0 0 0 3px rgba(66, 184, 131, 0.2);
+}

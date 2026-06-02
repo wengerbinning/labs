@@ -1,0 +1,28 @@
+
+
+.note {
+	margin-top: 1.5rem;
+	border-top: 1px solid #e2edf2;
+	padding-top: 1rem;
+
+	font-size: 0.75rem;
+	text-align: center;
+
+	color: #6b8a9c;
+}
+
+.message {
+	padding: 0.5rem;
+
+	font-size: 1.8rem;
+	font-weight: 600;
+
+	color: #1e4663;
+	color: transparent;
+
+	word-break: break-word;
+
+	background: linear-gradient(120deg, #2c5f7a, #1d3e53);
+	background-clip: text;
+	-webkit-background-clip: text;
+}
