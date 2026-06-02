@@ -1,3 +1,10 @@
+
+* nodejs: v24.15.0
+* npm: 11.12.1
+* nvm
+* react:
+* vue:
+
 该项目主要是实验HTML, CSS, JavaScript的各种特性
 
 * demo 1: 演示现代布局
