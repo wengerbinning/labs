@@ -1,27 +1,36 @@
 #ifndef __VERSION_H__
 #define __VERSION_H__
 
+#define _0 0ULL
+#define _1 1ULL
+#define BIT(n)     (_1 << (n))
+#define MASK(n)    (BIT(n) - 1)
+#define BITS(n, m) (MASK((m) + (n)) ^ MASK(n))
+
+
+#define VERSION_MAJOR 0
+#define VERSION_MINOR 1
+#define VERSION_PHASE 0
+#define VERSION_PATCH 0
 
 /* Version */
-#define VER_FIELD_MASK  0xFF
-#define VER_MAJOR_OFST    24
-#define VER_MINOR_OFST    16
-#define VER_PHASE_OFST     8
-#define VER_PATCH_OFST     0
+#define VER_NODE(v, n, s) (((v) >> ((n) * (s))) & MASK(s))
+#define NODE_VER(o, n, s) (((o) & MASK(s)) << ((n) * (s)))
+#define _V(a, b, n, s) (NODE_VER(a, 2*(n) + 1, (s)) | NODE_VER(b, 2*(n), (s)))
 
-#define VER_MAJOR(ver)  ((ver >> VER_MAJOR_OFST) & VER_FIELD_MASK)
-#define VER_MINOR(ver)  ((ver >> VER_MINOR_OFST) & VER_FIELD_MASK)
-#define VER_PHASE(ver)  ((ver >> VER_PHASE_OFST) & VER_FIELD_MASK)
-#define VER_PATCH(ver)  ((ver >> VER_PATCH_OFST) & VER_FIELD_MASK)
+#define VER_SIZE 8
+#define VER_MAJOR(v)  VER_NODE(v, 3, VER_SIZE)
+#define VER_MINOR(v)  VER_NODE(v, 2, VER_SIZE)
+#define VER_PHASE(v)  VER_NODE(v, 1, VER_SIZE)
+#define VER_PATCH(v)  VER_NODE(v, 0, VER_SIZE)
 
-#define VERSION(a, b, m, n) \
-	(((a & VER_FIELD_MASK) << VER_MAJOR_OFST) | \
-	 ((b & VER_FIELD_MASK) << VER_MINOR_OFST) | \
-	 ((m & VER_FIELD_MASK) << VER_PHASE_OFST) | \
-	 ((n & VER_FIELD_MASK) << VER_PATCH_OFST))
-
-#define VERSTR(ver) \
-	VER_MAJOR(ver), VER_MINOR(ver), VER_PHASE(ver), VER_PATCH(ver)
+#define VERFMT0 "%u.%u.%u.%u"
+#define VERFMT1 "v" VERFMT0
+#define VERFMT2 "V" VERFMT0
+#define VER2STR(v) VER_MAJOR(v), VER_MINOR(v), VER_PHASE(v), VER_PATCH(v)
+#define VERSION(a, b, m, n) (_V(a, b, 1, VER_SIZE) | _V(m, n, 0, VER_SIZE))
+#define MAJOR_VERSION(a, b) _V(a, b, 0, VER_SIZE)
+#define MINOR_VERSION(m, n) _V(m, n, 0, VER_SIZE)
 
 /* Feature Phase */
 #define FP_FIELD_MASK 0xFF
